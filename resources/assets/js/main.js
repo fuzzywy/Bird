@@ -40,21 +40,7 @@ const app = new Vue({
     el: '#app'
 });
 
-/*const routes = [
-    { path: '/home', component: {template :"<home></home>"} },
-    { path: '/archives', component: { template: '<archives></archives>' } },
-];
-
-const router = new VueRouter({
-    routes // （缩写）相当于 routes: routes
-});
-
-const app = new Vue({
-    router
-}).$mount('#app');
-*/
-
-/*Vue.component('App', require('./components/App.vue'));
+Vue.component('App', require('./components/App.vue'));
 Vue.component('example', require('./components/Example.vue'));
 const router = new VueRouter({
   mode: 'history',
@@ -63,7 +49,7 @@ const router = new VueRouter({
     { path: '/example', component: Example }
   ]
 })
-new Vue(Vue.util.extend({ router }, App)).$mount('#app')*/
+new Vue(Vue.util.extend({ router }, App)).$mount('#app')
 
 
 
