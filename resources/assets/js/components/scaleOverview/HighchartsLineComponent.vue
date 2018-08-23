@@ -1,7 +1,7 @@
 <template>
     <!-- <div class="hello">
         <div class="charts"> -->
-    <div :id="id" :option="option" class="col-12" style="min-width: 400px; padding-left: 0px"></div>
+    <div :id="id" :option="option" class="col-12" style="min-width: 400px; padding: 0px"></div>
         <!-- </div>
     </div> -->
 </template>
@@ -10,6 +10,9 @@
         data() {
             return {
                 id: 'container',
+                city: '全省',
+                overview: 'indexoverview',
+                types: "LTE",
                 option: {
                     chart: {
                         type: 'line',
@@ -55,8 +58,115 @@
                 }
             }
         },
+        /*mounted() {
+            // window.Highcharts.chart(this.id, this.option)
+            new Highcharts.chart(this.id, this.option)
+        },*/
         mounted() {
-            window.Highcharts.chart(this.id, this.option)
+            var charts = new Highcharts.chart(this.id, this.option)
+            charts.reflow();
+            this.bus.$on('leftClick', overview => {
+                this.overview = overview
+            })
+            this.bus.$on('cityClick', city => {
+                this.city = city
+            })
+            this.bus.$on('getTabsType', types=> {
+                this.types = types
+            })
+            this.bus.$on('leftClickData', overview => {
+                var obj = this.option
+                var id = this.id
+                this.overview = overview
+                axios.get('getcharts'+this.types , {
+                    params: {
+                        data: this.types,
+                        city: this.city,
+                        overview: this.overview
+                    }
+                })
+                .then(function(response) {
+                    //clear data
+                    while (charts.series.length > 0) {
+                        charts.series[0].remove(true);
+                    }
+                    charts.setTitle(response.data.title, response.data.subtitle)
+                    charts.yAxis[0].setTitle(response.data.ytitle)
+                    charts.xAxis[0].setTitle(response.data.xtitle)                    
+
+                    charts.xAxis[0].categories = response.data.xcategories;
+                    charts.yAxis[0].categories = response.data.ycategories;
+
+                    for (var i = response.data.ydata.length - 1; i >= 0; i--) {
+                        var series = charts.addSeries(response.data.ydata[i])  
+                    }
+                })
+                .catch(function(error) {
+                    console.log(error)
+                })
+            })
+            this.bus.$on('cityClickData', city => {
+                var obj = this.option
+                var id = this.id
+                this.city = city
+                axios.get('getcharts'+this.types , {
+                    params: {
+                        data: this.types,
+                        city: this.city,
+                        overview: this.overview
+                    }
+                })
+                .then(function(response) {
+                    //clear data
+                    while (charts.series.length > 0) {
+                        charts.series[0].remove(true);
+                    }
+                    charts.setTitle(response.data.title, response.data.subtitle)
+                    charts.yAxis[0].setTitle(response.data.ytitle)
+                    charts.xAxis[0].setTitle(response.data.xtitle)                    
+
+                    charts.xAxis[0].categories = response.data.xcategories;
+                    charts.yAxis[0].categories = response.data.ycategories;
+
+                    for (var i = response.data.ydata.length - 1; i >= 0; i--) {
+                        var series = charts.addSeries(response.data.ydata[i])  
+                    }
+                })
+                .catch(function(error) {
+                    console.log(error)
+                })
+            })
+            this.bus.$on('getTabsData', types => {
+                var obj = this.option
+                var id = this.id
+                this.types = types
+                axios.get('getchartsLTE' , {
+                    params: {
+                        data: this.types,
+                        city: this.city,
+                        overview: this.overview
+                    }
+                })
+                .then(function(response) {
+                    //clear data
+                    while (charts.series.length > 0) {
+                        charts.series[0].remove(true);
+                    }
+                    charts.setTitle(response.data.title, response.data.subtitle)
+                    charts.yAxis[0].setTitle(response.data.ytitle)
+                    charts.xAxis[0].setTitle(response.data.xtitle)                    
+
+                    charts.xAxis[0].categories = response.data.xcategories;
+                    charts.yAxis[0].categories = response.data.ycategories;
+
+                    for (var i = response.data.ydata.length - 1; i >= 0; i--) {
+                        var series = charts.addSeries(response.data.ydata[i])  
+                    }
+                })
+                .catch(function(error) {
+                    console.log(error)
+                })
+            })
         }
         /*components: {
             XChart

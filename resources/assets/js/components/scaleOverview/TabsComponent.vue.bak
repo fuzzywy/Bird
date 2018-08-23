@@ -1,0 +1,80 @@
+<template>
+	<b-card no-body>
+        <b-tabs card>
+			<b-tab no-body
+				v-for='post in posts'
+				:key='post.id'
+				:title='post.type'
+				:click.once='show(post.type)'
+			>
+				<tabsdata-component></tabsdata-component>
+				<b-card-footer>{{ post.name }}-{{ overview }}-{{ post.type }}</b-card-footer>
+			</b-tab>
+
+			<!-- <b-tab  title='LTE' @click='show("LTE")'>
+				<div class="row">
+					<div class="col-4" style="text-align: center;" @click="alert(0)">
+			        无线接通率
+			        <br />
+		            <i class="icon-ali-jiantou_xiangxia"></i>
+		            93%
+			    	</div>
+				</div>
+				<div class="row">
+					<div class="col-4" style="text-align: center;" @click="alert(0)">
+			        无线掉线率
+			        <br />
+		            <i class="icon-ali-jiantou_xiangxia"></i>
+		            93%
+			    	</div>
+				</div>
+			</b-tab>
+			<b-card-footer>网络概览-{{ overview }}-LTE</b-card-footer> -->
+			<!-- <b-tab nobody title='VOLTE' @click='show("VOLTE")'>
+				<tabsdata-component></tabsdata-component>
+				<b-card-footer>网络概览-{{ overview }}-VOLTE</b-card-footer>
+			</b-tab> -->
+
+		</b-tabs>
+    </b-card>
+</template>
+
+<script>
+	Vue.component('tabsdata-component', require('./TabsdataComponent.vue'));
+	export default {
+		name: 'tabs',
+		data() {
+			return {
+				city: '全省',
+				overview: 'indexoverview',
+				posts: [
+					{ id: 0, type:'LTE', name: "网络概览" },
+					{ id: 1, type:'VOLTE', name: '网络概览' },
+					{ id: 2, type:'NB-IOT', name: '网络概览' },
+					{ id: 3, type:'GSM', name: '网络概览' }
+				]
+			}
+		},
+		created() {
+	  		this.bus.$on('cityClick', overview => {
+	  			this.overview = overview
+	  			console.log(this)
+	  		})
+	  	},
+		methods: {
+			show: function(data) {
+				this.bus.$on('leftClick', overview => {
+					this.overview = overview
+				})
+				// alert(this.overview)
+				this.bus.$emit('tabsclick',
+				{
+					data:data, 
+					city:this.city,
+					overview:this.overview
+				});
+				// alert(data)
+			}
+		}
+	}
+</script>

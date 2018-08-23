@@ -2,7 +2,6 @@
 
 @section('content')
 <div class="container">
-<!-- <router-view></router-view> -->
   <div class="row">
     <div class="col-2">
       <b-card nobody header="<b>网络概览</b>">
@@ -24,7 +23,20 @@
       <!-- test highcharts -->
       <!-- <test></test> -->
     </div>
-</div>
+  </div>
      
+
+  <!-- <div class="row">
+    <div class="col-12">
+        <h1>Hello App!</h1>
+        <p>
+          <router-link to="/foo">Go to Foo</router-link>
+          <router-link to="/bar">Go to Bar</router-link>
+        </p>
+    </div>  
+    <router-view></router-view>
+  </div> -->
+
 </div>
+
 @endsection

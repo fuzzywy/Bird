@@ -1,31 +1,48 @@
 <template>
 	<div>
-		<b-list-group-item 
+		<b-list-group-item button
 			v-for='(item, index) in posts'
 			:key='item.id'
-			content="item.name"
 			:index='item.id'
-			@click='alert'
-		>{{ item.name }}</b-list-group-item>
+			:name='item.routertag'
+			@click='leftClick'
+		>{{ item.Content }}</b-list-group-item>
 	</div>
 </template>
 
 <script>
 	export default {
-		// props: ['content'],
-		// template: '<li @click="handleClick">{{content}}</li>',
+		// props: ['name'],
+		// template: '<li @click="handleClick">{{name}}</li>',
 		data() {
 			return {
 				posts: [
-					{ id: 1, name: '指标概览' },
-					{ id: 2, name: '规模概览' }
+					{ id: 1, Content: '指标概览', routertag: 'indexoverview' },
+					{ id: 2, Content: '规模概览', routertag: 'scaleoverview' }
 				]
 			}
 		},
+		/*watch: {
+			name: function(news, olds) {
+				alert(news);
+			}
+		},*/
 		methods: {
-			alert: function(event) {
-				alert(event.target.textContent)
-				// alert(index.target.innerHTML)
+			leftClick: function (event) {
+				this.bus.$emit('leftClick',event.target.name)
+				this.bus.$emit('leftClickData', event.target.name)
+				/*axios.get(event.target.name, {
+			    	params: {
+			    		name: event.target.textContent,
+			    		route: event.target.name
+			    	}
+			    })
+			    .then(function(response) {
+			    	// this.bus.$emit('leftClickData', event.target.name)
+			    })
+			    .catch(function(error) {
+			    	// console.log(error)
+			    })*/
 			}
 		}
 	}

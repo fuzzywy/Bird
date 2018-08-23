@@ -25,3 +25,16 @@ Route::get('/test', function() {
 Route::get('example', function () {
     return view('example');
 });
+
+Route::get('foo', 'TestController@test');
+
+Route::get('indexoverview', 'IndexOverviewController@index');
+Route::get('scaleoverview', 'ScaleOverviewController@scale');
+
+Route::get('getTabs', 'NetWorkOverviewController@getTabs');
+
+Route::get('getTabsLTE', 'NetWorkOverviewLTEController@getTabs');
+Route::get('getTabsVOLTE', 'NetWorkOverviewVOLTEController@getTabs');
+
+Route::get('getchartsLTE', 'NetWorkChartsLTEController@getcharts');
+Route::get('getchartsVOLTE', 'NetWorkChartsVOLTEController@getcharts');

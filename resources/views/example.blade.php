@@ -3,10 +3,13 @@
 <head>
   <meta charset="UTF-8">
   <title>Example</title>
-  <link href="/css/app.css" rel="stylesheet">
+  <link href="{{ asset('css/app.css') }}" rel="stylesheet">
 </head>
 <body>
-  <div id="app"><example></example></div>
+  <div id="app">
+  	<router></router>
+  </div>
   <h5> Example </h5>
-  <script src="/js/app.js"></script></body>
+  <script src="{{ asset('js/app.js') }}"></script>
+</body>
 </html>
