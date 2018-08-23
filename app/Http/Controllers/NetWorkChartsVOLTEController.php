@@ -9,46 +9,29 @@ use Illuminate\Support\Facades\Input;
 class NetWorkChartsVOLTEController extends Controller
 {
     public function getcharts() {
-        // sleep(2);
-    	$data = input::get('data');
-    	$city = input::get('city');
-    	$overview = input::get('overview');
-    	return "{
-                        chart: {
-                            type: 'line'
-                        },
-                        title: {
-                            text: '799'
-                        },
-                        xAxis: {
-                            categories: ['这', '是', '测', '试', '左边', '指标', '概览', '八月', '九月', '十月', '十一月', '十二月'],
-    　　　　　　　　　　　　　　   plotbands:[{
-    　　　　　　　　　　　　　　　　　from:4.5,
-    　　　　　　　　　　　　　　　　　to:6.5,
-    　　　　　　　　　　　　　　　　　color:'rgba(68,170,213,0)'//透明度和颜色
-    　　　　　　　　　　　　　　　  }]
-                             },
-     
-                            yAxis: {//y轴显示的内容
-                            title: {
-                                text: '气温 (°C)'
-                            }
-                        },
-                        plotOptions: {
-                            line: {
-                                dataLabels: {
-                                    enabled: true // 开启数据标签
-                                },
-                                enableMouseTracking: false // 关闭鼠标跟踪，对应的提示框、点击事件会失效
-                            }
-                        },
-                        series: [{//两条数据
-                            name: '东京',
-                            data: [7.0, 6.9, 9.5, 14.5, 18.4, 21.5, 25.2, 26.5, 23.3, 18.3, 13.9, 9.6]
-                        }, {
-                            name: '伦敦',
-                            data: [3.9, 4.2, 5.7, 8.5, 11.9, 15.2, 17.0, 16.6, 14.2, 10.3, 6.6, 4.8]
-                        }]
-                    }";
+        $data = input::get('data');
+        $city = input::get('city');
+        $overview = input::get('overview');
+        $datas = [];
+        //主标题/副标题/y轴标题/x轴标题
+        $title = array('text' => $data."-".$city."-".$overview , 'style' =>array('color' =>"#ff0000" ,"fontWeight"=>"bold" ));
+        $subtitle = array('text' => $data."-".$city."-".$overview, 'style' =>array('color' =>"#ff0000" ));
+        $ytitle = array('text' => "Y".$data."-".$city."-".$overview , 'style' =>array('color' =>"#ff0000" ,"fontWeight"=>"bold" ));
+        $xtitle = array('text' => "X".$data."-".$city."-".$overview , 'style' =>array('color' =>"#ff0000" ,"fontWeight"=>"bold" ));
+        //x轴/Y轴/data
+        $xcategories = array('1月'.rand(-3,10), '2月', '3月', '四月', '五月', '六月', '七月', '八月', '九月', '十月', '十一月', '十二月');
+        $ycategories = array(-10,0,10);
+        $ydata[] = array('name'=>'测试0', 'data'=>array(rand(-3,10), rand(-3,10), rand(-3,10), rand(-3,10), rand(-3,10), rand(-3,10), rand(-3,10), rand(-3,10), rand(-3,10), rand(-3,10), rand(-3,10), rand(-3,10)));
+        $ydata[] = array('name'=>'测试1', 'data'=>array(rand(-3,10), rand(-3,10), rand(-3,10), rand(-3,10), rand(-3,10), rand(-3,10), rand(-3,10), rand(-3,10), rand(-3,10), rand(-3,10), rand(-3,10), rand(-3,10)));
+        $ydata[] = array('name'=>'测试2', 'data'=>array(rand(-3,10), rand(-3,10), rand(-3,10), rand(-3,10), rand(-3,10), rand(-3,10), rand(-3,10), rand(-3,10), rand(-3,10), rand(-3,10), rand(-3,10), rand(-3,10)));
+
+        $datas['title'] = $title;
+        $datas['subtitle'] = $subtitle;
+        $datas['ytitle'] = $ytitle;
+        $datas['xtitle'] = $xtitle;
+        $datas['xcategories'] = $xcategories;
+        $datas['ycategories'] = $ycategories;
+        $datas['ydata'] = $ydata;
+        return json_encode($datas);
     }
 }
