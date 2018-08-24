@@ -3,7 +3,7 @@
         <b-tabs card>
 			<b-tab :active="isActiveLTE" title='LTE' @click='show("LTE")'>
 				<div class="row">
-					<div id='LTE'
+					<div
 			            class="col-4" 
 			            style="text-align: center;" 
 			            v-for="post in LTEs"
@@ -17,7 +17,7 @@
 			</b-tab>
 			<b-tab title='VOLTE' @click='show("VOLTE")'>
 				<div class="row">
-					<div id='VOLTE'
+					<div
 			            class="col-4" 
 			            style="text-align: center;" 
 			            v-for="post in VOLTEs"
@@ -31,7 +31,7 @@
 			</b-tab>
 			<b-tab title='NBIOT' @click='show("NBIOT")'>
 				<div class="row">
-					<div id='NBIOT'
+					<div
 			            class="col-4" 
 			            style="text-align: center;" 
 			            v-for="post in NBIOTs"
@@ -45,7 +45,7 @@
 			</b-tab>
 			<b-tab title='GSM' @click='show("GSM")'>
 				<div class="row">
-					<div id='GSM'
+					<div
 			            class="col-4" 
 			            style="text-align: center;" 
 			            v-for="post in GSMs"
