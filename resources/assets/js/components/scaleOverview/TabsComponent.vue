@@ -3,7 +3,7 @@
         <b-tabs card>
 			<b-tab :active="isActiveLTE" title='LTE' @click='show("LTE")'>
 				<div class="row">
-					<div 
+					<div id='LTE'
 			            class="col-4" 
 			            style="text-align: center;" 
 			            v-for="post in LTEs"
@@ -17,7 +17,7 @@
 			</b-tab>
 			<b-tab title='VOLTE' @click='show("VOLTE")'>
 				<div class="row">
-					<div 
+					<div id='VOLTE'
 			            class="col-4" 
 			            style="text-align: center;" 
 			            v-for="post in VOLTEs"
@@ -31,7 +31,7 @@
 			</b-tab>
 			<b-tab title='NBIOT' @click='show("NBIOT")'>
 				<div class="row">
-					<div 
+					<div id='NBIOT'
 			            class="col-4" 
 			            style="text-align: center;" 
 			            v-for="post in NBIOTs"
@@ -45,7 +45,7 @@
 			</b-tab>
 			<b-tab title='GSM' @click='show("GSM")'>
 				<div class="row">
-					<div 
+					<div id='GSM'
 			            class="col-4" 
 			            style="text-align: center;" 
 			            v-for="post in GSMs"
@@ -102,7 +102,6 @@
 				} else if( this.types == "GSM" ) {
 					var obj = this.GSMs
 				}
-	  			// obj.splice(0, obj.length)
             	this.overview = overview
             	axios.get('getTabs' , {
                     params: {
@@ -156,9 +155,9 @@
 					var obj = this.LTEs
 				} else if( data == "VOLTE" ) {
 					var obj = this.VOLTEs	
-				} else if( this.types == "NBIOT" ) {
+				} else if( data == "NBIOT" ) {
 					var obj = this.NBIOTs
-				} else if( this.types == "GSM" ) {
+				} else if( data == "GSM" ) {
 					var obj = this.GSMs
 				}
 				this.types = data
@@ -178,7 +177,7 @@
                 })
                 .then(function(response) {
                 	obj.splice(0, obj.length)
-                	for (var i = response.data.length - 1; i >= 0; i--) {
+            		for (var i = response.data.length - 1; i >= 0; i--) {
                 		obj.push(response.data[i])
                 	}
                 })
