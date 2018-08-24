@@ -1,7 +1,7 @@
 <template>
     <!-- <div class="hello">
         <div class="charts"> -->
-    <div :id="id" :option="option" class="col-12" style="min-width: 400px; padding: 0px"></div>
+    <div :id="id" :option="option" class="col-12" style="min-width: 400px; padding: 0px;"></div>
         <!-- </div>
     </div> -->
 </template>
@@ -36,6 +36,7 @@
                          },
  
                         yAxis: {//y轴显示的内容
+                            categories:[],
                         title: {
                             text: '气温 (°C)'
                         }
@@ -78,7 +79,7 @@
                 var obj = this.option
                 var id = this.id
                 this.overview = overview
-                axios.get('getcharts'+this.types , {
+                axios.get('getcharts', {
                     params: {
                         data: this.types,
                         city: this.city,
@@ -109,7 +110,7 @@
                 var obj = this.option
                 var id = this.id
                 this.city = city
-                axios.get('getcharts'+this.types , {
+                axios.get('getcharts', {
                     params: {
                         data: this.types,
                         city: this.city,
@@ -131,6 +132,7 @@
                     for (var i = response.data.ydata.length - 1; i >= 0; i--) {
                         var series = charts.addSeries(response.data.ydata[i])  
                     }
+                    charts.reflow();
                 })
                 .catch(function(error) {
                     console.log(error)
@@ -140,7 +142,7 @@
                 var obj = this.option
                 var id = this.id
                 this.types = types
-                axios.get('getchartsLTE' , {
+                axios.get('getcharts' , {
                     params: {
                         data: this.types,
                         city: this.city,
@@ -162,6 +164,7 @@
                     for (var i = response.data.ydata.length - 1; i >= 0; i--) {
                         var series = charts.addSeries(response.data.ydata[i])  
                     }
+                    charts.reflow();
                 })
                 .catch(function(error) {
                     console.log(error)

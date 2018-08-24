@@ -29,14 +29,41 @@
 			        </div>
 				</div>
 			</b-tab>
-			<b-card-footer>网络概览-{{ overview }}</b-card-footer>
-
+			<b-tab title='NBIOT' @click='show("NBIOT")'>
+				<div class="row">
+					<div 
+			            class="col-4" 
+			            style="text-align: center;" 
+			            v-for="post in NBIOTs"
+			            :key="post.id"
+			        >{{ post.type }}
+			            <br />
+			            <i :class="post.class"></i>
+			            {{ post.data }}
+			        </div>
+				</div>
+			</b-tab>
+			<b-tab title='GSM' @click='show("GSM")'>
+				<div class="row">
+					<div 
+			            class="col-4" 
+			            style="text-align: center;" 
+			            v-for="post in GSMs"
+			            :key="post.id"
+			        >{{ post.type }}
+			            <br />
+			            <i :class="post.class"></i>
+			            {{ post.data }}
+			        </div>
+				</div>
+			</b-tab>
+			<b-card-footer>网络概览-{{ overviewCn }}-{{city}}</b-card-footer>
 		</b-tabs>
     </b-card>
 </template>
 
 <script>
-	Vue.component('tabsdata-component', require('./TabsdataComponent.vue'));
+	// Vue.component('tabsdata-component', require('./TabsdataComponent.vue'));
 	export default {
 		name: 'tabs',
 		data() {
@@ -45,22 +72,22 @@
 				// isActiveVOLTE: true,
 				city: '全省',
 				overview: 'indexoverview',
+				overviewCn: '指标概览',
 				types: "LTE",
-				LTEs: [
-					// { id: 0, type: '无线接通率', data: '93%', class: 'icon-ali-jiantou_xiangxia' },
-     //                { id: 1, type: '无线掉线率', data: '1%', class: 'icon-ali-jianhao' },
-     //                { id: 2, type: '接入成功率', data: '99%', class: 'icon-ali-jiantou_xiangshang' }
-				],
-				VOLTEs: [
-					// { id: 0, type: '无线接通率', data: '93%', class: 'icon-ali-jiantou_xiangxia' },
-     //                { id: 1, type: '无线掉线率', data: '1%', class: 'icon-ali-jianhao' },
-     //                { id: 2, type: '接入成功率', data: '99%', class: 'icon-ali-jiantou_xiangshang' }
-				]
+				LTEs: [],
+				VOLTEs: [],
+				NBIOTs:[],
+				GSMs:[]
 			}
 		},
 		created() {
 	  		this.bus.$on('leftClick', overview => {
 	  			this.overview = overview
+	  			if (this.overview == 'indexoverview') {
+	  				this.overviewCn = '网络概览';
+	  			} else if ( this.overview == 'scaleoverview' ) {
+	  				this.overviewCn = '规模概览';
+	  			}
 	  		})
 	  		this.bus.$on('cityClick', city => {
 	  			this.city = city
@@ -70,10 +97,14 @@
 					var obj = this.LTEs
 				} else if( this.types == "VOLTE" ) {
 					var obj = this.VOLTEs	
+				} else if( this.types == "NBIOT" ) {
+					var obj = this.NBIOTs
+				} else if( this.types == "GSM" ) {
+					var obj = this.GSMs
 				}
 	  			// obj.splice(0, obj.length)
             	this.overview = overview
-            	axios.get('getTabs'+this.types , {
+            	axios.get('getTabs' , {
                     params: {
                     	data: this.types,
 						city: this.city,
@@ -95,10 +126,13 @@
 					var obj = this.LTEs
 				} else if( this.types == "VOLTE" ) {
 					var obj = this.VOLTEs	
+				} else if( this.types == "NBIOT" ) {
+					var obj = this.NBIOTs
+				} else if( this.types == "GSM" ) {
+					var obj = this.GSMs
 				}
-	  			// obj.splice(0, obj.length)
             	this.city = city
-            	axios.get('getTabs'+this.types , {
+            	axios.get('getTabs', {
                     params: {
                     	data: this.types,
 						city: city,
@@ -122,11 +156,14 @@
 					var obj = this.LTEs
 				} else if( data == "VOLTE" ) {
 					var obj = this.VOLTEs	
+				} else if( this.types == "NBIOT" ) {
+					var obj = this.NBIOTs
+				} else if( this.types == "GSM" ) {
+					var obj = this.GSMs
 				}
 				this.types = data
 				this.bus.$emit('getTabsType', this.types)
 				this.bus.$emit('getTabsData', this.types)
-				// obj.splice(0, obj.length)
 
 				this.bus.$on('leftClick', overview => {
 					this.overview = overview
@@ -136,7 +173,7 @@
 					city: this.city,
 					overview: this.overview
 				}
-				axios.get('getTabs'+data , {
+				axios.get('getTabs' , {
                     params: params
                 })
                 .then(function(response) {

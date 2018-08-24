@@ -5,13 +5,11 @@
 			:key='post.id'
 			@click='cityClick'
 		>{{ post.name }}</b-nav-item>
-		<!-- <p>{{overview}}</p> -->
 	</b-nav>
 </template>
 
 <script>
 	export default {
-		// props: ['leftName'],
 		data() {
 			return {
 				overview: 'indexoverview',
@@ -30,19 +28,16 @@
 	            alert(leftClick)
 	        })
     	},*/
-	  	created() {
+	  	/*created() {
 	  		// this.bus.$on('leftClick', overview => {
 	  		// 	this.overview = overview
 	  			
 	  		// })
-	  	},
+	  	},*/
 		methods: {
 			cityClick: function(event) {
 				this.bus.$emit('cityClick', event.target.innerHTML)
 				this.bus.$emit('cityClickData', event.target.innerHTML)
-				// alert(event.target.innerHTML)
-				// console.log(event.target.innerHTML)
-				// alert(event.target.innerHTML)
 			}
 		}
 	}

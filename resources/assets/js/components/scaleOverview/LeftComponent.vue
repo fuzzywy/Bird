@@ -12,8 +12,6 @@
 
 <script>
 	export default {
-		// props: ['name'],
-		// template: '<li @click="handleClick">{{name}}</li>',
 		data() {
 			return {
 				posts: [
@@ -22,27 +20,10 @@
 				]
 			}
 		},
-		/*watch: {
-			name: function(news, olds) {
-				alert(news);
-			}
-		},*/
 		methods: {
 			leftClick: function (event) {
 				this.bus.$emit('leftClick',event.target.name)
 				this.bus.$emit('leftClickData', event.target.name)
-				/*axios.get(event.target.name, {
-			    	params: {
-			    		name: event.target.textContent,
-			    		route: event.target.name
-			    	}
-			    })
-			    .then(function(response) {
-			    	// this.bus.$emit('leftClickData', event.target.name)
-			    })
-			    .catch(function(error) {
-			    	// console.log(error)
-			    })*/
 			}
 		}
 	}
