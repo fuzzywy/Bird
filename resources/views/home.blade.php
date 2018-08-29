@@ -7,36 +7,29 @@
       <b-card nobody header="<b>网络概览</b>">
         <b-list-group flush>
           <!-- list -->
-          <left-component></left-component>
+          <!-- <left-component></left-component> -->
+          <!-- default name="leftComponent" -->
+          <router-view></router-view>
         </b-list-group>
       </b-card>
     </div>
     <div class="col-10">
       <!-- city -->
-      <city-component></city-component>
+      <!-- <city-component></city-component> -->
+      <router-view name="cityComponent"></router-view>
       <!-- tab -->
-      <tab-component></tab-component> 
+      <!-- <tab-component></tab-component>  -->
+      <router-view name="tabComponent"></router-view>
       <br/>
       <!-- highcharts -->
-	    <highchartsline-component></highchartsline-component>
+	    <!-- <highchartsline-component></highchartsline-component> -->
+      <router-view name="highchartslineComponent"></router-view>
       <br/>
       <!-- test highcharts -->
       <!-- <test></test> -->
     </div>
   </div>
-     
-
-  <!-- <div class="row">
-    <div class="col-12">
-        <h1>Hello App!</h1>
-        <p>
-          <router-link to="/foo">Go to Foo</router-link>
-          <router-link to="/bar">Go to Bar</router-link>
-        </p>
-    </div>  
-    <router-view></router-view>
-  </div> -->
-
+  
 </div>
 
 @endsection
