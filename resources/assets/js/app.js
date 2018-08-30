@@ -36,6 +36,7 @@ import router from './routes.js';
 // window.routes = require('./route.js');
 // window.VueRouter = require('vue-router');
 // Vue.use(VueRouter);
+import store from './store.js';
 
 window.BootstrapVue  = require('bootstrap-vue');
 
@@ -73,5 +74,6 @@ Vue.prototype.bus = bus
 // Make sure to inject the router with the router option to make the
 // whole app router-aware.
 const app = new Vue({
-  router
+  router,
+  store
 }).$mount('#app')

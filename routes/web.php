@@ -21,6 +21,11 @@ Route::get('/home', 'HomeController@index')->name('home');
 Route::get('getTabs', 'NetworkOverviewController@getTabs');
 Route::get('getcharts', 'NetworkOverviewController@getcharts');
 
+
+Route::get('test', 'TestController@test');
+
+Route::get('getCity', 'NetworkOverviewController@getCity');
+Route::get('getBirdSideBar', 'NetworkOverviewController@getBirdSideBar');
 /*Route::get('/test', function() {
 	return view('test.test', ['name'=>'James']);
 });

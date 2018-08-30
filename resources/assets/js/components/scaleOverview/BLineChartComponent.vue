@@ -35,11 +35,12 @@
 　　　　　　　　　　　　　　　  }]
                          },
  
-                        yAxis: {//y轴显示的内容
-                            categories:[],
+                    yAxis: {//y轴显示的内容
+                        categories:[],
                         title: {
                             text: '气温 (°C)'
-                        }
+                        },
+                        alternateGridColor: '#FDFFD5'
                     },
                     plotOptions: {
                         line: {
@@ -160,7 +161,8 @@
 
                     charts.xAxis[0].categories = response.data.xcategories;
                     charts.yAxis[0].categories = response.data.ycategories;
-
+                    // charts.yAxis[0].tickPositions = response.data.ycategories;
+                    // console.log(charts)
                     for (var i = response.data.ydata.length - 1; i >= 0; i--) {
                         var series = charts.addSeries(response.data.ydata[i])  
                     }

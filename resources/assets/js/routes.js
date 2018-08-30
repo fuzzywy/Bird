@@ -24,11 +24,12 @@ export default new VueRouter({
             path: '/',
             name: 'home', 
             components: {
-                default: Vue.component('left-component', require('./components/scaleOverview/LeftComponent.vue')),
-                leftComponent: Vue.component('left-component', require('./components/scaleOverview/LeftComponent.vue')),
-                cityComponent: Vue.component('city-component', require('./components/scaleOverview/CityComponent.vue')),
-                tabComponent: Vue.component('tab-component', require('./components/scaleOverview/TabsComponent.vue')),
-                highchartslineComponent: Vue.component('highchartsline-component', require('./components/scaleOverview/HighchartsLineComponent.vue'))
+                default: Vue.component('left-component', require('./components/scaleOverview/BirdSideBarComponent.vue')),
+                BirdSideBar: Vue.component('left-component', require('./components/scaleOverview/BirdSideBarComponent.vue')),
+                BLocationNav: Vue.component('city-component', require('./components/scaleOverview/BLocationNavComponent.vue')),
+                BKpiCard: Vue.component('tab-component', require('./components/scaleOverview/BKpiCardComponent.vue')),
+                BLineChart: Vue.component('highchartsline-component', require('./components/scaleOverview/BLineChartComponent.vue')),
+                a: Vue.component('testVuex', require('./components/testVuex.vue'))
             }
         }
     ]
