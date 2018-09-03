@@ -68,8 +68,7 @@
         computed: {
             bLineChart() {
                 this.option = this.$store.getters.getbLineChart
-                return 2;
-                // return this.$store.getters.getbLineChartStatus;
+                return this.$store.getters.getbLineChartStatus;
             }
         },
         watch: {
