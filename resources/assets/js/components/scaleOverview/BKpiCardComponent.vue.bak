@@ -1,8 +1,6 @@
 <template>
 	<b-card no-body>
-		<!-- <span v-show="birdSideBarLoadStatus == 1">Loading</span>
-		<span v-show="birdSideBarLoadStatus == 3">Loading</span> -->
-        <b-tabs card v-show="bKpiCardStatus == 2">
+        <b-tabs card>
 			<b-tab :active="isActiveLTE" title='LTE' @click='show("LTE")'>
 				<div class="row">
 					<div
@@ -79,60 +77,23 @@
 				LTEs: [],
 				VOLTEs: [],
 				NBIOTs:[],
-				GSMs:[],
-				data:[]
+				GSMs:[]
 			}
 		},
-		computed: {
-            // 获取加载状态
-            bKpiCardStatus(){
-				this.data = this.$store.getters.getbKpiCard
-                return this.$store.getters.getbKpiCardStatus;
-            }
-        },
 		created() {
-			this.$store.dispatch( 'loadBKpiCardStatus', {
-				type: this.types,
-				city: this.city,
-				overview: this.overview
-			})
-	  		/*this.bus.$on('leftClick', overview => {
+	  		this.bus.$on('leftClick', overview => {
 	  			this.overview = overview
 	  			if (this.overview == 'indexoverview') {
 	  				this.overviewCn = '网络概览';
 	  			} else if ( this.overview == 'scaleoverview' ) {
 	  				this.overviewCn = '规模概览';
 	  			}
-	  		})*/
-	  		/*this.bus.$on('cityClick', city => {
+	  		})
+	  		this.bus.$on('cityClick', city => {
 	  			this.city = city
-	  		})*/
+	  		})
 	  		this.bus.$on('leftClickData', overview => {
-            	this.overview = overview
-            	if (this.overview == 'indexoverview') {
-	  				this.overviewCn = '网络概览';
-	  			} else if ( this.overview == 'scaleoverview' ) {
-	  				this.overviewCn = '规模概览';
-	  			}
-            	this.$store.dispatch( 'loadBKpiCardStatus', {
-					type: this.types,
-					city: this.city,
-					overview: this.overview
-				})
-	  		})
-
-	  		this.bus.$on('cityClickData', city => {
-            	this.city = city
-            	this.$store.dispatch( 'loadBKpiCardStatus', {
-					type: this.types,
-					city: this.city,
-					overview: this.overview
-				})
-	  		})
-	  	},
-	  	watch: {
-	  		data: function(val) {
-	  			if ( this.types == "LTE" ) {
+            	if ( this.types == "LTE" ) {
 					var obj = this.LTEs
 				} else if( this.types == "VOLTE" ) {
 					var obj = this.VOLTEs	
@@ -141,14 +102,64 @@
 				} else if( this.types == "GSM" ) {
 					var obj = this.GSMs
 				}
-	  			obj.splice(0, obj.length)
-	  			for (var i = val.length - 1; i >= 0; i--) {
-            		obj.push(val[i])
-            	}
-	  		}
+            	this.overview = overview
+            	axios.get('getTabs' , {
+                    params: {
+                    	data: this.types,
+						city: this.city,
+						overview: this.overview
+                    }
+                })
+                .then(function(response) {
+                	obj.splice(0, obj.length)
+                	for (var i = response.data.length - 1; i >= 0; i--) {
+                		obj.push(response.data[i])
+                	}
+                })
+                .catch(function(error) {
+                    console.log(error)
+                })
+	  		})
+	  		this.bus.$on('cityClickData', city => {
+            	if ( this.types == "LTE" ) {
+					var obj = this.LTEs
+				} else if( this.types == "VOLTE" ) {
+					var obj = this.VOLTEs	
+				} else if( this.types == "NBIOT" ) {
+					var obj = this.NBIOTs
+				} else if( this.types == "GSM" ) {
+					var obj = this.GSMs
+				}
+            	this.city = city
+            	axios.get('getTabs', {
+                    params: {
+                    	data: this.types,
+						city: city,
+						overview: this.overview
+                    }
+                })
+                .then(function(response) {
+                	obj.splice(0, obj.length)
+                	for (var i = response.data.length - 1; i >= 0; i--) {
+                		obj.push(response.data[i])
+                	}
+                })
+                .catch(function(error) {
+                    console.log(error)
+                })
+	  		})
 	  	},
 		methods: {
 			show: function(data) {
+				if ( data == "LTE" ) {
+					var obj = this.LTEs
+				} else if( data == "VOLTE" ) {
+					var obj = this.VOLTEs	
+				} else if( data == "NBIOT" ) {
+					var obj = this.NBIOTs
+				} else if( data == "GSM" ) {
+					var obj = this.GSMs
+				}
 				this.types = data
 				this.bus.$emit('getTabsType', this.types)
 				this.bus.$emit('getTabsData', this.types)
@@ -156,14 +167,7 @@
 				this.bus.$on('leftClick', overview => {
 					this.overview = overview
 				})
-
-				this.$store.dispatch( 'loadBKpiCardStatus', {
-					type: this.types,
-					city: this.city,
-					overview: this.overview
-				})
-
-				/*var params = {
+				var params = {
 					data: data,
 					city: this.city,
 					overview: this.overview
@@ -179,7 +183,7 @@
                 })
                 .catch(function(error) {
                     console.log(error)
-                })*/
+                })
 			}
 		}
 	}

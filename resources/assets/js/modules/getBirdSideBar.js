@@ -1,8 +1,8 @@
 /*
  |-------------------------------------------------------------------------------
- | VUEX modules/cafes.js
+ | VUEX modules/getBirdSideBar.js
  |-------------------------------------------------------------------------------
- | The Vuex data store for the cafes
+ | The Vuex data store for the getBirdSideBar
  */
 
 import BirdSideBarAPI from '../api/getBirdSideBar.js';

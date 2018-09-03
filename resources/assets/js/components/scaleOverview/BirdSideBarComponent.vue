@@ -17,8 +17,8 @@
 		data() {
 			return {
 				posts: [
-					{ id: 1, Content: '指标概览', routertag: 'indexoverview' },
-					{ id: 2, Content: '规模概览', routertag: 'scaleoverview' }
+					/*{ id: 1, Content: '指标概览', routertag: 'indexoverview' },
+					{ id: 2, Content: '规模概览', routertag: 'scaleoverview' }*/
 				]
 			}
 		},
@@ -38,7 +38,7 @@
         },
 		methods: {
 			leftClick: function (event) {
-				this.bus.$emit('leftClick',event.target.name)
+				// this.bus.$emit('leftClick',event.target.name)
 				this.bus.$emit('leftClickData', event.target.name)
 			}
 		}

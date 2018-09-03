@@ -34,13 +34,15 @@
         computed: {
             // 获取 city 加载状态
             cityLoadStatus(){
+            	// console.log(this.$store.getters.citys)
+            	// console.log(this.$store.getters.cityLoadStatus)
                 this.posts = this.$store.getters.citys;
                 return this.$store.getters.cityLoadStatus;
             }
         },
 		methods: {
 			cityClick: function(event) {
-				this.bus.$emit('cityClick', event.target.innerHTML)
+				// this.bus.$emit('cityClick', event.target.innerHTML)
 				this.bus.$emit('cityClickData', event.target.innerHTML)
 			}
 		}

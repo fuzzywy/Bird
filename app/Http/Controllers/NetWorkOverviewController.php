@@ -35,6 +35,8 @@ class NetworkOverviewController extends Controller
     public function getTabs() {
         // var_dump(Network::all());
         // var_dump(DB::select("select * from networks"));
+        // return "test";
+        // sleep(1);
     	$data = input::get('data');
     	$city = input::get('city');
     	$overview = input::get('overview');
