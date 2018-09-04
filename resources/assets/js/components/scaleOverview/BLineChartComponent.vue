@@ -74,6 +74,7 @@
         watch: {
             option: function(val) {
                 let charts = this.charts
+                console.log(charts)
                 while (charts.series.length > 0) {
                     charts.series[0].remove(true);
                 }
@@ -84,8 +85,8 @@
                 charts.xAxis[0].categories = val.xcategories;
                 charts.yAxis[0].categories = val.ycategories;
 
-                for (var i = val.ydata.length - 1; i >= 0; i--) {
-                    var series = charts.addSeries(val.ydata[i])  
+                for (let i = val.ydata.length - 1; i >= 0; i--) {
+                    let series = charts.addSeries(val.ydata[i])  
                 }
             }   
         },
@@ -93,11 +94,11 @@
             var charts = new Highcharts.chart(this.id, this.option)
             charts.reflow();
             this.charts = charts
-            this.$store.dispatch( 'loadBLineChartStatus', {
+            /*this.$store.dispatch( 'loadBLineChartStatus', {
                 type: this.types,
                 city: this.city,
                 overview: this.overview
-            })
+            })*/
             /*this.bus.$on('leftClick', overview => {
                 this.overview = overview
             })
@@ -159,11 +160,6 @@
                     city: this.city,
                     overview: this.overview
                 })
-                this.$store.dispatch( 'loadBLineChartStatus', {
-                    type: this.types,
-                    city: this.city,
-                    overview: this.overview
-                })
                 /*axios.get('getcharts', {
                     params: {
                         data: this.types,
@@ -196,11 +192,6 @@
                 // var obj = this.option
                 // var id = this.id
                 this.types = types
-                this.$store.dispatch( 'loadBLineChartStatus', {
-                    type: this.types,
-                    city: this.city,
-                    overview: this.overview
-                })
                 this.$store.dispatch( 'loadBLineChartStatus', {
                     type: this.types,
                     city: this.city,
