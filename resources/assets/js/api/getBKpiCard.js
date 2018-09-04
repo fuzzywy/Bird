@@ -10,5 +10,13 @@
 				overview: overview
             }
         });
+ 	},
+ 	getBScaleKpiCard: function( city, overview ) {
+ 		return axios.get('getScaleTabs', {
+ 			params: {
+ 				city: city,
+ 				overview: overview
+ 			}
+ 		});
  	}
  }

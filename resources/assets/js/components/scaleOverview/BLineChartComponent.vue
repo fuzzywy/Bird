@@ -1,7 +1,12 @@
 <template>
     <!-- <div class="hello">
         <div class="charts"> -->
-    <div :id="id" :option="option" v-show="bLineChart == 2" class="col-12" style="min-width: 400px; padding: 0px;"></div>
+    <div>
+        <div v-show="bLineChart == 1">Loading highchart</div>
+        <div :id="id" :option="option" v-show="bLineChart == 2 && show == 2" class="col-12" style="min-width: 400px; padding: 0px;"></div>
+        <div v-show="bLineChart == 3">Highchart loaded unsuccessfully!</div>
+    </div>
+    
         <!-- </div>
     </div> -->
 </template>
@@ -69,6 +74,11 @@
             bLineChart() {
                 this.option = this.$store.getters.getbLineChart
                 return this.$store.getters.getbLineChartStatus;
+            },
+            show() {
+                if( this.overview == 'indexoverview' ) {
+                    return 2;
+                }
             }
         },
         watch: {
@@ -116,11 +126,13 @@
 
                 // this.charts.splice(0, this.charts.length)
                 // this.charts = charts
-                this.$store.dispatch( 'loadBLineChartStatus', {
-                    type: this.types,
-                    city: this.city,
-                    overview: this.overview
-                })
+                if (this.overview == 'indexoverview') {
+                    this.$store.dispatch( 'loadBLineChartStatus', {
+                        type: this.types,
+                        city: this.city,
+                        overview: this.overview
+                    })
+                }
                 
                 /*axios.get('getcharts', {
                     params: {
@@ -155,11 +167,13 @@
                 // var id = this.id
                 this.city = city
 
-                this.$store.dispatch( 'loadBLineChartStatus', {
-                    type: this.types,
-                    city: this.city,
-                    overview: this.overview
-                })
+                if (this.overview == 'indexoverview') {
+                    this.$store.dispatch( 'loadBLineChartStatus', {
+                        type: this.types,
+                        city: this.city,
+                        overview: this.overview
+                    })
+                }
                 /*axios.get('getcharts', {
                     params: {
                         data: this.types,
@@ -192,11 +206,14 @@
                 // var obj = this.option
                 // var id = this.id
                 this.types = types
-                this.$store.dispatch( 'loadBLineChartStatus', {
-                    type: this.types,
-                    city: this.city,
-                    overview: this.overview
-                })
+
+                if (this.overview == 'indexoverview') {
+                    this.$store.dispatch( 'loadBLineChartStatus', {
+                        type: this.types,
+                        city: this.city,
+                        overview: this.overview
+                    })
+                }
                 /*axios.get('getcharts' , {
                     params: {
                         data: this.types,

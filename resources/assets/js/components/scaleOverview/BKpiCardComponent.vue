@@ -1,9 +1,151 @@
 <template>
-	<b-card no-body>
-		<!-- <span v-show="birdSideBarLoadStatus == 1">Loading</span>
-		<span v-show="birdSideBarLoadStatus == 3">Loading</span> -->
-        <b-tabs card v-show="bKpiCardStatus == 2">
-			<b-tab :active="isActiveLTE" title='LTE' @click='show("LTE")'>
+	<div>
+		<b-card no-body v-show="type == 'indexoverview'">
+	        <b-tabs card>
+	        	<span v-show="bKpiCardStatus == 1">Loading Card</span>
+				<span v-show="bKpiCardStatus == 3">Card loaded unsuccessfully!</span>
+				<b-tab :active="isActiveLTE" title='LTE' @click='show("LTE")' v-show="bKpiCardStatus == 2">
+					<div class="row">
+						<div
+				            class="col-4" 
+				            style="text-align: center;" 
+				            v-for="post in LTEs"
+				            :key="post.id"
+				        >{{ post.type }}
+				            <br />
+				            <i :class="post.class"></i>
+				            {{ post.data }}
+				        </div>
+				    </div>
+				</b-tab>
+				<b-tab title='VOLTE' @click='show("VOLTE")' v-show="bKpiCardStatus == 2">
+					<div class="row">
+						<div
+				            class="col-4" 
+				            style="text-align: center;" 
+				            v-for="post in VOLTEs"
+				            :key="post.id"
+				        >{{ post.type }}
+				            <br />
+				            <i :class="post.class"></i>
+				            {{ post.data }}
+				        </div>
+					</div>
+				</b-tab>
+				<b-tab title='NBIOT' @click='show("NBIOT")' v-show="bKpiCardStatus == 2">
+					<div class="row">
+						<div
+				            class="col-4" 
+				            style="text-align: center;" 
+				            v-for="post in NBIOTs"
+				            :key="post.id"
+				        >{{ post.type }}
+				            <br />
+				            <i :class="post.class"></i>
+				            {{ post.data }}
+				        </div>
+					</div>
+				</b-tab>
+				<b-tab title='GSM' @click='show("GSM")' v-show="bKpiCardStatus == 2">
+					<div class="row">
+						<div
+				            class="col-4" 
+				            style="text-align: center;" 
+				            v-for="post in GSMs"
+				            :key="post.id"
+				        >{{ post.type }}
+				            <br />
+				            <i :class="post.class"></i>
+				            {{ post.data }}
+				        </div>
+					</div>
+				</b-tab>
+				<b-card-footer>网络概览-{{ overviewCn }}-{{city}}</b-card-footer>
+			</b-tabs>
+	    </b-card>
+
+	    <b-card-group deck v-show="type == 'scaleoverview'">
+	    	<span v-show="bScaleKpiCard == 1">Loading ScaleCard</span>
+			<span v-show="bScaleKpiCard == 3">ScaleCard loaded unsuccessfully!</span>
+	        <b-card header="GSM"
+	                header-tag="header"
+	                :footer="overviewCn + city"
+	                footer-tag="footer"
+	                v-show="bScaleKpiCard == 2"
+	               	>
+	            <div class="row">
+					<div
+			            style="text-align: center;"
+			            v-for="post in scale.GSMs" 
+			            :key="post.id"
+			            :class="post.col" 
+			        >{{post.name}}<br />{{post.data}}
+			        </div>
+				</div>
+	        </b-card>
+    	</b-card-group>
+    	<b-card-group deck v-show="type == 'scaleoverview'">
+    		<span v-show="bScaleKpiCard == 1">Loading ScaleCard</span>
+			<span v-show="bScaleKpiCard == 3">ScaleCard loaded unsuccessfully!</span>
+    		<b-card header="TDD_LTE"
+	                header-tag="header"
+	                :footer="overviewCn + city"
+	                footer-tag="footer"
+	                v-show="bScaleKpiCard == 2"
+	               	>
+	            <div class="row">
+					<div
+			            style="text-align: center;"
+			            v-for="post in scale.TDDLTEs" 
+			            :key="post.id"
+			            :class="post.col" 
+			        >{{post.name}}<br />{{post.data}}
+			        </div>
+				</div>
+	        </b-card>
+	    </b-card-group>
+	   	<b-card-group deck v-show="type == 'scaleoverview'">
+    		<span v-show="bScaleKpiCard == 1">Loading ScaleCard</span>
+			<span v-show="bScaleKpiCard == 3">ScaleCard loaded unsuccessfully!</span>
+    		<b-card header="TDD_LTE"
+	                header-tag="header"
+	                :footer="overviewCn + city"
+	                footer-tag="footer"
+	                v-show="bScaleKpiCard == 2"
+	               	>
+	            <div class="row">
+					<div
+			            style="text-align: center;"
+			            v-for="post in scale.FDDLTEs" 
+			            :key="post.id"
+			            :class="post.col" 
+			        >{{post.name}}<br />{{post.data}}
+			        </div>
+				</div>
+	        </b-card>
+    	</b-card-group>
+    	<b-card-group deck v-show="type == 'scaleoverview'">
+    		<span v-show="bScaleKpiCard == 1">Loading ScaleCard</span>
+			<span v-show="bScaleKpiCard == 3">ScaleCard loaded unsuccessfully!</span>
+    		<b-card header="NBIOT"
+	                header-tag="header"
+	                :footer="overviewCn + city"
+	                footer-tag="footer"
+	                v-show="bScaleKpiCard == 2"
+	               	>
+	            <div class="row">
+					<div
+			            style="text-align: center;"
+			            v-for="post in scale.NBIOTs" 
+			            :key="post.id"
+			            :class="post.col" 
+			        >{{post.name}}<br />{{post.data}}
+			        </div>
+				</div>
+	        </b-card>
+    	</b-card-group>
+	   <!--  <b-tabs  card v-show="type == 'scaleoverview'">
+			<b-tab :active="isActiveLTE" title='LTE' @click='show("LTE")' v-show="bKpiCardStatus == 2">
 				<div class="row">
 					<div
 			            class="col-4" 
@@ -17,51 +159,8 @@
 			        </div>
 			    </div>
 			</b-tab>
-			<b-tab title='VOLTE' @click='show("VOLTE")'>
-				<div class="row">
-					<div
-			            class="col-4" 
-			            style="text-align: center;" 
-			            v-for="post in VOLTEs"
-			            :key="post.id"
-			        >{{ post.type }}
-			            <br />
-			            <i :class="post.class"></i>
-			            {{ post.data }}
-			        </div>
-				</div>
-			</b-tab>
-			<b-tab title='NBIOT' @click='show("NBIOT")'>
-				<div class="row">
-					<div
-			            class="col-4" 
-			            style="text-align: center;" 
-			            v-for="post in NBIOTs"
-			            :key="post.id"
-			        >{{ post.type }}
-			            <br />
-			            <i :class="post.class"></i>
-			            {{ post.data }}
-			        </div>
-				</div>
-			</b-tab>
-			<b-tab title='GSM' @click='show("GSM")'>
-				<div class="row">
-					<div
-			            class="col-4" 
-			            style="text-align: center;" 
-			            v-for="post in GSMs"
-			            :key="post.id"
-			        >{{ post.type }}
-			            <br />
-			            <i :class="post.class"></i>
-			            {{ post.data }}
-			        </div>
-				</div>
-			</b-tab>
-			<b-card-footer>网络概览-{{ overviewCn }}-{{city}}</b-card-footer>
-		</b-tabs>
-    </b-card>
+		</b-tabs> -->
+	</div>
 </template>
 
 <script>
@@ -80,7 +179,8 @@
 				VOLTEs: [],
 				NBIOTs:[],
 				GSMs:[],
-				data:[]
+				data:[],
+				scale: []
 			}
 		},
 		computed: {
@@ -88,7 +188,14 @@
             bKpiCardStatus(){
 				this.data = this.$store.getters.getbKpiCard
                 return this.$store.getters.getbKpiCardStatus;
-            }
+            },
+            type() {
+				return this.overview
+			},
+			bScaleKpiCard() {
+				this.scale = this.$store.getters.getbScaleCard
+				return this.$store.getters.getbScaleCardStatus;
+			}
         },
 		created() {
 			this.$store.dispatch( 'loadBKpiCardStatus', {
@@ -111,23 +218,34 @@
             	this.overview = overview
             	if (this.overview == 'indexoverview') {
 	  				this.overviewCn = '网络概览';
+	  				this.$store.dispatch( 'loadBKpiCardStatus', {
+						type: this.types,
+						city: this.city,
+						overview: this.overview
+					})
 	  			} else if ( this.overview == 'scaleoverview' ) {
 	  				this.overviewCn = '规模概览';
+	  				this.$store.dispatch( 'loadBScaleKpiCard', {
+	  					city: this.city,
+	  					overview: this.overview
+	  				})
 	  			}
-            	this.$store.dispatch( 'loadBKpiCardStatus', {
-					type: this.types,
-					city: this.city,
-					overview: this.overview
-				})
 	  		})
 
 	  		this.bus.$on('cityClickData', city => {
             	this.city = city
-            	this.$store.dispatch( 'loadBKpiCardStatus', {
-					type: this.types,
-					city: this.city,
-					overview: this.overview
-				})
+            	if (this.overview == 'indexoverview') {
+					this.$store.dispatch( 'loadBKpiCardStatus', {
+						type: this.types,
+						city: this.city,
+						overview: this.overview
+					})
+            	} else if ( this.overview == 'scaleoverview' ) {
+            		this.$store.dispatch( 'loadBScaleKpiCard', {
+	  					city: this.city,
+	  					overview: this.overview
+	  				})
+            	}
 	  		})
 	  	},
 	  	watch: {
@@ -157,11 +275,13 @@
 					this.overview = overview
 				})
 
-				this.$store.dispatch( 'loadBKpiCardStatus', {
-					type: this.types,
-					city: this.city,
-					overview: this.overview
-				})
+				if (this.overview == 'indexoverview') {
+					this.$store.dispatch( 'loadBKpiCardStatus', {
+						type: this.types,
+						city: this.city,
+						overview: this.overview
+					})
+				}
 
 				/*var params = {
 					data: data,

@@ -19,6 +19,7 @@ Auth::routes();
 Route::get('/home', 'HomeController@index')->name('home');
 
 Route::get('getTabs', 'NetworkOverviewController@getTabs');
+Route::get('getScaleTabs', 'NetworkOverviewController@getScaleTabs');
 Route::get('getcharts', 'NetworkOverviewController@getcharts');
 
 

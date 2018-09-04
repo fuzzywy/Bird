@@ -32,11 +32,115 @@ class NetworkOverviewController extends Controller
         return $arr;
     }
 
+    public function getScaleTabs() {
+        sleep(1);
+        $city = input::get('city');
+        $overview = input::get('overview');
+        $arr = [];
+        $arr['GSMs'][0]['id'] = 0;
+        $arr['GSMs'][0]['name'] = 'test'.rand(0,100);
+        $arr['GSMs'][0]['data'] = rand(1,100000).'个';
+        $arr['GSMs'][1]['id'] = 1;
+        $arr['GSMs'][1]['name'] = 'test'.rand(0,100);
+        $arr['GSMs'][1]['data'] = rand(1,100000).'个';
+        $arr['GSMs'][2]['id'] = 2;
+        $arr['GSMs'][2]['name'] = 'test'.rand(0,100);
+        $arr['GSMs'][2]['data'] = rand(1,100000).'个';
+        $arr['GSMs'][3]['id'] = 3;
+        $arr['GSMs'][3]['name'] = 'test'.rand(0,100);
+        $arr['GSMs'][3]['data'] = rand(1,100000).'个';
+        $arr['GSMs'][4]['id'] = 4;
+        $arr['GSMs'][4]['name'] = 'test'.rand(0,100);
+        $arr['GSMs'][4]['data'] = rand(1,100000).'个';
+        //每行显示个数GSMs
+        $num = 12/count($arr['GSMs']);
+        if ( $num < 3 ) {
+            $num = 3;
+        }
+        for ($i=0; $i < count($arr['GSMs']); $i++) { 
+            $arr['GSMs'][$i]['col'] = 'col-'. $num;
+        }
+
+        $arr['TDDLTEs'][0]['id'] = 0;
+        $arr['TDDLTEs'][0]['name'] = 'test'.rand(0,100);
+        $arr['TDDLTEs'][0]['data'] = rand(1,100000).'个';
+        $arr['TDDLTEs'][1]['id'] = 1;
+        $arr['TDDLTEs'][1]['name'] = 'test'.rand(0,100);
+        $arr['TDDLTEs'][1]['data'] = rand(1,100000).'个';
+        $arr['TDDLTEs'][2]['id'] = 2;
+        $arr['TDDLTEs'][2]['name'] = 'test'.rand(0,100);
+        $arr['TDDLTEs'][2]['data'] = rand(1,100000).'个';
+        $arr['TDDLTEs'][3]['id'] = 3;
+        $arr['TDDLTEs'][3]['name'] = 'test'.rand(0,100);
+        $arr['TDDLTEs'][3]['data'] = rand(1,100000).'个';
+        $arr['TDDLTEs'][4]['id'] = 4;
+        $arr['TDDLTEs'][4]['name'] = 'test'.rand(0,100);
+        $arr['TDDLTEs'][4]['data'] = rand(1,100000).'个';
+        $arr['TDDLTEs'][5]['id'] = 5;
+        $arr['TDDLTEs'][5]['name'] = 'test'.rand(0,100);
+        $arr['TDDLTEs'][5]['data'] = rand(1,100000).'个';
+
+        //每行显示个数GSMs
+        $num = 12/count($arr['TDDLTEs']);
+        if ( $num < 6 ) {
+            $num = 4;
+        }
+        for ($i=0; $i < count($arr['TDDLTEs']); $i++) { 
+            $arr['TDDLTEs'][$i]['col'] = 'col-'. $num;
+        }
+
+        $arr['FDDLTEs'][0]['id'] = 0;
+        $arr['FDDLTEs'][0]['name'] = 'test'.rand(0,100);
+        $arr['FDDLTEs'][0]['data'] = rand(1,100000).'个';
+        $arr['FDDLTEs'][1]['id'] = 1;
+        $arr['FDDLTEs'][1]['name'] = 'test'.rand(0,100);
+        $arr['FDDLTEs'][1]['data'] = rand(1,100000).'个';
+        $arr['FDDLTEs'][2]['id'] = 2;
+        $arr['FDDLTEs'][2]['name'] = 'test'.rand(0,100);
+        $arr['FDDLTEs'][2]['data'] = rand(1,100000).'个';
+        $arr['FDDLTEs'][3]['id'] = 3;
+        $arr['FDDLTEs'][3]['name'] = 'test'.rand(0,100);
+        $arr['FDDLTEs'][3]['data'] = rand(1,100000).'个';
+        $arr['FDDLTEs'][4]['id'] = 4;
+        $arr['FDDLTEs'][4]['name'] = 'test'.rand(0,100);
+        $arr['FDDLTEs'][4]['data'] = rand(1,100000).'个';
+        $arr['FDDLTEs'][5]['id'] = 5;
+        $arr['FDDLTEs'][5]['name'] = 'test'.rand(0,100);
+        $arr['FDDLTEs'][5]['data'] = rand(1,100000).'个';
+
+        //每行显示个数GSMs
+        $num = 12/count($arr['FDDLTEs']);
+        if ( $num < 6 ) {
+            $num = 4;
+        }
+        for ($i=0; $i < count($arr['FDDLTEs']); $i++) { 
+            $arr['FDDLTEs'][$i]['col'] = 'col-'. $num;
+        }
+
+        $arr['NBIOTs'][0]['id'] = 0;
+        $arr['NBIOTs'][0]['name'] = 'test'.rand(0,100);
+        $arr['NBIOTs'][0]['data'] = rand(1,100000).'个';
+        $arr['NBIOTs'][1]['id'] = 1;
+        $arr['NBIOTs'][1]['name'] = 'test'.rand(0,100);
+        $arr['NBIOTs'][1]['data'] = rand(1,100000).'个';
+        //每行显示个数GSMs
+        $num = 12/count($arr['NBIOTs']);
+        if ( $num < 8 ) {
+            $num = 6;
+        }
+        for ($i=0; $i < count($arr['NBIOTs']); $i++) { 
+            $arr['NBIOTs'][$i]['col'] = 'col-'. $num;
+        }
+
+        return $arr;
+
+    }
+
     public function getTabs() {
         // var_dump(Network::all());
         // var_dump(DB::select("select * from networks"));
         // return "test";
-        // sleep(1);
+        sleep(1);
     	$data = input::get('data');
     	$city = input::get('city');
     	$overview = input::get('overview');
@@ -58,6 +162,7 @@ class NetworkOverviewController extends Controller
     }
 
     public function getcharts() {
+        sleep(1);
         $data = input::get('data');
         $city = input::get('city');
         $overview = input::get('overview');
