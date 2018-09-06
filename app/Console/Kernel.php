@@ -13,7 +13,10 @@ class Kernel extends ConsoleKernel
      * @var array
      */
     protected $commands = [
-        //
+        Commands\GsmExtract::class,
+        Commands\VolteExtract::class,
+        Commands\LteExtract::class,
+        Commands\NbiExtract::class,
     ];
 
     /**
@@ -24,6 +27,12 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
+           date_default_timezone_set("PRC");
+        $schedule->command('Gsm:backup')->cron("20 * * * *");
+        $schedule->command('Volte:backup')->cron("25 * * * *");
+        $schedule->command('Lte:backup')->cron("25 * * * *");
+        $schedule->command('Nbi:backup')->cron("25 * * * *");
+        // $schedule->command('VolteExtract:backup')->cron("20 * * * *");
         // $schedule->command('inspire')
         //          ->hourly();
     }

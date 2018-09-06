@@ -5,9 +5,17 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
 use Illuminate\Support\Facades\Input;
+use App\Http\Controllers\Common\DataBaseConnection;
 use App\Models\Network;
+use App\Models\GSM;
+use App\Models\NBIOT;
+use App\Models\LTE_FDD;
+use App\Models\LTE_TDD;
+use App\Models\VOLTE_FDD;
+use App\Models\VOLTE_TDD;
+use App\Models\City;
 use Illuminate\Support\Facades\DB;
-
+use PDO;
 class NetworkOverviewController extends Controller
 {
     public function getBirdSideBar() {
@@ -135,57 +143,237 @@ class NetworkOverviewController extends Controller
         return $arr;
 
     }
-
+    
     public function getTabs() {
-        // var_dump(Network::all());
-        // var_dump(DB::select("select * from networks"));
-        // return "test";
-        sleep(1);
-    	$data = input::get('data');
-    	$city = input::get('city');
-    	$overview = input::get('overview');
-        $a = array('icon-ali-jiantou_xiangxia', 'icon-ali-jiantou_xiangshang', 'icon-ali-jianhao');
-        $arr = [];
-        $arr[0]['id'] = 0;
-        $arr[0]['type'] = $city.'-'.$data.'-'.$overview;
-        $arr[0]['data'] = rand(90,100)."%";
-        $arr[0]['class'] = $a[array_rand($a, 1)];
-        $arr[1]['id'] = 1;
-        $arr[1]['type'] = '无线掉线率';
-        $arr[1]['data'] = rand(90,100)."%";
-        $arr[1]['class'] = $a[array_rand($a, 1)];
-        $arr[2]['id'] = 2;
-        $arr[2]['type'] = $city.'-'.$data.'-'.$overview;
-        $arr[2]['data'] = rand(90,100)."%";
-        $arr[2]['class'] = $a[array_rand($a, 1)];
+    	
+        
+        $data = input::get('data',"LTE"); //type
+        $city = input::get('city',"全省"); //city
+        $dbc = new DataBaseConnection();
+        $db = $dbc->getDB("Bird");
+        if($city!="全省"){
+          $dbc = new DataBaseConnection();
+          $cityConnmame= $dbc->getConnName($db,$city);
+        }
+        // $data ="GSM";
+        $overview = input::get('overview');
+        // $db = new PDO("mysql:host=10.39.148.186;port=13306;dbname=Bird", 'root', 'mongs');
+
+        if($overview=="indexoverview"){
+            if($data=="GSM"){
+                    if($city=="全省"){
+                        $sql ="SELECT id,day_id,hour_id,'全省',round(avg(access),2) AS access,round(avg(lost),2) AS lost,round(avg(handover),2) AS handover FROM `B_GSM` GROUP BY hour_id,day_id ORDER BY id DESC,day_id desc,hour_id desc limit 2";
+                        $result = $db->query($sql)->fetchall(PDO::FETCH_ASSOC);
+                        $arr = $this->getCompare($result,$city,$overview);
+                    }else{
+                        $result= GSM::select()->where("location",$cityConnmame)->orderBy('id','desc')->limit(2)->get()->toArray();
+                        $arr = $this->getCompare($result,$city,$overview);  
+                    }
+            }elseif($data=="LTE"){
+                 if($city=="全省"){
+                        $sql1 ="SELECT id,day_id,hour_id,'全省',round(avg(access),2) AS access,round(avg(lost),2) AS lost,round(avg(handover),2) AS handover FROM `B_LTE_FDD` GROUP BY hour_id,day_id ORDER BY id DESC,day_id desc,hour_id desc limit 2";
+                        $sql2 ="SELECT id,day_id,hour_id,'全省',round(avg(access),2) AS access,round(avg(lost),2) AS lost,round(avg(handover),2) AS handover FROM `B_LTE_TDD` GROUP BY hour_id,day_id ORDER BY id DESC,day_id desc,hour_id desc limit 2";
+                        $result1 = $db->query($sql1)->fetchall(PDO::FETCH_ASSOC);
+                        $result2 = $db->query($sql2)->fetchall(PDO::FETCH_ASSOC);
+                        $result = $this->getAvg($result1,$result2);
+                        $arr = $this->getCompare($result,$city,$overview);
+                    }else{
+                        $result1= LTE_TDD::select()->where("location",$cityConnmame)->orderBy('id','desc')->limit(2)->get()->toArray();
+                        $result2= LTE_FDD::select()->where("location",$cityConnmame)->orderBy('id','desc')->limit(2)->get()->toArray();
+                        $result = $this->getAvg($result1,$result2);
+                        $arr = $this->getCompare($result,$city,$overview);  
+                    }
+            }elseif($data=="VOLTE"){
+                if($city=="全省"){
+                        $sql1 ="SELECT id,day_id,hour_id,'全省',round(avg(access),2) AS access,round(avg(lost),2) AS lost,round(avg(handover),2) AS handover,round(avg(srvcc),2) AS srvcc,round(avg(upackagelost),2) AS upackagelost,round(avg(dpackagelost),2) AS dpackagelost FROM `B_VOLTE_FDD` GROUP BY hour_id,day_id ORDER BY id DESC,day_id desc,hour_id desc limit 2";
+                        $sql2 ="SELECT id,day_id,hour_id,'全省',round(avg(access),2) AS access,round(avg(lost),2) AS lost,round(avg(handover),2) AS handover,round(avg(srvcc),2) AS srvcc,round(avg(upackagelost),2) AS upackagelost,round(avg(dpackagelost),2) AS dpackagelost  FROM `B_VOLTE_TDD` GROUP BY hour_id,day_id ORDER BY id DESC,day_id desc,hour_id desc limit 2";
+                        $result1 = $db->query($sql1)->fetchall(PDO::FETCH_ASSOC);
+                        $result2 = $db->query($sql2)->fetchall(PDO::FETCH_ASSOC);
+                        $result = $this->getAvg($result1,$result2);
+                        $arr = $this->getCompare($result,$city,$overview);
+                    }else{
+                        $result1= VOLTE_TDD::select()->where("location",$cityConnmame)->orderBy('id','desc')->limit(2)->get()->toArray();
+                        $result2= VOLTE_FDD::select()->where("location",$cityConnmame)->orderBy('id','desc')->limit(2)->get()->toArray();
+                        $result = $this->getAvg($result1,$result2);
+                        $arr = $this->getCompare($result,$city,$overview);  
+                    }
+            }elseif($data=="NBIOT"){
+                 if($city=="全省"){
+                        $sql ="SELECT id,day_id,hour_id,'全省',round(avg(access),2) AS access FROM `B_NBIOT` GROUP BY hour_id,day_id ORDER BY id DESC,day_id desc,hour_id desc limit 2";
+                        $result = $db->query($sql)->fetchall(PDO::FETCH_ASSOC);
+                        $arr = $this->getCompare($result,$city,$overview);
+                    }else{
+                        $result= NBIOT::select()->where("location",$cityConnmame)->orderBy('id','desc')->limit(2)->get()->toArray();
+                        $arr = $this->getCompare($result,$city,$overview);  
+                    }
+            }
+
+        }else{
+            
+        }
+
         return json_encode($arr);
+        
+    }
+    public function getAvg($result1,$result2){
+        $res = array();
+        if($result1&&$result2){
+            $num = count($result1);
+            $len = count($result1[0]);
+            $key = array_keys($result1[0]);
+            for ($j=0; $j <$num ; $j++) { 
+                for($i=0;$i<$len;$i++){
+                $res[$j][$key[$i]] = $result1[$j][$key[$i]];
+                    if($i>=4){
+                        $res[0][$key[$i]] = round(($result1[0][$key[$i]]+$result2[0][$key[$i]])/2,2);
+                    }
+                }
+            }
+            // print_r($res);exit;
+        return $res;
+
+        }elseif($result1){
+            return $result1;
+        }else{
+            return $result2;
+        }
+    }
+    public function getCompare($result,$city,$overview){
+
+        $data = array();
+        $len = count($result[0]);
+        $key = array_keys($result[0]);
+        // print_r($key);exit;
+        $a = array('icon-ali-jiantou_xiangxia', 'icon-ali-jiantou_xiangshang', 'icon-ali-jianhao');
+        $arr =array();
+        $id=0;
+        for($i=4;$i<$len;$i++){
+            if($result[1][$key[$i]]>$result[0][$key[$i]]){
+                $arr[$id]['class']='icon-ali-jiantou_xiangshang';
+                $arr[$id]['tend'] = (intval(($result[1][$key[$i]]-$result[0][$key[$i]])*100)/100)."%";
+            }elseif($result[1][$key[$i]]<$result[0][$key[$i]]){
+                $arr[$id]['class']='icon-ali-jiantou_xiangxia';
+                $arr[$id]['tend'] = (intval(($result[0][$key[$i]]-$result[1][$key[$i]])*100)/100)."%";
+            }else{
+                $arr[$id]['class']='icon-ali-jianhao';
+                $arr[$id]['tend'] = '0%';
+            }
+            // $arr[$id]["type"] = $city.'-'.$data.'-'.$overview;
+            $arr[$id]["type"] = $city."-".$key[$i]."-".$overview;
+            $arr[$id]["data"] = $result[0][$key[$i]]."%";
+            $arr[$id]['id']=$id;
+
+            $id++;
+        }
+        return $arr;
+        // foreach ($result as $key => $value) {
+        //     $
+        // }
+
+
+         // for($i=)
+
     }
 
     public function getcharts() {
-        sleep(1);
-        $data = input::get('data');
-        $city = input::get('city');
+        $data = input::get('data',"LTE");
+        $city = input::get('city',"全省");
         $overview = input::get('overview');
+
+        // $db = new PDO("mysql:host=10.39.148.186;port=13306;dbname=Bird", 'root', 'mongs');
+        $dbc = new DataBaseConnection();
+        $db = $dbc->getDB("Bird");
+        if($city!="全省"){
+            $dbc = new DataBaseConnection();
+            $cityConnmame= $dbc->getConnName($db,$city);
+        }
+        if($overview=="indexoverview"){
+            if($data=="GSM"){
+                if($city=="全省"){
+                     $sql ="SELECT id,day_id,hour_id,'全省',round(avg(access),2) AS access,round(avg(lost),2) AS lost,round(avg(handover),2) AS handover FROM `B_GSM` GROUP BY hour_id,day_id ORDER BY id DESC,day_id desc,hour_id desc limit 12";
+                        $result = $db->query($sql)->fetchall(PDO::FETCH_ASSOC);
+                }else{
+                    $result= GSM::select()->where("location",$cityConnmame)->orderBy('id','desc')->limit(12)->get()->toArray();
+                }
+            }elseif($data=="LTE"){
+                 if($city=="全省"){
+                        $sql1 ="SELECT id,day_id,hour_id,'全省',round(avg(access),2) AS access,round(avg(lost),2) AS lost,round(avg(handover),2) AS handover FROM `B_LTE_FDD` GROUP BY hour_id,day_id ORDER BY id DESC,day_id desc,hour_id desc limit 12";
+                        $sql2 ="SELECT id,day_id,hour_id,'全省',round(avg(access),2) AS access,round(avg(lost),2) AS lost,round(avg(handover),2) AS handover FROM `B_LTE_TDD` GROUP BY hour_id,day_id ORDER BY id DESC,day_id desc,hour_id desc limit 12";
+                        $result1 = $db->query($sql1)->fetchall(PDO::FETCH_ASSOC);
+                        $result2 = $db->query($sql2)->fetchall(PDO::FETCH_ASSOC);
+                        $result = $this->getAvg($result1,$result2);
+                    }else{
+                        $result1= LTE_TDD::select()->where("location",$cityConnmame)->orderBy('id','desc')->limit(12)->get()->toArray();
+                        $result2= LTE_FDD::select()->where("location",$cityConnmame)->orderBy('id','desc')->limit(12)->get()->toArray();
+                        $result = $this->getAvg($result1,$result2);
+                    }
+            }elseif($data=="VOLTE"){
+                if($city=="全省"){
+                        $sql1 ="SELECT id,day_id,hour_id,'全省',round(avg(access),2) AS access,round(avg(lost),2) AS lost,round(avg(handover),2) AS handover,round(avg(srvcc),2) AS srvcc,round(avg(upackagelost),2) AS upackagelost,round(avg(dpackagelost),2) AS dpackagelost FROM `B_VOLTE_FDD` GROUP BY hour_id,day_id ORDER BY id DESC,day_id desc,hour_id desc limit 12";
+                        $sql2 ="SELECT id,day_id,hour_id,'全省',round(avg(access),2) AS access,round(avg(lost),2) AS lost,round(avg(handover),2) AS handover,round(avg(srvcc),2) AS srvcc,round(avg(upackagelost),2) AS upackagelost,round(avg(dpackagelost),2) AS dpackagelost  FROM `B_VOLTE_TDD` GROUP BY hour_id,day_id ORDER BY id DESC,day_id desc,hour_id desc limit 12";
+                        $result1 = $db->query($sql1)->fetchall(PDO::FETCH_ASSOC);
+                        $result2 = $db->query($sql2)->fetchall(PDO::FETCH_ASSOC);
+                        $result = $this->getAvg($result1,$result2);
+                    }else{
+                        $result1= VOLTE_TDD::select()->where("location",$cityConnmame)->orderBy('id','desc')->limit(12)->get()->toArray();
+                        $result2= VOLTE_FDD::select()->where("location",$cityConnmame)->orderBy('id','desc')->limit(12)->get()->toArray();
+                        $result = $this->getAvg($result1,$result2);
+                    }
+            }elseif($data=="NBIOT"){
+                 if($city=="全省"){
+                        $sql ="SELECT id,day_id,hour_id,'全省',round(avg(access),2) AS access FROM `B_NBIOT` GROUP BY hour_id,day_id ORDER BY id DESC,day_id desc,hour_id desc limit 12";
+                        $result = $db->query($sql)->fetchall(PDO::FETCH_ASSOC);
+                    }else{
+                        $result= NBIOT::select()->where("location",$cityConnmame)->orderBy('id','desc')->limit(12)->get()->toArray();
+                    }
+            }
+            $result = array_reverse($result);
+            $data= $this->getChart($result,$city,$overview,$data);
+            return json_encode($data);
+        }
+    }
+
+
+    public function getChart($result,$city,$overview,$type)
+    {
+
+
+
         $datas = [];
         //主标题/副标题/y轴标题/x轴标题
-        $title = array('text' => $data."-".$city."-".$overview , 'style' =>array('color' =>"#ff0000" ,"fontWeight"=>"bold" ));
-        $subtitle = array('text' => $data."-".$city."-".$overview, 'style' =>array('color' =>"#ff0000" ));
-        $ytitle = array('text' => "Y".$data."-".$city."-".$overview , 'style' =>array('color' =>"#ff0000" ,"fontWeight"=>"bold" ));
-        $xtitle = array('text' => "X".$data."-".$city."-".$overview , 'style' =>array('color' =>"#ff0000" ,"fontWeight"=>"bold" ));
+        // $title = array('text' => $type."-".$city."-".$overview , 'style' =>array('color' =>"#ff0000" ,"fontWeight"=>"bold" ));
+        // $subtitle = array('text' => $type."-".$city."-".$overview, 'style' =>array('color' =>"#ff0000" ));
+        // $ytitle = array('text' => "Y".$type."-".$city."-".$overview , 'style' =>array('color' =>"#ff0000" ,"fontWeight"=>"bold" ));
+        // $xtitle = array('text' => "X".$type."-".$city."-".$overview , 'style' =>array('color' =>"#ff0000" ,"fontWeight"=>"bold" ));
+         $title = array('text' => $type."-".$city , 'style' =>array('color' =>"#ff0000" ,"fontWeight"=>"bold" ));
+        $subtitle = array('text' => $type."-".$city, 'style' =>array('color' =>"#ff0000" ));
+        $ytitle = array('text' => "Y".$type."-".$city, 'style' =>array('color' =>"#ff0000" ,"fontWeight"=>"bold" ));
+        $xtitle = array('text' => "X".$type."-".$city, 'style' =>array('color' =>"#ff0000" ,"fontWeight"=>"bold" ));
         //x轴/Y轴/data
-        $xcategories = array('1月'.rand(-3,10), '2月', '3月', '四月', '五月', '六月', '七月', '八月', '九月', '十月', '十一月', '十二月');
+        $num = count($result);
+        $len = count($result[0]);
+        $key = array_keys($result[0]);
+        for($i=0;$i<$num;$i++){
+            $xcategories[] = date("m-d",strtotime($result[$i]['day_id']))." ".$result[$i]['hour_id'];
+            for($j=4;$j<$len;$j++){
+                $data[$len-$j-1][] = intval($result[$i][$key[$j]]*100)/100; 
+                $name[$len-$j-1] = $key[$j]; 
+            }
+        }
+        $ydata=array();
+        foreach ($name as $key => $value) {
+            $ydata[]=array('name'=>$value,'data'=>$data[$key]);
+        }
         $ycategories = array();
-        $ydata[] = array('name'=>'测试0', 'data'=>array(rand(-3,10), rand(-3,10), rand(-3,10), rand(-3,10), rand(-3,10), rand(-3,10), rand(-3,10), rand(-3,10), rand(-3,10), rand(-3,10), rand(-3,10), rand(-3,10)));
-        $ydata[] = array('name'=>'测试1', 'data'=>array(rand(-3,10), rand(-3,10), rand(-3,10), rand(-3,10), rand(-3,10), rand(-3,10), rand(-3,10), rand(-3,10), rand(-3,10), rand(-3,10), rand(-3,10), rand(-3,10)));
-        $ydata[] = array('name'=>'测试2', 'data'=>array(rand(-3,10), rand(-3,10), rand(-3,10), rand(-3,10), rand(-3,10), rand(-3,10), rand(-3,10), rand(-3,10), rand(-3,10), rand(-3,10), rand(-3,10), rand(-3,10)));
 
         $datas['title'] = $title;
-        $datas['subtitle'] = $subtitle;
+        $datas['subtitle'] = '';
         $datas['ytitle'] = $ytitle;
         $datas['xtitle'] = $xtitle;
         $datas['xcategories'] = $xcategories;
         $datas['ycategories'] = $ycategories;
         $datas['ydata'] = $ydata;
-        return json_encode($datas);
+        return $datas;
     }
+
 }
