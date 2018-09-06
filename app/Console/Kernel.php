@@ -29,9 +29,9 @@ class Kernel extends ConsoleKernel
     {
            date_default_timezone_set("PRC");
         $schedule->command('Gsm:backup')->cron("20 * * * *");
-        $schedule->command('Volte:backup')->cron("25 * * * *");
-        $schedule->command('Lte:backup')->cron("25 * * * *");
-        $schedule->command('Nbi:backup')->cron("25 * * * *");
+        $schedule->command('Volte:backup')->cron("22 * * * *");
+        $schedule->command('Lte:backup')->cron("22 * * * *");
+        $schedule->command('Nbi:backup')->cron("22 * * * *");
         // $schedule->command('VolteExtract:backup')->cron("20 * * * *");
         // $schedule->command('inspire')
         //          ->hourly();

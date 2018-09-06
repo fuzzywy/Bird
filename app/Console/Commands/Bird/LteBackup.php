@@ -73,6 +73,9 @@ class LteBackup{
             $str = "null,";
 
             foreach ($value as $k => $v) {
+                if($v==''){
+                    $v=0;
+                }
                 $str.="'".$v."',";
             }
             $str =rtrim($str,",");

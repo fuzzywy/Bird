@@ -250,17 +250,17 @@ class NetworkOverviewController extends Controller
         for($i=4;$i<$len;$i++){
             if($result[1][$key[$i]]>$result[0][$key[$i]]){
                 $arr[$id]['class']='icon-ali-jiantou_xiangshang';
-                $arr[$id]['tend'] = (intval(($result[1][$key[$i]]-$result[0][$key[$i]])*100)/100)."%";
+                $arr[$id]['tend'] = round((($result[1][$key[$i]]-$result[0][$key[$i]])),2)."%";
             }elseif($result[1][$key[$i]]<$result[0][$key[$i]]){
                 $arr[$id]['class']='icon-ali-jiantou_xiangxia';
-                $arr[$id]['tend'] = (intval(($result[0][$key[$i]]-$result[1][$key[$i]])*100)/100)."%";
+                $arr[$id]['tend'] = round((($result[0][$key[$i]]-$result[1][$key[$i]])),2)."%";
             }else{
                 $arr[$id]['class']='icon-ali-jianhao';
                 $arr[$id]['tend'] = '0%';
             }
             // $arr[$id]["type"] = $city.'-'.$data.'-'.$overview;
             $arr[$id]["type"] = $city."-".$key[$i]."-".$overview;
-            $arr[$id]["data"] = $result[0][$key[$i]]."%";
+            $arr[$id]["data"] = round($result[0][$key[$i]],2)."%";
             $arr[$id]['id']=$id;
 
             $id++;
