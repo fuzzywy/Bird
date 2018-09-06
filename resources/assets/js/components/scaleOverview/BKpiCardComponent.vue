@@ -1,66 +1,86 @@
 <template>
 	<div>
 		<b-card no-body v-show="type == 'indexoverview'">
-	        <b-tabs card>
+	        <b-tabs pills card>
 	        	<span v-show="bKpiCardStatus == 1">Loading Card</span>
 				<span v-show="bKpiCardStatus == 3">Card loaded unsuccessfully!</span>
-				<b-tab :active="isActiveLTE" title='LTE' @click='show("LTE")' v-show="bKpiCardStatus == 2">
+				<b-tab class='cardclass' :active="isActiveLTE" title='LTE' @click='show("LTE")' v-show="bKpiCardStatus == 2">
 					<div class="row">
 						<div
-				            class="col-4" 
+				            class="col-4 rowclass" 
 				            style="text-align: center;" 
 				            v-for="post in LTEs"
 				            :key="post.id"
-				        >{{ post.type }}
-				            <br />
-				            <i :class="post.class"></i>
-				            {{ post.data }}
+				        >
+				        	<div class="postclass">
+					        	<span class="posttype">{{ post.type }}</span>
+					            <br />
+					            <span class="postdata"><b>{{ post.data }}</b></span>
+					            <br />
+					            <i :class="post.class"></i>
+					            {{ post.tend }}
+					        </div>
 				        </div>
 				    </div>
 				</b-tab>
-				<b-tab title='VOLTE' @click='show("VOLTE")' v-show="bKpiCardStatus == 2">
+				<b-tab class='cardclass' title='VOLTE' @click='show("VOLTE")' v-show="bKpiCardStatus == 2">
 					<div class="row">
 						<div
-				            class="col-4" 
+				            class="col-4 rowclass" 
 				            style="text-align: center;" 
 				            v-for="post in VOLTEs"
 				            :key="post.id"
-				        >{{ post.type }}
-				            <br />
-				            <i :class="post.class"></i>
-				            {{ post.data }}
+				        >
+				        	<div class="postclass">
+					        	<span class="posttype">{{ post.type }}</span>
+					            <br />
+					            <span class="postdata"><b>{{ post.data }}</b></span>
+					            <br />
+					            <i :class="post.class"></i>
+					            {{ post.tend }}
+					        </div>
 				        </div>
 					</div>
 				</b-tab>
-				<b-tab title='NBIOT' @click='show("NBIOT")' v-show="bKpiCardStatus == 2">
+				<b-tab class='cardclass' title='NBIOT' @click='show("NBIOT")' v-show="bKpiCardStatus == 2">
 					<div class="row">
 						<div
-				            class="col-4" 
+				            class="col-4 rowclass" 
 				            style="text-align: center;" 
 				            v-for="post in NBIOTs"
 				            :key="post.id"
-				        >{{ post.type }}
-				            <br />
-				            <i :class="post.class"></i>
-				            {{ post.data }}
+				        >
+				        	<div class="postclass">
+					        	<span class="posttype">{{ post.type }}</span>
+					            <br />
+					            <span class="postdata"><b>{{ post.data }}</b></span>
+					            <br />
+					            <i :class="post.class"></i>
+					            {{ post.tend }}
+					        </div>
 				        </div>
 					</div>
 				</b-tab>
-				<b-tab title='GSM' @click='show("GSM")' v-show="bKpiCardStatus == 2">
+				<b-tab class='cardclass' title='GSM' @click='show("GSM")' v-show="bKpiCardStatus == 2">
 					<div class="row">
 						<div
-				            class="col-4" 
+				            class="col-4 rowclass" 
 				            style="text-align: center;" 
 				            v-for="post in GSMs"
 				            :key="post.id"
-				        >{{ post.type }}
-				            <br />
-				            <i :class="post.class"></i>
-				            {{ post.data }}
+				        >
+				        	<div class="postclass">
+					        	<span class="posttype">{{ post.type }}</span>
+					            <br />
+					            <span class="postdata"><b>{{ post.data }}</b></span>
+					            <br />
+					            <i :class="post.class"></i>
+					            {{ post.tend }}
+					        </div>
 				        </div>
 					</div>
 				</b-tab>
-				<b-card-footer>网络概览-{{ overviewCn }}-{{city}}</b-card-footer>
+				<b-card-footer>{{ overviewCn }}-{{city}}</b-card-footer>
 			</b-tabs>
 	    </b-card>
 
@@ -69,17 +89,20 @@
 			<span v-show="bScaleKpiCard == 3">ScaleCard loaded unsuccessfully!</span>
 	        <b-card header="GSM"
 	                header-tag="header"
-	                :footer="overviewCn + city"
-	                footer-tag="footer"
 	                v-show="bScaleKpiCard == 2"
 	               	>
 	            <div class="row">
 					<div
-			            style="text-align: center;"
+			            style="text-align: center;padding-bottom: 15px"
 			            v-for="post in scale.GSMs" 
 			            :key="post.id"
 			            :class="post.col" 
-			        >{{post.name}}<br />{{post.data}}
+			        >
+			        	<div class='scalecard' style="vertical-align: middle;">
+			        		<img class='floatleft' src="/public/img/huihua.png">
+			        		<div class="postdata" style="color: #fff; padding-top: 20px;">{{post.data}}</div>
+			        		<div class="posttype" style="color: #fff">{{post.name}}</div>
+			        	</div>
 			        </div>
 				</div>
 	        </b-card>
@@ -89,17 +112,28 @@
 			<span v-show="bScaleKpiCard == 3">ScaleCard loaded unsuccessfully!</span>
     		<b-card header="TDD_LTE"
 	                header-tag="header"
-	                :footer="overviewCn + city"
-	                footer-tag="footer"
 	                v-show="bScaleKpiCard == 2"
 	               	>
 	            <div class="row">
 					<div
-			            style="text-align: center;"
+			            style="text-align: center;padding-bottom: 15px"
 			            v-for="post in scale.TDDLTEs" 
 			            :key="post.id"
 			            :class="post.col" 
-			        >{{post.name}}<br />{{post.data}}
+			        >
+				        <div class='scalecard' style="vertical-align: middle;">
+			        		<img class='floatleft' src="/public/img/huihua.png">
+			        		<div class="postdata" style="color: #fff; padding-top: 20px;">{{post.data}}</div>
+			        		<div class="posttype" style="color: #fff">{{post.name}}</div>
+			        	</div>
+			        	<!-- <div class='scalecard'>
+			        		<img class='floatleft' src="/public/img/huihua.png">
+			        		<div style="padding-top:20px">
+				        		<span class="postdata" style="color: #fff">{{post.data}}</span>
+				        		<br />
+				        		<span class="posttype" style="color: #fff">{{post.name}}</span>
+				        	</div>
+			        	</div> -->
 			        </div>
 				</div>
 	        </b-card>
@@ -107,19 +141,22 @@
 	   	<b-card-group deck v-show="type == 'scaleoverview'">
     		<span v-show="bScaleKpiCard == 1">Loading ScaleCard</span>
 			<span v-show="bScaleKpiCard == 3">ScaleCard loaded unsuccessfully!</span>
-    		<b-card header="TDD_LTE"
+    		<b-card header="FDD_LTE"
 	                header-tag="header"
-	                :footer="overviewCn + city"
-	                footer-tag="footer"
 	                v-show="bScaleKpiCard == 2"
 	               	>
 	            <div class="row">
 					<div
-			            style="text-align: center;"
+			            style="text-align: center;padding-bottom: 15px"
 			            v-for="post in scale.FDDLTEs" 
 			            :key="post.id"
 			            :class="post.col" 
-			        >{{post.name}}<br />{{post.data}}
+			        >
+			        	<div class='scalecard' style="vertical-align: middle;">
+			        		<img class='floatleft' src="/public/img/huihua.png">
+			        		<div class="postdata" style="color: #fff; padding-top: 20px;">{{post.data}}</div>
+			        		<div class="posttype" style="color: #fff">{{post.name}}</div>
+			        	</div>
 			        </div>
 				</div>
 	        </b-card>
@@ -135,11 +172,16 @@
 	               	>
 	            <div class="row">
 					<div
-			            style="text-align: center;"
+			            style="text-align: center;padding-bottom: 15px"
 			            v-for="post in scale.NBIOTs" 
 			            :key="post.id"
 			            :class="post.col" 
-			        >{{post.name}}<br />{{post.data}}
+			        >
+			        	<div class='scalecard' style="vertical-align: middle;">
+			        		<img class='floatleft' src="/public/img/huihua.png">
+			        		<div class="postdata" style="color: #fff; padding-top: 20px;">{{post.data}}</div>
+			        		<div class="posttype" style="color: #fff">{{post.name}}</div>
+			        	</div>
 			        </div>
 				</div>
 	        </b-card>
@@ -162,7 +204,51 @@
 		</b-tabs> -->
 	</div>
 </template>
+<style>
+	.scalecard {
+		background-color: #20a8d8;
+		/*width:250px; */
+		height: 120px;
+		border-radius: 3px;
+	}
+	.floatleft {
+		vertical-align: middle;
+		/*background-color: #20a8d8;*/
+		width: 100px;
+		height: 100px;
+		float: left;
+		margin: 10px 5px 5px 10px;
+	}
+	.scalepostclass {
+		/*background-color: #20a8d8;*/
+		border-radius: 3px;
+		padding: 20px 10px 20px 10px;
+		margin-top: 5px;
+		margin-left: 0px;
+	}
+ 	
 
+
+	.cardclass {
+		padding: 10px 25px 10px 10px 
+	}
+	.postclass {
+		background-color: #DCDCDC;
+		border-radius: 3px;
+		margin-top: 5px;
+		margin-left: 0px;
+	}
+	.rowclass {
+		padding: 0px 0px 0px 15px
+	}
+	.postdata {
+		font-size: 25px
+	}
+	.posttype {
+		font-size: 15px
+	}
+	
+</style>
 <script>
 	// Vue.component('tabsdata-component', require('./TabsdataComponent.vue'));
 	export default {
@@ -217,7 +303,7 @@
 	  		this.bus.$on('leftClickData', overview => {
             	this.overview = overview
             	if (this.overview == 'indexoverview') {
-	  				this.overviewCn = '网络概览';
+	  				this.overviewCn = '指标概览';
 	  				this.$store.dispatch( 'loadBKpiCardStatus', {
 						type: this.types,
 						city: this.city,

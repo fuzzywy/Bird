@@ -1,5 +1,16 @@
 <template>
-	<b-nav>
+	<div>
+		<span v-show="cityLoadStatus == 1">Loading</span>
+		<b-button-group>
+			<b-button v-show="cityLoadStatus == 2"
+				v-for='post in posts'
+				:key='post.id'
+				@click='cityClick'>{{ post.name }}
+			</b-button>
+		</b-button-group>
+		<span v-show="cityLoadStatus == 3">City loaded unsuccessfully!</span>
+	</div>
+	<!-- <b-nav>
 		<span v-show="cityLoadStatus == 1">Loading</span>
 		<b-nav-item v-show="cityLoadStatus == 2"
 			v-for='post in posts'
@@ -7,7 +18,7 @@
 			@click='cityClick'
 		>{{ post.name }}</b-nav-item>
         <span v-show="cityLoadStatus == 3">City loaded unsuccessfully!</span>
-	</b-nav>
+	</b-nav> -->
 </template>
 
 <script>

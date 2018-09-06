@@ -1,9 +1,9 @@
 <template>
     <!-- <div class="hello">
         <div class="charts"> -->
-    <div>
+    <div v-show="show == 2">
         <div v-show="bLineChart == 1">Loading highchart</div>
-        <div :id="id" :option="option" v-show="bLineChart == 2 && show == 2" class="col-12" style="min-width: 400px; padding: 0px;"></div>
+        <div :id="id" :option="option" v-show="bLineChart == 2" class="col-12" style="min-width: 400px; padding: 0px;"></div>
         <div v-show="bLineChart == 3">Highchart loaded unsuccessfully!</div>
     </div>
     
@@ -58,10 +58,13 @@
                     },
                     series: [{//两条数据
                         name: '东京',
-                        data: [7.0, 6.9, 9.5, 14.5, 18.4, 21.5, 25.2, 26.5, 23.3, 18.3, 13.9, 9.6]
+                        data: [99.93,99.94,99.74,99.99,99.98,99.93,99.95,99.92,99.96,99.95,99.95,99.93]
                     }, {
                         name: '伦敦',
-                        data: [3.9, 4.2, 5.7, 8.5, 11.9, 15.2, 17.0, 16.6, 14.2, 10.3, 6.6, 4.8]
+                        data: [0.35,0.37,0.39,0.33,0.31,0.25,0.40,0.17,0.32,0.28,0.29,0.27]
+                    },{
+                        name: '伦敦1',
+                        data: [98.50,98.49,98.68,98.79,98.69,98.54,97.43,98.72,98.58,98.68,98.70,98.69]
                     }]
                 }
             }
@@ -84,10 +87,11 @@
         watch: {
             option: function(val) {
                 let charts = this.charts
-                console.log(charts)
+
                 while (charts.series.length > 0) {
                     charts.series[0].remove(true);
                 }
+                
                 charts.setTitle(val.title, val.subtitle)
                 charts.yAxis[0].setTitle(val.ytitle)
                 charts.xAxis[0].setTitle(val.xtitle)                    
@@ -98,6 +102,7 @@
                 for (let i = val.ydata.length - 1; i >= 0; i--) {
                     let series = charts.addSeries(val.ydata[i])  
                 }
+                
             }   
         },
         mounted() {
