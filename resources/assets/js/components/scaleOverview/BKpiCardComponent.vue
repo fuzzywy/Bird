@@ -205,6 +205,12 @@
 	</div>
 </template>
 <style>
+	.icon-ali-jiantoushangsheng-blue {
+		color: #1296db;
+	}
+	.icon-ali-jiantouxiajiang-red {
+		color: #d81e06;
+	}
 	.scalecard {
 		background-color: #20a8d8;
 		/*width:250px; */
