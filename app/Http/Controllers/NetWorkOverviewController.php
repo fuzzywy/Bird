@@ -16,6 +16,7 @@ use App\Models\VOLTE_TDD;
 use App\Models\City;
 use Illuminate\Support\Facades\DB;
 use PDO;
+use App;
 class NetworkOverviewController extends Controller
 {
     public function getBirdSideBar() {
@@ -23,6 +24,7 @@ class NetworkOverviewController extends Controller
         $arr = array(
                 array("id" => 0, "Content" => "指标概览", "routertag" => "indexoverview" ),
                 array("id" => 1, "Content" => "规模概览", "routertag" => "scaleoverview" ),
+                array("id" => 2, "Content" => "负荷概览", "routertag" => "loadoverview")
             );
         return $arr;
     }
@@ -40,6 +42,145 @@ class NetworkOverviewController extends Controller
         return $arr;
     }
 
+    public function getLoadTabs() {
+        sleep(1);
+        $city = input::get('city');
+        $overview = input::get('overview');
+        $arr = [];
+        $arr['TDDLTEs'][0]['id'] = 0;
+        $arr['TDDLTEs'][0]['name'] = 'test'.rand(0,100);
+        $arr['TDDLTEs'][0]['data'] = rand(1,100000);
+        $arr['TDDLTEs'][0]['img'] = '/public/img/huihua.png';
+        $arr['TDDLTEs'][1]['id'] = 1;
+        $arr['TDDLTEs'][1]['name'] = 'test'.rand(0,100);
+        $arr['TDDLTEs'][1]['data'] = rand(1,100000);
+        $arr['TDDLTEs'][1]['img'] = '/public/img/huihua.png';
+        $arr['TDDLTEs'][2]['id'] = 2;
+        $arr['TDDLTEs'][2]['name'] = 'test'.rand(0,100);
+        $arr['TDDLTEs'][2]['data'] = rand(1,100000);
+        $arr['TDDLTEs'][2]['img'] = '/public/img/huihua.png';
+        $arr['TDDLTEs'][3]['id'] = 3;
+        $arr['TDDLTEs'][3]['name'] = 'test'.rand(0,100);
+        $arr['TDDLTEs'][3]['data'] = rand(1,100000);
+        $arr['TDDLTEs'][3]['img'] = '/public/img/huihua.png';
+        $arr['TDDLTEs'][4]['id'] = 4;
+        $arr['TDDLTEs'][4]['name'] = 'test'.rand(0,100);
+        $arr['TDDLTEs'][4]['data'] = rand(1,100000);
+        $arr['TDDLTEs'][4]['img'] = '/public/img/huihua.png';
+        $arr['TDDLTEs'][5]['id'] = 5;
+        $arr['TDDLTEs'][5]['name'] = 'test'.rand(0,100);
+        $arr['TDDLTEs'][5]['data'] = rand(1,100000);
+        $arr['TDDLTEs'][5]['img'] = '/public/img/huihua.png';
+        $arr['TDDLTEs'][6]['id'] = 6;
+        $arr['TDDLTEs'][6]['name'] = 'test'.rand(0,100);
+        $arr['TDDLTEs'][6]['data'] = rand(1,100000);
+        $arr['TDDLTEs'][6]['img'] = '/public/img/huihua.png';
+        $arr['TDDLTEs'][7]['id'] = 7;
+        $arr['TDDLTEs'][7]['name'] = 'test'.rand(0,100);
+        $arr['TDDLTEs'][7]['data'] = rand(1,100000);
+        $arr['TDDLTEs'][7]['img'] = '/public/img/huihua.png';
+        $arr['TDDLTEs'][8]['id'] = 8;
+        $arr['TDDLTEs'][8]['name'] = 'test'.rand(0,100);
+        $arr['TDDLTEs'][8]['data'] = rand(1,100000);
+        $arr['TDDLTEs'][8]['img'] = '/public/img/huihua.png';
+        //每行显示个数TDDLTEs
+        $num = 12/count($arr['TDDLTEs']);
+        if ( $num < 6 ) {
+            $num = 4;
+        }
+        for ($i=0; $i < count($arr['TDDLTEs']); $i++) { 
+            $arr['TDDLTEs'][$i]['col'] = 'col-'. $num;
+        }
+
+        $arr['FDDLTEs'][0]['id'] = 0;
+        $arr['FDDLTEs'][0]['name'] = 'test'.rand(0,100);
+        $arr['FDDLTEs'][0]['data'] = rand(1,100000);
+        $arr['FDDLTEs'][0]['img'] = '/public/img/huihua.png';
+        $arr['FDDLTEs'][1]['id'] = 1;
+        $arr['FDDLTEs'][1]['name'] = 'test'.rand(0,100);
+        $arr['FDDLTEs'][1]['data'] = rand(1,100000);
+        $arr['FDDLTEs'][1]['img'] = '/public/img/huihua.png';
+        $arr['FDDLTEs'][2]['id'] = 2;
+        $arr['FDDLTEs'][2]['name'] = 'test'.rand(0,100);
+        $arr['FDDLTEs'][2]['data'] = rand(1,100000);
+        $arr['FDDLTEs'][2]['img'] = '/public/img/huihua.png';
+        $arr['FDDLTEs'][3]['id'] = 3;
+        $arr['FDDLTEs'][3]['name'] = 'test'.rand(0,100);
+        $arr['FDDLTEs'][3]['data'] = rand(1,100000);
+        $arr['FDDLTEs'][3]['img'] = '/public/img/huihua.png';
+        $arr['FDDLTEs'][4]['id'] = 4;
+        $arr['FDDLTEs'][4]['name'] = 'test'.rand(0,100);
+        $arr['FDDLTEs'][4]['data'] = rand(1,100000);
+        $arr['FDDLTEs'][4]['img'] = '/public/img/huihua.png';
+        $arr['FDDLTEs'][5]['id'] = 5;
+        $arr['FDDLTEs'][5]['name'] = 'test'.rand(0,100);
+        $arr['FDDLTEs'][5]['data'] = rand(1,100000);
+        $arr['FDDLTEs'][5]['img'] = '/public/img/huihua.png';
+        $arr['FDDLTEs'][6]['id'] = 6;
+        $arr['FDDLTEs'][6]['name'] = 'test'.rand(0,100);
+        $arr['FDDLTEs'][6]['data'] = rand(1,100000);
+        $arr['FDDLTEs'][6]['img'] = '/public/img/huihua.png';
+        $arr['FDDLTEs'][7]['id'] = 7;
+        $arr['FDDLTEs'][7]['name'] = 'test'.rand(0,100);
+        $arr['FDDLTEs'][7]['data'] = rand(1,100000);
+        $arr['FDDLTEs'][7]['img'] = '/public/img/huihua.png';
+        $arr['FDDLTEs'][8]['id'] = 8;
+        $arr['FDDLTEs'][8]['name'] = 'test'.rand(0,100);
+        $arr['FDDLTEs'][8]['data'] = rand(1,100000);
+        $arr['FDDLTEs'][8]['img'] = '/public/img/huihua.png';
+        //每行显示个数FDDLTEs
+        $num = 12/count($arr['FDDLTEs']);
+        if ( $num < 6 ) {
+            $num = 4;
+        }
+        for ($i=0; $i < count($arr['FDDLTEs']); $i++) { 
+            $arr['FDDLTEs'][$i]['col'] = 'col-'. $num;
+        }
+
+        $arr['NBIOTs'][0]['id'] = 0;
+        $arr['NBIOTs'][0]['name'] = 'test'.rand(0,100);
+        $arr['NBIOTs'][0]['data'] = rand(1,100000);
+        $arr['NBIOTs'][0]['img'] = '/public/img/huihua.png';
+        $arr['NBIOTs'][1]['id'] = 1;
+        $arr['NBIOTs'][1]['name'] = 'test'.rand(0,100);
+        $arr['NBIOTs'][1]['data'] = rand(1,100000);
+        $arr['NBIOTs'][1]['img'] = '/public/img/huihua.png';
+        //每行显示个数GSMs
+        $num = 12/count($arr['NBIOTs']);
+        if ( $num < 8 ) {
+            $num = 6;
+        }
+        for ($i=0; $i < count($arr['NBIOTs']); $i++) { 
+            $arr['NBIOTs'][$i]['col'] = 'col-'. $num;
+        }
+
+        $arr['GSMs'][0]['id'] = 0;
+        $arr['GSMs'][0]['name'] = 'test'.rand(0,100);
+        $arr['GSMs'][0]['data'] = rand(1,100000);
+        $arr['GSMs'][0]['img'] = '/public/img/huihua.png';
+        $arr['GSMs'][1]['id'] = 1;
+        $arr['GSMs'][1]['name'] = 'test'.rand(0,100);
+        $arr['GSMs'][1]['data'] = rand(1,100000);
+        $arr['GSMs'][1]['img'] = '/public/img/huihua.png';
+        $arr['GSMs'][2]['id'] = 2;
+        $arr['GSMs'][2]['name'] = 'test'.rand(0,100);
+        $arr['GSMs'][2]['data'] = rand(1,100000);
+        $arr['GSMs'][2]['img'] = '/public/img/huihua.png';
+        $arr['GSMs'][3]['id'] = 3;
+        $arr['GSMs'][3]['name'] = 'test'.rand(0,100);
+        $arr['GSMs'][3]['data'] = rand(1,100000);
+        $arr['GSMs'][3]['img'] = '/public/img/huihua.png';
+        //每行显示个数GSMs
+        $num = 12/count($arr['GSMs']);
+        if ( $num < 3 ) {
+            $num = 3;
+        }
+        for ($i=0; $i < count($arr['GSMs']); $i++) { 
+            $arr['GSMs'][$i]['col'] = 'col-'. $num;
+        }
+        return $arr;
+    }
+
     public function getScaleTabs() {
         sleep(1);
         $city = input::get('city');
@@ -47,19 +188,24 @@ class NetworkOverviewController extends Controller
         $arr = [];
         $arr['GSMs'][0]['id'] = 0;
         $arr['GSMs'][0]['name'] = 'test'.rand(0,100);
-        $arr['GSMs'][0]['data'] = rand(1,100000).'个';
+        $arr['GSMs'][0]['data'] = rand(1,100000);
+        $arr['GSMs'][0]['img'] = '/public/img/huihua.png';
         $arr['GSMs'][1]['id'] = 1;
         $arr['GSMs'][1]['name'] = 'test'.rand(0,100);
-        $arr['GSMs'][1]['data'] = rand(1,100000).'个';
+        $arr['GSMs'][1]['data'] = rand(1,100000);
+        $arr['GSMs'][1]['img'] = '/public/img/huihua.png';
         $arr['GSMs'][2]['id'] = 2;
         $arr['GSMs'][2]['name'] = 'test'.rand(0,100);
-        $arr['GSMs'][2]['data'] = rand(1,100000).'个';
+        $arr['GSMs'][2]['data'] = rand(1,100000);
+        $arr['GSMs'][2]['img'] = '/public/img/huihua.png';
         $arr['GSMs'][3]['id'] = 3;
         $arr['GSMs'][3]['name'] = 'test'.rand(0,100);
-        $arr['GSMs'][3]['data'] = rand(1,100000).'个';
+        $arr['GSMs'][3]['data'] = rand(1,100000);
+        $arr['GSMs'][3]['img'] = '/public/img/huihua.png';
         $arr['GSMs'][4]['id'] = 4;
         $arr['GSMs'][4]['name'] = 'test'.rand(0,100);
-        $arr['GSMs'][4]['data'] = rand(1,100000).'个';
+        $arr['GSMs'][4]['data'] = rand(1,100000);
+        $arr['GSMs'][4]['img'] = '/public/img/huihua.png';
         //每行显示个数GSMs
         $num = 12/count($arr['GSMs']);
         if ( $num < 3 ) {
@@ -71,22 +217,28 @@ class NetworkOverviewController extends Controller
 
         $arr['TDDLTEs'][0]['id'] = 0;
         $arr['TDDLTEs'][0]['name'] = 'test'.rand(0,100);
-        $arr['TDDLTEs'][0]['data'] = rand(1,100000).'个';
+        $arr['TDDLTEs'][0]['data'] = rand(1,100000);
+        $arr['TDDLTEs'][0]['img'] = '/public/img/huihua.png';
         $arr['TDDLTEs'][1]['id'] = 1;
         $arr['TDDLTEs'][1]['name'] = 'test'.rand(0,100);
-        $arr['TDDLTEs'][1]['data'] = rand(1,100000).'个';
+        $arr['TDDLTEs'][1]['data'] = rand(1,100000);
+        $arr['TDDLTEs'][1]['img'] = '/public/img/huihua.png';
         $arr['TDDLTEs'][2]['id'] = 2;
         $arr['TDDLTEs'][2]['name'] = 'test'.rand(0,100);
-        $arr['TDDLTEs'][2]['data'] = rand(1,100000).'个';
+        $arr['TDDLTEs'][2]['data'] = rand(1,100000);
+        $arr['TDDLTEs'][2]['img'] = '/public/img/huihua.png';
         $arr['TDDLTEs'][3]['id'] = 3;
         $arr['TDDLTEs'][3]['name'] = 'test'.rand(0,100);
-        $arr['TDDLTEs'][3]['data'] = rand(1,100000).'个';
+        $arr['TDDLTEs'][3]['data'] = rand(1,100000);
+        $arr['TDDLTEs'][3]['img'] = '/public/img/huihua.png';
         $arr['TDDLTEs'][4]['id'] = 4;
         $arr['TDDLTEs'][4]['name'] = 'test'.rand(0,100);
-        $arr['TDDLTEs'][4]['data'] = rand(1,100000).'个';
+        $arr['TDDLTEs'][4]['data'] = rand(1,100000);
+        $arr['TDDLTEs'][4]['img'] = '/public/img/huihua.png';
         $arr['TDDLTEs'][5]['id'] = 5;
         $arr['TDDLTEs'][5]['name'] = 'test'.rand(0,100);
-        $arr['TDDLTEs'][5]['data'] = rand(1,100000).'个';
+        $arr['TDDLTEs'][5]['data'] = rand(1,100000);
+        $arr['TDDLTEs'][5]['img'] = '/public/img/huihua.png';
 
         //每行显示个数GSMs
         $num = 12/count($arr['TDDLTEs']);
@@ -99,22 +251,28 @@ class NetworkOverviewController extends Controller
 
         $arr['FDDLTEs'][0]['id'] = 0;
         $arr['FDDLTEs'][0]['name'] = 'test'.rand(0,100);
-        $arr['FDDLTEs'][0]['data'] = rand(1,100000).'个';
+        $arr['FDDLTEs'][0]['data'] = rand(1,100000);
+        $arr['FDDLTEs'][0]['img'] = '/public/img/huihua.png';
         $arr['FDDLTEs'][1]['id'] = 1;
         $arr['FDDLTEs'][1]['name'] = 'test'.rand(0,100);
-        $arr['FDDLTEs'][1]['data'] = rand(1,100000).'个';
+        $arr['FDDLTEs'][1]['data'] = rand(1,100000);
+        $arr['FDDLTEs'][1]['img'] = '/public/img/huihua.png';
         $arr['FDDLTEs'][2]['id'] = 2;
         $arr['FDDLTEs'][2]['name'] = 'test'.rand(0,100);
-        $arr['FDDLTEs'][2]['data'] = rand(1,100000).'个';
+        $arr['FDDLTEs'][2]['data'] = rand(1,100000);
+        $arr['FDDLTEs'][2]['img'] = '/public/img/huihua.png';
         $arr['FDDLTEs'][3]['id'] = 3;
         $arr['FDDLTEs'][3]['name'] = 'test'.rand(0,100);
-        $arr['FDDLTEs'][3]['data'] = rand(1,100000).'个';
+        $arr['FDDLTEs'][3]['data'] = rand(1,100000);
+        $arr['FDDLTEs'][3]['img'] = '/public/img/huihua.png';
         $arr['FDDLTEs'][4]['id'] = 4;
         $arr['FDDLTEs'][4]['name'] = 'test'.rand(0,100);
-        $arr['FDDLTEs'][4]['data'] = rand(1,100000).'个';
+        $arr['FDDLTEs'][4]['data'] = rand(1,100000);
+        $arr['FDDLTEs'][4]['img'] = '/public/img/huihua.png';
         $arr['FDDLTEs'][5]['id'] = 5;
         $arr['FDDLTEs'][5]['name'] = 'test'.rand(0,100);
-        $arr['FDDLTEs'][5]['data'] = rand(1,100000).'个';
+        $arr['FDDLTEs'][5]['data'] = rand(1,100000);
+        $arr['FDDLTEs'][5]['img'] = '/public/img/huihua.png';
 
         //每行显示个数GSMs
         $num = 12/count($arr['FDDLTEs']);
@@ -127,10 +285,12 @@ class NetworkOverviewController extends Controller
 
         $arr['NBIOTs'][0]['id'] = 0;
         $arr['NBIOTs'][0]['name'] = 'test'.rand(0,100);
-        $arr['NBIOTs'][0]['data'] = rand(1,100000).'个';
+        $arr['NBIOTs'][0]['data'] = rand(1,100000);
+        $arr['NBIOTs'][0]['img'] = '/public/img/huihua.png';
         $arr['NBIOTs'][1]['id'] = 1;
         $arr['NBIOTs'][1]['name'] = 'test'.rand(0,100);
-        $arr['NBIOTs'][1]['data'] = rand(1,100000).'个';
+        $arr['NBIOTs'][1]['data'] = rand(1,100000);
+        $arr['NBIOTs'][1]['img'] = '/public/img/huihua.png';
         //每行显示个数GSMs
         $num = 12/count($arr['NBIOTs']);
         if ( $num < 8 ) {
@@ -249,17 +409,17 @@ class NetworkOverviewController extends Controller
         $id=0;
         for($i=4;$i<$len;$i++){
             if($result[1][$key[$i]]>$result[0][$key[$i]]){
-                $arr[$id]['class']='icon-ali-jiantou_xiangshang';
+                $arr[$id]['class']='icon-ali-jiantoushangsheng-blue';
                 $arr[$id]['tend'] = round((($result[1][$key[$i]]-$result[0][$key[$i]])),2)."%";
             }elseif($result[1][$key[$i]]<$result[0][$key[$i]]){
-                $arr[$id]['class']='icon-ali-jiantou_xiangxia';
+                $arr[$id]['class']='icon-ali-jiantouxiajiang-red';
                 $arr[$id]['tend'] = round((($result[0][$key[$i]]-$result[1][$key[$i]])),2)."%";
             }else{
                 $arr[$id]['class']='icon-ali-jianhao';
                 $arr[$id]['tend'] = '0%';
             }
-            // $arr[$id]["type"] = $city.'-'.$data.'-'.$overview;
-            $arr[$id]["type"] = $city."-".$key[$i]."-".$overview;
+            $arr[$id]["type"] = $key[$i];
+            // $arr[$id]["type"] = $city."-".$key[$i]."-".$overview;
             $arr[$id]["data"] = round($result[0][$key[$i]],2)."%";
             $arr[$id]['id']=$id;
 
@@ -340,15 +500,10 @@ class NetworkOverviewController extends Controller
 
 
         $datas = [];
-        //主标题/副标题/y轴标题/x轴标题
-        // $title = array('text' => $type."-".$city."-".$overview , 'style' =>array('color' =>"#ff0000" ,"fontWeight"=>"bold" ));
-        // $subtitle = array('text' => $type."-".$city."-".$overview, 'style' =>array('color' =>"#ff0000" ));
-        // $ytitle = array('text' => "Y".$type."-".$city."-".$overview , 'style' =>array('color' =>"#ff0000" ,"fontWeight"=>"bold" ));
-        // $xtitle = array('text' => "X".$type."-".$city."-".$overview , 'style' =>array('color' =>"#ff0000" ,"fontWeight"=>"bold" ));
-         $title = array('text' => $type."-".$city , 'style' =>array('color' =>"#ff0000" ,"fontWeight"=>"bold" ));
+        $title = array('text' => $type."-".$city , 'style' =>array('color' =>"#ff0000" ,"fontWeight"=>"bold" ));
         $subtitle = array('text' => $type."-".$city, 'style' =>array('color' =>"#ff0000" ));
-        $ytitle = array('text' => "Y".$type."-".$city, 'style' =>array('color' =>"#ff0000" ,"fontWeight"=>"bold" ));
-        $xtitle = array('text' => "X".$type."-".$city, 'style' =>array('color' =>"#ff0000" ,"fontWeight"=>"bold" ));
+        $ytitle = array('text' =>$type."-".$city, 'style' =>array('color' =>"#ff0000" ,"fontWeight"=>"bold" ));
+        $xtitle = array('text' =>$type."-".$city, 'style' =>array('color' =>"#ff0000" ,"fontWeight"=>"bold" ));
         //x轴/Y轴/data
         $num = count($result);
         $len = count($result[0]);

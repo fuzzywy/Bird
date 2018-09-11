@@ -1,14 +1,18 @@
 <template>
 	<div>
-		<span v-show="birdSideBarLoadStatus == 1">Loading</span>
-		<b-list-group-item button v-show="birdSideBarLoadStatus == 2"
-			v-for='(item, index) in posts'
-			:key='item.id'
-			:index='item.id'
-			:name='item.routertag'
-			@click='leftClick'
-		>{{ item.Content }}</b-list-group-item>
-		<span v-show="birdSideBarLoadStatus == 3">SideBar loaded unsuccessfully!</span>
+		<b-card nobody header="<b>网络概览</b>">
+			<b-list-group flush>
+				<span v-show="birdSideBarLoadStatus == 1">Loading</span>
+				<b-list-group-item button v-show="birdSideBarLoadStatus == 2"
+					v-for='(item, index) in posts'
+					:key='item.id'
+					:index='item.id'
+					:name='item.routertag'
+					@click='leftClick'
+				>{{ item.Content }}</b-list-group-item>
+				<span v-show="birdSideBarLoadStatus == 3">SideBar loaded unsuccessfully!</span>
+			</b-list-group>
+		</b-card>
 	</div>
 </template>
 

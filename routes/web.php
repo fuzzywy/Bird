@@ -16,10 +16,13 @@ Route::get('/', function () {
 });
 Auth::routes();
 
+Route::get('localeLang', 'NavController@localeLang');
+
 Route::get('/home', 'HomeController@index')->name('home');
 
 Route::get('getTabs', 'NetworkOverviewController@getTabs');
 Route::get('getScaleTabs', 'NetworkOverviewController@getScaleTabs');
+Route::get('getLoadTabs', 'NetworkOverviewController@getLoadTabs');
 Route::get('getcharts', 'NetworkOverviewController@getcharts');
 
 

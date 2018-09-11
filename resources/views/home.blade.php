@@ -5,14 +5,14 @@
   <div class="row">
     <div class="col-2">
       <!-- <router-view name="a"></router-view> -->
-      <b-card nobody header="<b>网络概览</b>">
-        <b-list-group flush>
+      <!-- <b-card nobody header="<b>网络概览</b>">
+        <b-list-group flush> -->
           <!-- list -->
           <!-- <left-component></left-component> -->
           <!-- default name="BirdSideBar" -->
           <router-view></router-view>
-        </b-list-group>
-      </b-card>
+        <!-- </b-list-group>
+      </b-card> -->
     </div>
     <div class="col-10">
       <!-- city -->

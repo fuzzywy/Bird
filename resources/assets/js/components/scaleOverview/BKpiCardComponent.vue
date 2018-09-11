@@ -80,7 +80,7 @@
 				        </div>
 					</div>
 				</b-tab>
-				<b-card-footer>{{ overviewCn }}-{{city}}</b-card-footer>
+				<!-- <b-card-footer>{{ overviewCn }}-{{city}}</b-card-footer> -->
 			</b-tabs>
 	    </b-card>
 
@@ -99,7 +99,7 @@
 			            :class="post.col" 
 			        >
 			        	<div class='scalecard' style="vertical-align: middle;">
-			        		<img class='floatleft' src="/public/img/huihua.png">
+			        		<img class='floatleft' :src= "post.img">
 			        		<div class="postdata" style="color: #fff; padding-top: 20px;">{{post.data}}</div>
 			        		<div class="posttype" style="color: #fff">{{post.name}}</div>
 			        	</div>
@@ -122,7 +122,7 @@
 			            :class="post.col" 
 			        >
 				        <div class='scalecard' style="vertical-align: middle;">
-			        		<img class='floatleft' src="/public/img/huihua.png">
+			        		<img class='floatleft' :src="post.img">
 			        		<div class="postdata" style="color: #fff; padding-top: 20px;">{{post.data}}</div>
 			        		<div class="posttype" style="color: #fff">{{post.name}}</div>
 			        	</div>
@@ -153,7 +153,7 @@
 			            :class="post.col" 
 			        >
 			        	<div class='scalecard' style="vertical-align: middle;">
-			        		<img class='floatleft' src="/public/img/huihua.png">
+			        		<img class='floatleft' :src="post.img">
 			        		<div class="postdata" style="color: #fff; padding-top: 20px;">{{post.data}}</div>
 			        		<div class="posttype" style="color: #fff">{{post.name}}</div>
 			        	</div>
@@ -178,7 +178,7 @@
 			            :class="post.col" 
 			        >
 			        	<div class='scalecard' style="vertical-align: middle;">
-			        		<img class='floatleft' src="/public/img/huihua.png">
+			        		<img class='floatleft' :src="post.img">
 			        		<div class="postdata" style="color: #fff; padding-top: 20px;">{{post.data}}</div>
 			        		<div class="posttype" style="color: #fff">{{post.name}}</div>
 			        	</div>
@@ -186,6 +186,103 @@
 				</div>
 	        </b-card>
     	</b-card-group>
+
+
+    	<b-card-group deck v-show="type == 'loadoverview'">
+    		<span v-show="bLoadKpiCard == 1">Loading LoadCard</span>
+			<span v-show="bLoadKpiCard == 3">LoadCard loaded unsuccessfully!</span>
+    		<b-card header="TDD_LTE"
+	                header-tag="header"
+	                v-show="bLoadKpiCard == 2"
+	               	>
+	            <div class="row">
+					<div
+			            style="text-align: center;padding-bottom: 15px"
+			            v-for="post in load.TDDLTEs" 
+			            :key="post.id"
+			            :class="post.col" 
+			        >
+				        <div class='scalecard' style="vertical-align: middle;">
+			        		<img class='floatleft' :src="post.img">
+			        		<div class="postdata" style="color: #fff; padding-top: 20px;">{{post.data}}</div>
+			        		<div class="posttype" style="color: #fff">{{post.name}}</div>
+			        	</div>
+			        </div>
+				</div>
+	        </b-card>
+	    </b-card-group>
+
+	    <b-card-group deck v-show="type == 'loadoverview'">
+    		<span v-show="bLoadKpiCard == 1">Loading LoadCard</span>
+			<span v-show="bLoadKpiCard == 3">LoadCard loaded unsuccessfully!</span>
+    		<b-card header="FDD_LTE"
+	                header-tag="header"
+	                v-show="bLoadKpiCard == 2"
+	               	>
+	            <div class="row">
+					<div
+			            style="text-align: center;padding-bottom: 15px"
+			            v-for="post in load.FDDLTEs" 
+			            :key="post.id"
+			            :class="post.col" 
+			        >
+				        <div class='scalecard' style="vertical-align: middle;">
+			        		<img class='floatleft' :src="post.img">
+			        		<div class="postdata" style="color: #fff; padding-top: 20px;">{{post.data}}</div>
+			        		<div class="posttype" style="color: #fff">{{post.name}}</div>
+			        	</div>
+			        </div>
+				</div>
+	        </b-card>
+	    </b-card-group>
+
+	    <b-card-group deck v-show="type == 'loadoverview'">
+    		<span v-show="bLoadKpiCard == 1">Loading LoadCard</span>
+			<span v-show="bLoadKpiCard == 3">LoadCard loaded unsuccessfully!</span>
+    		<b-card header="NBIOT"
+	                header-tag="header"
+	                v-show="bLoadKpiCard == 2"
+	               	>
+	            <div class="row">
+					<div
+			            style="text-align: center;padding-bottom: 15px"
+			            v-for="post in load.NBIOTs" 
+			            :key="post.id"
+			            :class="post.col" 
+			        >
+				        <div class='scalecard' style="vertical-align: middle;">
+			        		<img class='floatleft' :src="post.img">
+			        		<div class="postdata" style="color: #fff; padding-top: 20px;">{{post.data}}</div>
+			        		<div class="posttype" style="color: #fff">{{post.name}}</div>
+			        	</div>
+			        </div>
+				</div>
+	        </b-card>
+	    </b-card-group>
+
+	    <b-card-group deck v-show="type == 'loadoverview'">
+    		<span v-show="bLoadKpiCard == 1">Loading LoadCard</span>
+			<span v-show="bLoadKpiCard == 3">LoadCard loaded unsuccessfully!</span>
+    		<b-card header="GSM"
+	                header-tag="header"
+	                v-show="bLoadKpiCard == 2"
+	               	>
+	            <div class="row">
+					<div
+			            style="text-align: center;padding-bottom: 15px"
+			            v-for="post in load.GSMs" 
+			            :key="post.id"
+			            :class="post.col" 
+			        >
+				        <div class='scalecard' style="vertical-align: middle;">
+			        		<img class='floatleft' :src="post.img">
+			        		<div class="postdata" style="color: #fff; padding-top: 20px;">{{post.data}}</div>
+			        		<div class="posttype" style="color: #fff">{{post.name}}</div>
+			        	</div>
+			        </div>
+				</div>
+	        </b-card>
+	    </b-card-group>
 	   <!--  <b-tabs  card v-show="type == 'scaleoverview'">
 			<b-tab :active="isActiveLTE" title='LTE' @click='show("LTE")' v-show="bKpiCardStatus == 2">
 				<div class="row">
@@ -272,7 +369,8 @@
 				NBIOTs:[],
 				GSMs:[],
 				data:[],
-				scale: []
+				scale: [],
+				load:[]
 			}
 		},
 		computed: {
@@ -287,6 +385,10 @@
 			bScaleKpiCard() {
 				this.scale = this.$store.getters.getbScaleCard
 				return this.$store.getters.getbScaleCardStatus;
+			},
+			bLoadKpiCard() {
+				this.load = this.$store.getters.getbLoadKpiCard
+				return this.$store.getters.getbLoadKpiCardStatus;
 			}
         },
 		created() {
@@ -321,6 +423,12 @@
 	  					city: this.city,
 	  					overview: this.overview
 	  				})
+	  			} else if ( this.overview == 'loadoverview' ) {
+	  				this.overviewCn = '负荷概览';
+	  				this.$store.dispatch( 'loadBLoadKpiCard', {
+	  					city: this.city,
+	  					overview: this.overview
+	  				} )
 	  			}
 	  		})
 
@@ -337,7 +445,12 @@
 	  					city: this.city,
 	  					overview: this.overview
 	  				})
-            	}
+            	} else if ( this.overview == 'loadoverview' ) {
+	  				this.$store.dispatch( 'loadBLoadKpiCard', {
+	  					city: this.city,
+	  					overview: this.overview
+	  				} )
+	  			}
 	  		})
 	  	},
 	  	watch: {

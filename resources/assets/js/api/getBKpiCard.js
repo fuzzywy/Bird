@@ -18,5 +18,13 @@
  				overview: overview
  			}
  		});
+ 	},
+ 	getBLoadKpiCard: function( city, overview ) {
+ 		return axios.get('getLoadTabs', {
+ 			params: {
+ 				city: city,
+ 				overview: overview
+ 			}
+ 		});
  	}
  }
