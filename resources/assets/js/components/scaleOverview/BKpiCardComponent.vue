@@ -12,7 +12,7 @@
 				            v-for="post in LTEs"
 				            :key="post.id"
 				        >
-				        	<div class="postclass">
+				        	<div class="postclass" @click="button(post.id)">
 					        	<span class="posttype">{{ post.type }}</span>
 					            <br />
 					            <span class="postdata"><b>{{ post.data }}</b></span>
@@ -31,7 +31,7 @@
 				            v-for="post in VOLTEs"
 				            :key="post.id"
 				        >
-				        	<div class="postclass">
+				        	<div class="postclass" @click="button(post.id)">
 					        	<span class="posttype">{{ post.type }}</span>
 					            <br />
 					            <span class="postdata"><b>{{ post.data }}</b></span>
@@ -50,7 +50,7 @@
 				            v-for="post in NBIOTs"
 				            :key="post.id"
 				        >
-				        	<div class="postclass">
+				        	<div class="postclass" @click="button(post.id)">
 					        	<span class="posttype">{{ post.type }}</span>
 					            <br />
 					            <span class="postdata"><b>{{ post.data }}</b></span>
@@ -69,7 +69,7 @@
 				            v-for="post in GSMs"
 				            :key="post.id"
 				        >
-				        	<div class="postclass">
+				        	<div class="postclass" @click="button(post.id)">
 					        	<span class="posttype">{{ post.type }}</span>
 					            <br />
 					            <span class="postdata"><b>{{ post.data }}</b></span>
@@ -336,10 +336,14 @@
 		padding: 10px 25px 10px 10px 
 	}
 	.postclass {
+		cursor:pointer;
 		background-color: #DCDCDC;
 		border-radius: 3px;
 		margin-top: 5px;
 		margin-left: 0px;
+	}
+	.postclass:hover {
+		background-color: #CCCCCC;
 	}
 	.rowclass {
 		padding: 0px 0px 0px 15px
@@ -471,6 +475,9 @@
 	  		}
 	  	},
 		methods: {
+			button: function(data) {
+				this.bus.$emit('getTabsId', data)
+			},
 			show: function(data) {
 				this.types = data
 				this.bus.$emit('getTabsType', this.types)

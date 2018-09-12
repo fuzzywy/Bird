@@ -12,7 +12,10 @@ export const bKpiCard = {
 		bKpiCardStatus: 0,
 
 		bScaleKpiCard: [],
-		bScaleKpiCardStatus: 0
+		bScaleKpiCardStatus: 0,
+
+		bLoadKpiCard: [],
+		bLoadKpiCardStatus: 0
 	},
 	actions: {
 		loadBKpiCardStatus( { commit }, data ) {
@@ -39,6 +42,19 @@ export const bKpiCard = {
 				commit( 'setbScaleKpiCard', {} );
 				commit( 'setbScaleKpiCardStatus', 3);
 			} )
+		},
+
+		loadBLoadKpiCard( { commit }, data ) {
+			commit( 'setbLoadKpiCardStatus', 1 );
+			BKpiCardAPI.getBLoadKpiCard( data.city, data.overview )
+			.then( (response) => {
+				commit( 'setbLoadKpiCard', response.data );
+				commit( 'setbLoadKpiCardStatus', 2 );
+			} )
+			.catch( function() {
+				commit( 'setbLoadKpiCard', {} );
+				commit( 'setbLoadKpiCardStatus', 3 );
+			} )
 		}
 	},
 	mutations: {
@@ -58,6 +74,15 @@ export const bKpiCard = {
 			state.bScaleKpiCard = []
 			state.bScaleKpiCard.splice(0, state.bScaleKpiCard.length)
         	state.bScaleKpiCard = bScaleKpiCard
+		},
+
+		setbLoadKpiCardStatus( state, status ) {
+			state.bLoadKpiCardStatus = status;
+		},
+		setbLoadKpiCard( state, bLoadKpiCard ) {
+			state.bLoadKpiCard = []
+			state.bLoadKpiCard.splice(0, state.bLoadKpiCard.length)
+			state.bLoadKpiCard = bLoadKpiCard
 		}
 	},
 	getters: {
@@ -73,6 +98,13 @@ export const bKpiCard = {
 		},
 		getbScaleCard:state=>{
 			return state.bScaleKpiCard
+		},
+
+		getbLoadKpiCardStatus( state ) {
+			return state.bLoadKpiCardStatus
+		},
+		getbLoadKpiCard:state=>{
+			return state.bLoadKpiCard
 		}
 	}
 }

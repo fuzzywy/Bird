@@ -19,6 +19,7 @@
                 overview: 'indexoverview',
                 types: "LTE",
                 charts: {},
+                cardId: 0,
                 option: {
                     chart: {
                         type: 'line',
@@ -54,17 +55,38 @@
                                 enabled: true // 开启数据标签
                             },
                             enableMouseTracking: false // 关闭鼠标跟踪，对应的提示框、点击事件会失效
+                        },
+                        series: {
+                            events: {
+                                legendItemClick: function(e) {
+                                    /*var target = e.target; 
+                                        console.log(target === this);
+                                        */
+                                    var index = this.index;
+                                    var series = this.chart.series;
+                                    if(!series[index].visible) {
+                                        for(var i=0;i<series.length;i++) {
+                                            var s = series[i];
+                                            i===index ? s.show() : s.hide();
+                                        }
+                                    }
+                                    return false;
+                                }
+                            }
                         }
                     },
                     series: [{//两条数据
                         name: '东京',
-                        data: [99.93,99.94,99.74,99.99,99.98,99.93,99.95,99.92,99.96,99.95,99.95,99.93]
+                        data: [99.93,99.94,99.74,99.99,99.98,99.93,99.95,99.92,99.96,99.95,99.95,99.93],
+                        visible:true
                     }, {
                         name: '伦敦',
-                        data: [0.35,0.37,0.39,0.33,0.31,0.25,0.40,0.17,0.32,0.28,0.29,0.27]
+                        data: [0.35,0.37,0.39,0.33,0.31,0.25,0.40,0.17,0.32,0.28,0.29,0.27],
+                        visible:true
                     },{
                         name: '伦敦1',
-                        data: [98.50,98.49,98.68,98.79,98.69,98.54,97.43,98.72,98.58,98.68,98.70,98.69]
+                        data: [98.50,98.49,98.68,98.79,98.69,98.54,97.43,98.72,98.58,98.68,98.70,98.69],
+                        visible:true
                     }]
                 }
             }
@@ -99,10 +121,22 @@
                 charts.xAxis[0].categories = val.xcategories;
                 charts.yAxis[0].categories = val.ycategories;
 
-                for (let i = val.ydata.length - 1; i >= 0; i--) {
-                    let series = charts.addSeries(val.ydata[i])  
+                for ( let i = 0;  i < val.ydata.length; i++) {
+                    if ( this.cardId == i ) {
+                        val.ydata[i]['visible'] = true
+                    } else {
+                        val.ydata[i]['visible'] = false
+                    }
+                    let series = charts.addSeries(val.ydata[i])
                 }
-                
+                /*for (let i = val.ydata.length - 1; i >= 0; i--) {
+                    if ( this.cardId == i ) {
+                        val.ydata[i]['visible'] = true
+                    } else {
+                        val.ydata[i]['visible'] = false
+                    }
+                    let series = charts.addSeries(val.ydata[i])  
+                }*/
             }   
         },
         mounted() {
@@ -120,6 +154,16 @@
             this.bus.$on('cityClick', city => {
                 this.city = city
             })*/
+            this.bus.$on('getTabsId', id=> {
+                this.cardId = id
+                if (this.overview == 'indexoverview') {
+                    this.$store.dispatch( 'loadBLineChartStatus', {
+                        type: this.types,
+                        city: this.city,
+                        overview: this.overview
+                    })
+                }
+            })
             this.bus.$on('getTabsType', types=> {
                 this.types = types
             })
