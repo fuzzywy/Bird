@@ -2,10 +2,10 @@
 	<div>
 		<b-card no-body v-show="type == 'indexoverview'">
 	        <b-tabs pills card>
-	        	<span v-show="bKpiCardStatus == 1">Loading Card</span>
-				<span v-show="bKpiCardStatus == 3">Card loaded unsuccessfully!</span>
-				<b-tab class='cardclass' :active="isActiveLTE" title='LTE' @click='show("LTE")' v-show="bKpiCardStatus == 2">
-					<div class="row">
+				<b-tab class='cardclass' :active="isActiveLTE" title='LTE' @click='show("LTE")'>
+					<div v-show="bKpiCardStatus == 1" style="text-align: center;"><i class="icon-ali-load">loading...</i></div>
+					<div v-show="bKpiCardStatus == 3" style="text-align: center;">Card loaded unsuccessfully!</div>
+					<div class="row" v-show="bKpiCardStatus == 2">
 						<div
 				            class="col-4 rowclass" 
 				            style="text-align: center;" 
@@ -23,8 +23,10 @@
 				        </div>
 				    </div>
 				</b-tab>
-				<b-tab class='cardclass' title='VOLTE' @click='show("VOLTE")' v-show="bKpiCardStatus == 2">
-					<div class="row">
+				<b-tab class='cardclass' title='VOLTE' @click='show("VOLTE")'>
+					<div v-show="bKpiCardStatus == 1" style="text-align: center;"><i class="icon-ali-load">loading...</i></div>
+					<div v-show="bKpiCardStatus == 3" style="text-align: center;">Card loaded unsuccessfully!</div>
+					<div class="row" v-show="bKpiCardStatus == 2">
 						<div
 				            class="col-4 rowclass" 
 				            style="text-align: center;" 
@@ -42,8 +44,10 @@
 				        </div>
 					</div>
 				</b-tab>
-				<b-tab class='cardclass' title='NBIOT' @click='show("NBIOT")' v-show="bKpiCardStatus == 2">
-					<div class="row">
+				<b-tab class='cardclass' title='NBIOT' @click='show("NBIOT")'>
+					<div v-show="bKpiCardStatus == 1" style="text-align: center;"><i class="icon-ali-load">loading...</i></div>
+					<div v-show="bKpiCardStatus == 3" style="text-align: center;">Card loaded unsuccessfully!</div>
+					<div class="row" v-show="bKpiCardStatus == 2">
 						<div
 				            class="col-4 rowclass" 
 				            style="text-align: center;" 
@@ -61,8 +65,10 @@
 				        </div>
 					</div>
 				</b-tab>
-				<b-tab class='cardclass' title='GSM' @click='show("GSM")' v-show="bKpiCardStatus == 2">
-					<div class="row">
+				<b-tab class='cardclass' title='GSM' @click='show("GSM")'>
+					<div v-show="bKpiCardStatus == 1" style="text-align: center;"><i class="icon-ali-load">loading...</i></div>
+					<div v-show="bKpiCardStatus == 3" style="text-align: center;">Card loaded unsuccessfully!</div>
+					<div class="row" v-show="bKpiCardStatus == 2">
 						<div
 				            class="col-4 rowclass" 
 				            style="text-align: center;" 

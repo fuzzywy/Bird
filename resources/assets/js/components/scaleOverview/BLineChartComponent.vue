@@ -2,9 +2,9 @@
     <!-- <div class="hello">
         <div class="charts"> -->
     <div v-show="show == 2">
-        <div v-show="bLineChart == 1">Loading highchart</div>
+        <div v-show="bLineChart == 1" style="text-align: center;"><i class="icon-ali-load">loading...</i></div>
         <div :id="id" :option="option" v-show="bLineChart == 2" class="col-12" style="min-width: 400px; padding: 0px;"></div>
-        <div v-show="bLineChart == 3">Highchart loaded unsuccessfully!</div>
+        <div v-show="bLineChart == 3" style="text-align: center;">Highchart loaded unsuccessfully!</div>
     </div>
     
         <!-- </div>
@@ -157,20 +157,34 @@
             this.bus.$on('getTabsId', id=> {
                 this.cardId = id
                 if (this.overview == 'indexoverview') {
-                    this.$store.dispatch( 'loadBLineChartStatus', {
+                    while (this.charts.series.length > 0) {
+                        this.charts.series[0].remove(true);
+                    }
+                    for (var i = 0; i < this.option.ydata.length; i++) {
+                        if (this.cardId == i ) {
+                            this.option.ydata[i]['visible'] = true
+                        }else {
+                            this.option.ydata[i]['visible'] = false
+                        }
+                        this.charts.addSeries(this.option.ydata[i])
+                    }
+                    // this.charts = this.option
+                    /*this.$store.dispatch( 'loadBLineChartStatus', {
                         type: this.types,
                         city: this.city,
                         overview: this.overview
-                    })
+                    })*/
                 }
             })
             this.bus.$on('getTabsType', types=> {
+                this.cardId = 0
                 this.types = types
             })
             this.bus.$on('leftClickData', overview => {
                 // this.overview = overview
                 // var obj = this.option
                 // var id = this.id
+                this.cardId = 0
                 this.overview = overview
 
                 // this.charts.splice(0, this.charts.length)
@@ -214,6 +228,7 @@
                 // this.city = city
                 // var obj = this.option
                 // var id = this.id
+                this.cardId = 0
                 this.city = city
 
                 if (this.overview == 'indexoverview') {
