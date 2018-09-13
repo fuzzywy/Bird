@@ -120,14 +120,15 @@
 
                 charts.xAxis[0].categories = val.xcategories;
                 charts.yAxis[0].categories = val.ycategories;
-
-                for ( let i = 0;  i < val.ydata.length; i++) {
-                    if ( this.cardId == i ) {
-                        val.ydata[i]['visible'] = true
-                    } else {
-                        val.ydata[i]['visible'] = false
+                if (val.ydata != undefined){
+                    for ( let i = 0;  i < val.ydata.length; i++) {
+                        if ( this.cardId == i ) {
+                            val.ydata[i]['visible'] = true
+                        } else {
+                            val.ydata[i]['visible'] = false
+                        }
+                        let series = charts.addSeries(val.ydata[i])
                     }
-                    let series = charts.addSeries(val.ydata[i])
                 }
                 /*for (let i = val.ydata.length - 1; i >= 0; i--) {
                     if ( this.cardId == i ) {
