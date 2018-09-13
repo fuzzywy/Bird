@@ -12,7 +12,7 @@
 				            v-for="post in LTEs"
 				            :key="post.id"
 				        >
-				        	<div class="postclass" @click="button(post.id)">
+				        	<div class="postclass" @click="button(post.id)" :class="post.color">
 					        	<span class="posttype">{{ post.type }}</span>
 					            <br />
 					            <span class="postdata"><b>{{ post.data }}</b></span>
@@ -33,7 +33,7 @@
 				            v-for="post in VOLTEs"
 				            :key="post.id"
 				        >
-				        	<div class="postclass" @click="button(post.id)">
+				        	<div class="postclass" @click="button(post.id)" :class="post.color">
 					        	<span class="posttype">{{ post.type }}</span>
 					            <br />
 					            <span class="postdata"><b>{{ post.data }}</b></span>
@@ -54,7 +54,7 @@
 				            v-for="post in NBIOTs"
 				            :key="post.id"
 				        >
-				        	<div class="postclass" @click="button(post.id)">
+				        	<div class="postclass" @click="button(post.id)" :class="post.color">
 					        	<span class="posttype">{{ post.type }}</span>
 					            <br />
 					            <span class="postdata"><b>{{ post.data }}</b></span>
@@ -75,7 +75,7 @@
 				            v-for="post in GSMs"
 				            :key="post.id"
 				        >
-				        	<div class="postclass" @click="button(post.id)">
+				        	<div class="postclass" @click="button(post.id)" :class="post.color">
 					        	<span class="posttype">{{ post.type }}</span>
 					            <br />
 					            <span class="postdata"><b>{{ post.data }}</b></span>
@@ -308,12 +308,20 @@
 	</div>
 </template>
 <style>
+	.red {
+		color: #d81e06;
+	}
+	.blue {
+		color: #1296db;
+	}
+
 	.icon-ali-jiantoushangsheng-blue {
 		color: #1296db;
 	}
 	.icon-ali-jiantouxiajiang-red {
 		color: #d81e06;
 	}
+
 	.scalecard {
 		background-color: #20a8d8;
 		/*width:250px; */
@@ -370,6 +378,7 @@
 			return {
 				isActiveLTE: true,
 				// isActiveVOLTE: true,
+				//class: 'default',
 				city: '全省',
 				overview: 'indexoverview',
 				overviewCn: '指标概览',
@@ -402,11 +411,11 @@
 			}
         },
 		created() {
-			this.$store.dispatch( 'loadBKpiCardStatus', {
+			/*this.$store.dispatch( 'loadBKpiCardStatus', {
 				type: this.types,
 				city: this.city,
 				overview: this.overview
-			})
+			})*/
 	  		/*this.bus.$on('leftClick', overview => {
 	  			this.overview = overview
 	  			if (this.overview == 'indexoverview') {
@@ -476,8 +485,14 @@
 				}
 	  			obj.splice(0, obj.length)
 	  			for (var i = val.length - 1; i >= 0; i--) {
+            		/*if ( val[i]['limit'] == "icon-ali-jiantoushangsheng-blue" ) {
+            			val[i]['color'] = 'blue'
+            		}else if ( val[i]['linit'] == "icon-ali-jiantouxiajiang-red" ) {
+            			val[i]['color'] = 'red'
+            		}*/
             		obj.push(val[i])
             	}
+            	// console.log(obj)
 	  		}
 	  	},
 		methods: {
