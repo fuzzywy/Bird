@@ -19,8 +19,9 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Session;
+use App\Models\Databaseconns;
 use PDO;
-
+use APP;
 /**
  * 工具类
  * Class DataBaseConnection
@@ -57,6 +58,10 @@ class DataBaseConnection
      *@return string
      */
     public function getConnName($db,$city){
+        if (App::isLocale('en')) {
+            return $city;
+        }
+// var_dump(App::isLocale('en'));exit;
         $sql = "select connName from city where cityChinese='$city' limit 1";
         $res = $db->query($sql)->fetchall(PDO::FETCH_ASSOC);
         foreach ($res as $key => $value) {
@@ -65,4 +70,112 @@ class DataBaseConnection
         return $connName;
 
     }//end getConnName()
+
+    /**
+     * 获取最新的kget时间
+     */
+    public function getKgetTime(){
+
+        $dbn = $this->getDB('mongs');
+        $sql = "select taskName from task where taskName like 'kget1_____' order by endTime desc limit 1 ";
+        $res = $dbn->query($sql)->fetch(PDO::FETCH_ASSOC);
+        
+        return $res['taskName']; 
+    }
+
+    public function getSubNetsArr($type,$cityChinese){
+
+        switch($type){
+            case "TDD":
+            $result = Databaseconns::select("subNetwork as subnet")->where("cityChinese",$cityChinese)->get()->toArray();
+            break;
+            case "FDD":
+            $result = Databaseconns::select("subNetworkFDD as subnet")->where("cityChinese",$cityChinese)->get()->toArray();
+            break;
+            case "NBIOT":
+            $result = Databaseconns::select("subNetworkNbiot as subnet")->where("cityChinese",$cityChinese)->get()->toArray();
+            break;
+        }
+
+        $subnet =array();
+        foreach ($result as $key => $value) {
+            $subnet= array_merge($subnet,explode(",", $value['subnet']));
+        }
+        return array_filter($subnet);
+    }
+        public function getSubNetsStr($type,$cityChinese){
+
+        switch($type){
+            case "TDD":
+            $result = Databaseconns::select("subNetwork as subnet")->where("cityChinese",$cityChinese)->get()->toArray();
+            break;
+            case "FDD":
+            $result = Databaseconns::select("subNetworkFDD as subnet")->where("cityChinese",$cityChinese)->get()->toArray();
+            break;
+            case "NBIOT":
+            $result = Databaseconns::select("subNetworkNbiot as subnet")->where("cityChinese",$cityChinese)->get()->toArray();
+            break;
+        }
+
+        $subnet ="";
+        foreach ($result as $key => $value) {
+            $array = array_filter(explode(",", $value['subnet']));
+            if($array){
+                foreach ($array as $k => $v) {
+                    $subnet.="'".$v."',";
+                }
+            }
+           
+        }
+        $subnet = rtrim($subnet,",");
+        return $subnet;
+    }
+
+     public function getSubNetsByconnName($type,$connName){
+
+        switch($type){
+            case "TDD":
+            $result = Databaseconns::select("subNetwork as subnet")->where("connName",$connName)->get()->toArray();
+            break;
+            case "FDD":
+            $result = Databaseconns::select("subNetworkFDD as subnet")->where("connName",$connName)->get()->toArray();
+            break;
+            case "NBIOT":
+            $result = Databaseconns::select("subNetworkNbiot as subnet")->where("connName",$connName)->get()->toArray();
+            break;
+        }
+        $subnet = "";
+        if($result){
+            $array = array_filter(explode(",", $result[0]['subnet']));
+            if($array){
+                foreach ($array as $k => $v) {
+                    $subnet.="'".$v."',";
+                }
+            }
+            $subnet = rtrim($subnet,",");
+        }
+        return $subnet;
+    }
+
+    public  function getSN($oss) {
+        $SN = "";
+        switch ($oss) {
+            case 'wuxiENM':
+                $SN = "substring(substring(SN, 0, charindex(',',SN)-1), 12)";
+                break;
+            case "wuxi1":
+                $SN = "substring(SN, 12, charindex(',', SN)-12)";
+                break;
+          case "wuxi":
+            $SN = "substring(SN, 12, charindex(',', SN)-12)";
+            break;
+            case "suzhou3":
+                $SN = "substring(SN, 12, charindex(',', SN)-12)";
+                break;
+            default:
+                $SN = "substring(SN,charindex('=',substring(SN,32,25))+32,charindex(',',substring(SN,32,25))-charindex('=',substring(SN,32,25))-1)";
+                break;
+        }
+        return $SN;
+    }
 }//end class

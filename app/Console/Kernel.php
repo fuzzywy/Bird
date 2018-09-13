@@ -17,6 +17,10 @@ class Kernel extends ConsoleKernel
         Commands\VolteExtract::class,
         Commands\LteExtract::class,
         Commands\NbiExtract::class,
+        Commands\SLteExtract::class,
+        Commands\SGsmExtract::class,
+        Commands\BLNbiExtract::class,
+
     ];
 
     /**
@@ -27,11 +31,15 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-           date_default_timezone_set("PRC");
+        date_default_timezone_set("PRC");
         $schedule->command('Gsm:backup')->cron("20 * * * *");
         $schedule->command('Volte:backup')->cron("22 * * * *");
         $schedule->command('Lte:backup')->cron("22 * * * *");
         $schedule->command('Nbi:backup')->cron("22 * * * *");
+        //备份B_S_FDD/TDD/NBIOT数据
+        $schedule->command('SLte:backup')->cron("0 0 * * *");
+        //B_S_GSM数据备份
+        $schedule->command('SGsm:backup')->cron("20 0 * * *");
         // $schedule->command('VolteExtract:backup')->cron("20 * * * *");
         // $schedule->command('inspire')
         //          ->hourly();

@@ -3,7 +3,6 @@
 namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
-use App\Models\Databaseconn2g;
 use App\Models\City;
 use App\Console\Commands\Bird\GsmBackup;
 use PDO;

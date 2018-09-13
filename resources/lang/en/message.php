@@ -22,5 +22,13 @@ return [
 		"无锡"=>"wuxi",
 		"镇江"=>"zhenjiang",
 		"南通"=>"nantong",
+	],
+	"scale"=>[
+		"carrier"=>"carrier",
+		"cell"=>"cell",
+		"erbs"=>"erbs",
+		"high_peed"=>"high_peed",
+		"co_enhance"=>"co_enhance",
+		"ca_agg"=>"ca_agg",
 	]
 ];

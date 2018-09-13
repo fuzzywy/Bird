@@ -13,6 +13,10 @@ use App\Models\LTE_FDD;
 use App\Models\LTE_TDD;
 use App\Models\VOLTE_FDD;
 use App\Models\VOLTE_TDD;
+use App\Models\B_S_GSM;
+use App\Models\B_S_LTE_NBIOT;
+use App\Models\B_S_LTE_FDD;
+use App\Models\B_S_LTE_TDD;
 use App\Models\City;
 use Illuminate\Support\Facades\DB;
 use PDO;
@@ -20,7 +24,6 @@ use App;
 class NetworkOverviewController extends Controller
 {
     public function getBirdSideBar() {
-        sleep(1);
         $arr = array(
                 array("id" => 0, "Content" => "指标概览", "routertag" => "indexoverview" ),
                 array("id" => 1, "Content" => "规模概览", "routertag" => "scaleoverview" ),
@@ -30,15 +33,11 @@ class NetworkOverviewController extends Controller
     }
 
     public function getCity() {
-        sleep(1);
-        $arr = array(
-                    array("id" => 0, "name" => "全省"), 
-                    array("id" => 1, "name" => "常州"),
-                    array("id" => 2, "name" => "苏州"),
-                    array("id" => 3, "name" => "无锡"),
-                    array("id" => 4, "name" => "南通"),
-                    array("id" => 5, "name" => "镇江")
-                );
+        $cityList = City::select()->get()->toArray();
+        $arr=array(array("id"=>0,"name"=>trans("message.province")));
+        foreach ($cityList as $key => $value) {
+            array_push($arr, array("id"=>$key+1,"name"=>trans("message.city.".$value['cityChinese'])));
+        }
         return $arr;
     }
 
@@ -182,30 +181,147 @@ class NetworkOverviewController extends Controller
     }
 
     public function getScaleTabs() {
-        sleep(1);
+
         $city = input::get('city');
         $overview = input::get('overview');
         $arr = [];
-        $arr['GSMs'][0]['id'] = 0;
-        $arr['GSMs'][0]['name'] = 'test'.rand(0,100);
-        $arr['GSMs'][0]['data'] = rand(1,100000);
-        $arr['GSMs'][0]['img'] = '/public/img/huihua.png';
-        $arr['GSMs'][1]['id'] = 1;
-        $arr['GSMs'][1]['name'] = 'test'.rand(0,100);
-        $arr['GSMs'][1]['data'] = rand(1,100000);
-        $arr['GSMs'][1]['img'] = '/public/img/huihua.png';
-        $arr['GSMs'][2]['id'] = 2;
-        $arr['GSMs'][2]['name'] = 'test'.rand(0,100);
-        $arr['GSMs'][2]['data'] = rand(1,100000);
-        $arr['GSMs'][2]['img'] = '/public/img/huihua.png';
-        $arr['GSMs'][3]['id'] = 3;
-        $arr['GSMs'][3]['name'] = 'test'.rand(0,100);
-        $arr['GSMs'][3]['data'] = rand(1,100000);
-        $arr['GSMs'][3]['img'] = '/public/img/huihua.png';
-        $arr['GSMs'][4]['id'] = 4;
-        $arr['GSMs'][4]['name'] = 'test'.rand(0,100);
-        $arr['GSMs'][4]['data'] = rand(1,100000);
-        $arr['GSMs'][4]['img'] = '/public/img/huihua.png';
+      
+        if($city!="全省"&&$city!="province"){
+            if (App::isLocale('en')) {
+             $city = City::select()->where("connName",$city)->get()->toArray()[0]['cityChinese'];
+            }
+            $day_id =B_S_GSM::select("day_id")->orderBy("id","desc")->limit(1)->get()->toArray();
+
+            $res = B_S_GSM::select()->where("location",$city)->where("day_id",$day_id[0]['day_id'])->limit(1)->get()->toArray();
+
+            $key = array_keys($res[0]);
+            $len = count($key);
+            for($i=0;$i<$len-3;$i++){
+                $arr['GSMs'][$i]['id']=$i;
+                $arr['GSMs'][$i]['name']=trans("message.scale.".$key[$i+3]);
+                $arr['GSMs'][$i]['data']=$res[0][$key[$i+3]];
+                $arr['GSMs'][$i]['img'] = '/public/img/huihua.png';
+
+
+            }
+            // print_r($day_id[0]['day_id']);
+            $day_id_TFN =B_S_LTE_TDD::select("day_id")->orderBy("id","desc")->limit(1)->get()->toArray();
+            $res = B_S_LTE_TDD::select()->where("location",$city)->where("day_id",$day_id[0]['day_id'])->limit(1)->get()->toArray();
+
+            $key = array_keys($res[0]);
+            $len = count($key);
+            for($i=0;$i<$len-3;$i++){
+                $arr['TDDLTEs'][$i]['id']=$i;
+                $arr['TDDLTEs'][$i]['name']=trans("message.scale.".$key[$i+3]);
+                $arr['TDDLTEs'][$i]['data']=$res[0][$key[$i+3]];
+                $arr['TDDLTEs'][$i]['img'] = '/public/img/huihua.png';
+
+
+            }
+             $res = B_S_LTE_FDD::select()->where("location",$city)->where("day_id",$day_id[0]['day_id'])->limit(1)->get()->toArray();
+
+            $key = array_keys($res[0]);
+            $len = count($key);
+            for($i=0;$i<$len-3;$i++){
+                $arr['FDDLTEs'][$i]['id']=$i;
+                $arr['FDDLTEs'][$i]['name']=trans("message.scale.".$key[$i+3]);
+                $arr['FDDLTEs'][$i]['data']=$res[0][$key[$i+3]];
+                $arr['FDDLTEs'][$i]['img'] = '/public/img/huihua.png';
+
+
+            }
+             $res = B_S_LTE_NBIOT::select()->where("location",$city)->where("day_id",$day_id[0]['day_id'])->limit(1)->get()->toArray();
+
+            $key = array_keys($res[0]);
+            $len = count($key);
+            for($i=0;$i<$len-3;$i++){
+                $arr['NBIOTs'][$i]['id']=$i;
+                $arr['NBIOTs'][$i]['name']=trans("message.scale.".$key[$i+3]);
+                $arr['NBIOTs'][$i]['data']=$res[0][$key[$i+3]];
+                $arr['NBIOTs'][$i]['img'] = '/public/img/huihua.png';
+
+
+            }
+
+        }else{
+            $day_id =B_S_GSM::select("day_id")->orderBy("id","desc")->limit(1)->get()->toArray();
+
+            // $res = B_S_GSM::select()->where("day_id",$day_id[0]['day_id'])->sum('cell','erbs')->get()->toArray();
+            $res = B_S_GSM::select()
+                            ->where("day_id",$day_id[0]['day_id'])
+                            ->select(array(\DB::raw("sum(cell) as cell"),
+                                        \DB::raw("sum(erbs) as erbs")))
+                            ->get()->toArray();
+            $key = array_keys($res[0]);
+            $len = count($key);
+            for($i=0;$i<$len;$i++){
+                $arr['GSMs'][$i]['id']=$i;
+                $arr['GSMs'][$i]['name']=trans("message.scale.".$key[$i]);
+                $arr['GSMs'][$i]['data']=$res[0][$key[$i]];
+                $arr['GSMs'][$i]['img'] = '/public/img/huihua.png';
+
+
+            }
+
+            $day_id_TFN =B_S_LTE_TDD::select("day_id")->orderBy("id","desc")->limit(1)->get()->toArray();
+            $res = B_S_LTE_TDD::select()->where("location",$city)->where("day_id",$day_id[0]['day_id'])->limit(1)->get()->toArray();
+            $res = B_S_LTE_TDD::select()
+                            ->where("day_id",$day_id[0]['day_id'])
+                            ->select(array(\DB::raw("sum(carrier) as carrier"),
+                                        \DB::raw("sum(cell) as cell"),
+                                        \DB::raw("sum(erbs) as erbs"),
+                                        \DB::raw("sum(high_peed) as high_peed"),
+                                        \DB::raw("sum(co_enhance) as co_enhance"),
+                                        \DB::raw("sum(ca_agg) as ca_agg")))
+                            ->get()->toArray();
+            $key = array_keys($res[0]);
+            $len = count($key);
+            for($i=0;$i<$len;$i++){
+                $arr['TDDLTEs'][$i]['id']=$i;
+                $arr['TDDLTEs'][$i]['name']=trans("message.scale.".$key[$i]);
+                $arr['TDDLTEs'][$i]['data']=$res[0][$key[$i]];
+                $arr['TDDLTEs'][$i]['img'] = '/public/img/huihua.png';
+
+
+            }
+            $res = B_S_LTE_TDD::select()
+                            ->where("day_id",$day_id[0]['day_id'])
+                            ->select(array(\DB::raw("sum(carrier) as carrier"),
+                                        \DB::raw("sum(cell) as cell"),
+                                        \DB::raw("sum(erbs) as erbs"),
+                                        \DB::raw("sum(high_peed) as high_peed"),
+                                        \DB::raw("sum(co_enhance) as co_enhance"),
+                                        \DB::raw("sum(ca_agg) as ca_agg")))
+                            ->get()->toArray();
+
+            $key = array_keys($res[0]);
+            $len = count($key);
+            for($i=0;$i<$len;$i++){
+                $arr['FDDLTEs'][$i]['id']=$i;
+                $arr['FDDLTEs'][$i]['name']=trans("message.scale.".$key[$i]);
+                $arr['FDDLTEs'][$i]['data']=$res[0][$key[$i]];
+                $arr['FDDLTEs'][$i]['img'] = '/public/img/huihua.png';
+
+
+            }
+             $res = B_S_LTE_NBIOT::select()
+                            ->where("day_id",$day_id[0]['day_id'])
+                            ->select(array(
+                                        \DB::raw("sum(cell) as cell"),
+                                        \DB::raw("sum(erbs) as erbs")))
+                            ->get()->toArray();
+            $key = array_keys($res[0]);
+            $len = count($key);
+            for($i=0;$i<$len;$i++){
+                $arr['NBIOTs'][$i]['id']=$i;
+                $arr['NBIOTs'][$i]['name']=trans("message.scale.".$key[$i]);
+                $arr['NBIOTs'][$i]['data']=$res[0][$key[$i]];
+                $arr['NBIOTs'][$i]['img'] = '/public/img/huihua.png';
+
+
+            }
+        }
+
         //每行显示个数GSMs
         $num = 12/count($arr['GSMs']);
         if ( $num < 3 ) {
@@ -214,31 +330,6 @@ class NetworkOverviewController extends Controller
         for ($i=0; $i < count($arr['GSMs']); $i++) { 
             $arr['GSMs'][$i]['col'] = 'col-'. $num;
         }
-
-        $arr['TDDLTEs'][0]['id'] = 0;
-        $arr['TDDLTEs'][0]['name'] = 'test'.rand(0,100);
-        $arr['TDDLTEs'][0]['data'] = rand(1,100000);
-        $arr['TDDLTEs'][0]['img'] = '/public/img/huihua.png';
-        $arr['TDDLTEs'][1]['id'] = 1;
-        $arr['TDDLTEs'][1]['name'] = 'test'.rand(0,100);
-        $arr['TDDLTEs'][1]['data'] = rand(1,100000);
-        $arr['TDDLTEs'][1]['img'] = '/public/img/huihua.png';
-        $arr['TDDLTEs'][2]['id'] = 2;
-        $arr['TDDLTEs'][2]['name'] = 'test'.rand(0,100);
-        $arr['TDDLTEs'][2]['data'] = rand(1,100000);
-        $arr['TDDLTEs'][2]['img'] = '/public/img/huihua.png';
-        $arr['TDDLTEs'][3]['id'] = 3;
-        $arr['TDDLTEs'][3]['name'] = 'test'.rand(0,100);
-        $arr['TDDLTEs'][3]['data'] = rand(1,100000);
-        $arr['TDDLTEs'][3]['img'] = '/public/img/huihua.png';
-        $arr['TDDLTEs'][4]['id'] = 4;
-        $arr['TDDLTEs'][4]['name'] = 'test'.rand(0,100);
-        $arr['TDDLTEs'][4]['data'] = rand(1,100000);
-        $arr['TDDLTEs'][4]['img'] = '/public/img/huihua.png';
-        $arr['TDDLTEs'][5]['id'] = 5;
-        $arr['TDDLTEs'][5]['name'] = 'test'.rand(0,100);
-        $arr['TDDLTEs'][5]['data'] = rand(1,100000);
-        $arr['TDDLTEs'][5]['img'] = '/public/img/huihua.png';
 
         //每行显示个数GSMs
         $num = 12/count($arr['TDDLTEs']);
@@ -249,31 +340,6 @@ class NetworkOverviewController extends Controller
             $arr['TDDLTEs'][$i]['col'] = 'col-'. $num;
         }
 
-        $arr['FDDLTEs'][0]['id'] = 0;
-        $arr['FDDLTEs'][0]['name'] = 'test'.rand(0,100);
-        $arr['FDDLTEs'][0]['data'] = rand(1,100000);
-        $arr['FDDLTEs'][0]['img'] = '/public/img/huihua.png';
-        $arr['FDDLTEs'][1]['id'] = 1;
-        $arr['FDDLTEs'][1]['name'] = 'test'.rand(0,100);
-        $arr['FDDLTEs'][1]['data'] = rand(1,100000);
-        $arr['FDDLTEs'][1]['img'] = '/public/img/huihua.png';
-        $arr['FDDLTEs'][2]['id'] = 2;
-        $arr['FDDLTEs'][2]['name'] = 'test'.rand(0,100);
-        $arr['FDDLTEs'][2]['data'] = rand(1,100000);
-        $arr['FDDLTEs'][2]['img'] = '/public/img/huihua.png';
-        $arr['FDDLTEs'][3]['id'] = 3;
-        $arr['FDDLTEs'][3]['name'] = 'test'.rand(0,100);
-        $arr['FDDLTEs'][3]['data'] = rand(1,100000);
-        $arr['FDDLTEs'][3]['img'] = '/public/img/huihua.png';
-        $arr['FDDLTEs'][4]['id'] = 4;
-        $arr['FDDLTEs'][4]['name'] = 'test'.rand(0,100);
-        $arr['FDDLTEs'][4]['data'] = rand(1,100000);
-        $arr['FDDLTEs'][4]['img'] = '/public/img/huihua.png';
-        $arr['FDDLTEs'][5]['id'] = 5;
-        $arr['FDDLTEs'][5]['name'] = 'test'.rand(0,100);
-        $arr['FDDLTEs'][5]['data'] = rand(1,100000);
-        $arr['FDDLTEs'][5]['img'] = '/public/img/huihua.png';
-
         //每行显示个数GSMs
         $num = 12/count($arr['FDDLTEs']);
         if ( $num < 6 ) {
@@ -282,15 +348,6 @@ class NetworkOverviewController extends Controller
         for ($i=0; $i < count($arr['FDDLTEs']); $i++) { 
             $arr['FDDLTEs'][$i]['col'] = 'col-'. $num;
         }
-
-        $arr['NBIOTs'][0]['id'] = 0;
-        $arr['NBIOTs'][0]['name'] = 'test'.rand(0,100);
-        $arr['NBIOTs'][0]['data'] = rand(1,100000);
-        $arr['NBIOTs'][0]['img'] = '/public/img/huihua.png';
-        $arr['NBIOTs'][1]['id'] = 1;
-        $arr['NBIOTs'][1]['name'] = 'test'.rand(0,100);
-        $arr['NBIOTs'][1]['data'] = rand(1,100000);
-        $arr['NBIOTs'][1]['img'] = '/public/img/huihua.png';
         //每行显示个数GSMs
         $num = 12/count($arr['NBIOTs']);
         if ( $num < 8 ) {
@@ -311,7 +368,7 @@ class NetworkOverviewController extends Controller
         $city = input::get('city',"全省"); //city
         $dbc = new DataBaseConnection();
         $db = $dbc->getDB("Bird");
-        if($city!="全省"){
+        if($city!="全省"&&$city!="province"){
           $dbc = new DataBaseConnection();
           $cityConnmame= $dbc->getConnName($db,$city);
         }
@@ -319,60 +376,57 @@ class NetworkOverviewController extends Controller
         $overview = input::get('overview');
         // $db = new PDO("mysql:host=10.39.148.186;port=13306;dbname=Bird", 'root', 'mongs');
 
-        if($overview=="indexoverview"){
-            if($data=="GSM"){
-                    if($city=="全省"){
-                        $sql ="SELECT id,day_id,hour_id,'全省',round(avg(access),2) AS access,round(avg(lost),2) AS lost,round(avg(handover),2) AS handover FROM `B_GSM` GROUP BY hour_id,day_id ORDER BY id DESC,day_id desc,hour_id desc limit 2";
-                        $result = $db->query($sql)->fetchall(PDO::FETCH_ASSOC);
-                        $arr = $this->getCompare($result,$city,$overview);
-                    }else{
-                        $result= GSM::select()->where("location",$cityConnmame)->orderBy('id','desc')->limit(2)->get()->toArray();
-                        $arr = $this->getCompare($result,$city,$overview);  
-                    }
-            }elseif($data=="LTE"){
-                 if($city=="全省"){
-                        $sql1 ="SELECT id,day_id,hour_id,'全省',round(avg(access),2) AS access,round(avg(lost),2) AS lost,round(avg(handover),2) AS handover FROM `B_LTE_FDD` GROUP BY hour_id,day_id ORDER BY id DESC,day_id desc,hour_id desc limit 2";
-                        $sql2 ="SELECT id,day_id,hour_id,'全省',round(avg(access),2) AS access,round(avg(lost),2) AS lost,round(avg(handover),2) AS handover FROM `B_LTE_TDD` GROUP BY hour_id,day_id ORDER BY id DESC,day_id desc,hour_id desc limit 2";
-                        $result1 = $db->query($sql1)->fetchall(PDO::FETCH_ASSOC);
-                        $result2 = $db->query($sql2)->fetchall(PDO::FETCH_ASSOC);
-                        $result = $this->getAvg($result1,$result2);
-                        $arr = $this->getCompare($result,$city,$overview);
-                    }else{
-                        $result1= LTE_TDD::select()->where("location",$cityConnmame)->orderBy('id','desc')->limit(2)->get()->toArray();
-                        $result2= LTE_FDD::select()->where("location",$cityConnmame)->orderBy('id','desc')->limit(2)->get()->toArray();
-                        $result = $this->getAvg($result1,$result2);
-                        $arr = $this->getCompare($result,$city,$overview);  
-                    }
-            }elseif($data=="VOLTE"){
-                if($city=="全省"){
-                        $sql1 ="SELECT id,day_id,hour_id,'全省',round(avg(access),2) AS access,round(avg(lost),2) AS lost,round(avg(handover),2) AS handover,round(avg(srvcc),2) AS srvcc,round(avg(upackagelost),2) AS upackagelost,round(avg(dpackagelost),2) AS dpackagelost FROM `B_VOLTE_FDD` GROUP BY hour_id,day_id ORDER BY id DESC,day_id desc,hour_id desc limit 2";
-                        $sql2 ="SELECT id,day_id,hour_id,'全省',round(avg(access),2) AS access,round(avg(lost),2) AS lost,round(avg(handover),2) AS handover,round(avg(srvcc),2) AS srvcc,round(avg(upackagelost),2) AS upackagelost,round(avg(dpackagelost),2) AS dpackagelost  FROM `B_VOLTE_TDD` GROUP BY hour_id,day_id ORDER BY id DESC,day_id desc,hour_id desc limit 2";
-                        $result1 = $db->query($sql1)->fetchall(PDO::FETCH_ASSOC);
-                        $result2 = $db->query($sql2)->fetchall(PDO::FETCH_ASSOC);
-                        $result = $this->getAvg($result1,$result2);
-                        $arr = $this->getCompare($result,$city,$overview);
-                    }else{
-                        $result1= VOLTE_TDD::select()->where("location",$cityConnmame)->orderBy('id','desc')->limit(2)->get()->toArray();
-                        $result2= VOLTE_FDD::select()->where("location",$cityConnmame)->orderBy('id','desc')->limit(2)->get()->toArray();
-                        $result = $this->getAvg($result1,$result2);
-                        $arr = $this->getCompare($result,$city,$overview);  
-                    }
-            }elseif($data=="NBIOT"){
-                 if($city=="全省"){
-                        $sql ="SELECT id,day_id,hour_id,'全省',round(avg(access),2) AS access FROM `B_NBIOT` GROUP BY hour_id,day_id ORDER BY id DESC,day_id desc,hour_id desc limit 2";
-                        $result = $db->query($sql)->fetchall(PDO::FETCH_ASSOC);
-                        $arr = $this->getCompare($result,$city,$overview);
-                    }else{
-                        $result= NBIOT::select()->where("location",$cityConnmame)->orderBy('id','desc')->limit(2)->get()->toArray();
-                        $arr = $this->getCompare($result,$city,$overview);  
-                    }
-            }
-
-        }else{
-            
+        if($data=="GSM"){
+                if($city=="全省"||$city=="province"){
+                    $sql ="SELECT id,day_id,hour_id,'全省',round(avg(access),2) AS access,round(avg(lost),2) AS lost,round(avg(handover),2) AS handover FROM `B_GSM` GROUP BY hour_id,day_id ORDER BY id DESC,day_id desc,hour_id desc limit 2";
+                    $result = $db->query($sql)->fetchall(PDO::FETCH_ASSOC);
+                    $arr = $this->getCompare($result,$city,$overview);
+                }else{
+                    $result= GSM::select()->where("location",$cityConnmame)->orderBy('id','desc')->limit(2)->get()->toArray();
+                    $arr = $this->getCompare($result,$city,$overview);  
+                }
+        }elseif($data=="LTE"){
+                if($city=="全省"||$city=="province"){
+                    $sql1 ="SELECT id,day_id,hour_id,'全省',round(avg(access),2) AS access,round(avg(lost),2) AS lost,round(avg(handover),2) AS handover FROM `B_LTE_FDD` GROUP BY hour_id,day_id ORDER BY id DESC,day_id desc,hour_id desc limit 2";
+                    $sql2 ="SELECT id,day_id,hour_id,'全省',round(avg(access),2) AS access,round(avg(lost),2) AS lost,round(avg(handover),2) AS handover FROM `B_LTE_TDD` GROUP BY hour_id,day_id ORDER BY id DESC,day_id desc,hour_id desc limit 2";
+                    $result1 = $db->query($sql1)->fetchall(PDO::FETCH_ASSOC);
+                    $result2 = $db->query($sql2)->fetchall(PDO::FETCH_ASSOC);
+                    $result = $this->getAvg($result1,$result2);
+                    $arr = $this->getCompare($result,$city,$overview);
+                }else{
+                    $result1= LTE_TDD::select()->where("location",$cityConnmame)->orderBy('id','desc')->limit(2)->get()->toArray();
+                    $result2= LTE_FDD::select()->where("location",$cityConnmame)->orderBy('id','desc')->limit(2)->get()->toArray();
+                    $result = $this->getAvg($result1,$result2);
+                    $arr = $this->getCompare($result,$city,$overview);  
+                }
+        }elseif($data=="VOLTE"){
+                if($city=="全省"||$city=="province"){
+                    $sql1 ="SELECT id,day_id,hour_id,'全省',round(avg(access),2) AS access,round(avg(lost),2) AS lost,round(avg(handover),2) AS handover,round(avg(srvcc),2) AS srvcc,round(avg(upackagelost),2) AS upackagelost,round(avg(dpackagelost),2) AS dpackagelost FROM `B_VOLTE_FDD` GROUP BY hour_id,day_id ORDER BY id DESC,day_id desc,hour_id desc limit 2";
+                    $sql2 ="SELECT id,day_id,hour_id,'全省',round(avg(access),2) AS access,round(avg(lost),2) AS lost,round(avg(handover),2) AS handover,round(avg(srvcc),2) AS srvcc,round(avg(upackagelost),2) AS upackagelost,round(avg(dpackagelost),2) AS dpackagelost  FROM `B_VOLTE_TDD` GROUP BY hour_id,day_id ORDER BY id DESC,day_id desc,hour_id desc limit 2";
+                    $result1 = $db->query($sql1)->fetchall(PDO::FETCH_ASSOC);
+                    $result2 = $db->query($sql2)->fetchall(PDO::FETCH_ASSOC);
+                    $result = $this->getAvg($result1,$result2);
+                    $arr = $this->getCompare($result,$city,$overview);
+                }else{
+                    $result1= VOLTE_TDD::select()->where("location",$cityConnmame)->orderBy('id','desc')->limit(2)->get()->toArray();
+                    $result2= VOLTE_FDD::select()->where("location",$cityConnmame)->orderBy('id','desc')->limit(2)->get()->toArray();
+                    $result = $this->getAvg($result1,$result2);
+                    $arr = $this->getCompare($result,$city,$overview);  
+                }
+        }elseif($data=="NBIOT"){
+             if($city=="全省"||$city=="province"){
+                    $sql ="SELECT id,day_id,hour_id,'全省',round(avg(access),2) AS access FROM `B_NBIOT` GROUP BY hour_id,day_id ORDER BY id DESC,day_id desc,hour_id desc limit 2";
+                    $result = $db->query($sql)->fetchall(PDO::FETCH_ASSOC);
+                    $arr = $this->getCompare($result,$city,$overview);
+                }else{
+                    $result= NBIOT::select()->where("location",$cityConnmame)->orderBy('id','desc')->limit(2)->get()->toArray();
+                    $arr = $this->getCompare($result,$city,$overview);  
+                }
         }
 
-        return json_encode($arr);
+      
+
+        return json_encode(array_reverse($arr));
         
     }
     public function getAvg($result1,$result2){
@@ -418,7 +472,7 @@ class NetworkOverviewController extends Controller
                 $arr[$id]['class']='icon-ali-jianhao';
                 $arr[$id]['tend'] = '0%';
             }
-            $arr[$id]["type"] = $key[$i];
+            $arr[$id]["type"] = trans("message.overview.".$key[$i]);
             // $arr[$id]["type"] = $city."-".$key[$i]."-".$overview;
             $arr[$id]["data"] = round($result[0][$key[$i]],2)."%";
             $arr[$id]['id']=$id;
@@ -439,24 +493,23 @@ class NetworkOverviewController extends Controller
         $data = input::get('data',"LTE");
         $city = input::get('city',"全省");
         $overview = input::get('overview');
-
         // $db = new PDO("mysql:host=10.39.148.186;port=13306;dbname=Bird", 'root', 'mongs');
         $dbc = new DataBaseConnection();
         $db = $dbc->getDB("Bird");
-        if($city!="全省"){
+        if($city!="全省"&&$city!="province"){
             $dbc = new DataBaseConnection();
             $cityConnmame= $dbc->getConnName($db,$city);
         }
         if($overview=="indexoverview"){
             if($data=="GSM"){
-                if($city=="全省"){
+                if($city=="全省"||$city=="province"){
                      $sql ="SELECT id,day_id,hour_id,'全省',round(avg(access),2) AS access,round(avg(lost),2) AS lost,round(avg(handover),2) AS handover FROM `B_GSM` GROUP BY hour_id,day_id ORDER BY id DESC,day_id desc,hour_id desc limit 12";
                         $result = $db->query($sql)->fetchall(PDO::FETCH_ASSOC);
                 }else{
                     $result= GSM::select()->where("location",$cityConnmame)->orderBy('id','desc')->limit(12)->get()->toArray();
                 }
             }elseif($data=="LTE"){
-                 if($city=="全省"){
+                 if($city=="全省"||$city=="province"){
                         $sql1 ="SELECT id,day_id,hour_id,'全省',round(avg(access),2) AS access,round(avg(lost),2) AS lost,round(avg(handover),2) AS handover FROM `B_LTE_FDD` GROUP BY hour_id,day_id ORDER BY id DESC,day_id desc,hour_id desc limit 12";
                         $sql2 ="SELECT id,day_id,hour_id,'全省',round(avg(access),2) AS access,round(avg(lost),2) AS lost,round(avg(handover),2) AS handover FROM `B_LTE_TDD` GROUP BY hour_id,day_id ORDER BY id DESC,day_id desc,hour_id desc limit 12";
                         $result1 = $db->query($sql1)->fetchall(PDO::FETCH_ASSOC);
@@ -468,7 +521,7 @@ class NetworkOverviewController extends Controller
                         $result = $this->getAvg($result1,$result2);
                     }
             }elseif($data=="VOLTE"){
-                if($city=="全省"){
+                if($city=="全省"||$city=="province"){
                         $sql1 ="SELECT id,day_id,hour_id,'全省',round(avg(access),2) AS access,round(avg(lost),2) AS lost,round(avg(handover),2) AS handover,round(avg(srvcc),2) AS srvcc,round(avg(upackagelost),2) AS upackagelost,round(avg(dpackagelost),2) AS dpackagelost FROM `B_VOLTE_FDD` GROUP BY hour_id,day_id ORDER BY id DESC,day_id desc,hour_id desc limit 12";
                         $sql2 ="SELECT id,day_id,hour_id,'全省',round(avg(access),2) AS access,round(avg(lost),2) AS lost,round(avg(handover),2) AS handover,round(avg(srvcc),2) AS srvcc,round(avg(upackagelost),2) AS upackagelost,round(avg(dpackagelost),2) AS dpackagelost  FROM `B_VOLTE_TDD` GROUP BY hour_id,day_id ORDER BY id DESC,day_id desc,hour_id desc limit 12";
                         $result1 = $db->query($sql1)->fetchall(PDO::FETCH_ASSOC);
@@ -480,7 +533,7 @@ class NetworkOverviewController extends Controller
                         $result = $this->getAvg($result1,$result2);
                     }
             }elseif($data=="NBIOT"){
-                 if($city=="全省"){
+                if($city=="全省"||$city=="province"){
                         $sql ="SELECT id,day_id,hour_id,'全省',round(avg(access),2) AS access FROM `B_NBIOT` GROUP BY hour_id,day_id ORDER BY id DESC,day_id desc,hour_id desc limit 12";
                         $result = $db->query($sql)->fetchall(PDO::FETCH_ASSOC);
                     }else{
@@ -517,7 +570,7 @@ class NetworkOverviewController extends Controller
         }
         $ydata=array();
         foreach ($name as $key => $value) {
-            $ydata[]=array('name'=>$value,'data'=>$data[$key]);
+            $ydata[]=array('name'=>trans("message.overview.".$value),'data'=>$data[$key]);
         }
         $ycategories = array();
 
