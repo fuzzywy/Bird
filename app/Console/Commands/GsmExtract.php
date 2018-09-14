@@ -5,6 +5,7 @@ namespace App\Console\Commands;
 use Illuminate\Console\Command;
 use App\Models\City;
 use App\Console\Commands\Bird\GsmBackup;
+use App\Http\Controllers\Common\DataBaseConnection;
 use PDO;
 class GsmExtract extends Command
 {
@@ -40,7 +41,8 @@ class GsmExtract extends Command
     public function handle()
     {
 
-        $db = new PDO("mysql:host=10.39.148.186;port=13306;dbname=Bird", 'root', 'mongs');
+        $dbc = new DataBaseConnection();
+        $db = $dbc->getDB("mongs");
         $result = City::select("connName")->get();
         foreach ($result as $key => $value) {
             // print_r($value->connName);

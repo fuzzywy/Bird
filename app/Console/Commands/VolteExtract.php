@@ -6,6 +6,7 @@ use Illuminate\Console\Command;
 use App\Models\Databaseconns;
 use App\Models\City;
 use App\Console\Commands\Bird\LteBackup;
+use App\Http\Controllers\Common\DataBaseConnection;
 use PDO;
 class VolteExtract extends Command
 {
@@ -41,7 +42,8 @@ class VolteExtract extends Command
     public function handle()
     {
 
-        $db = new PDO("mysql:host=10.39.148.186;port=13306;dbname=Bird", 'root', 'mongs');
+        $dbc = new DataBaseConnection();
+        $db = $dbc->getDB("mongs");
         $result = City::select("connName")->get();
         foreach ($result as $key => $value) {
          $Volte_TDD = new LteBackup("B_VOLTE_TDD","city","hour",$value->connName,"TDD",$db);
