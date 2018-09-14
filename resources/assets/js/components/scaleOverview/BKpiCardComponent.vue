@@ -91,8 +91,10 @@
 	    </b-card>
 
 	    <b-card-group deck v-show="type == 'scaleoverview'">
-	    	<span v-show="bScaleKpiCard == 1">Loading ScaleCard</span>
-			<span v-show="bScaleKpiCard == 3">ScaleCard loaded unsuccessfully!</span>
+	    	<div v-show="bScaleKpiCard == 1" style="margin: auto;"><i class="icon-ali-load">loading...</i></div>
+	    	<div v-show="bScaleKpiCard == 3" style="margin: auto;">ScaleCard loaded unsuccessfully!</div>
+	    	<!-- <span v-show="bScaleKpiCard == 1">Loading ScaleCard</span>
+			<span v-show="bScaleKpiCard == 3">ScaleCard loaded unsuccessfully!</span> -->
 	        <b-card header="GSM"
 	                header-tag="header"
 	                v-show="bScaleKpiCard == 2"
@@ -114,8 +116,8 @@
 	        </b-card>
     	</b-card-group>
     	<b-card-group deck v-show="type == 'scaleoverview'">
-    		<span v-show="bScaleKpiCard == 1">Loading ScaleCard</span>
-			<span v-show="bScaleKpiCard == 3">ScaleCard loaded unsuccessfully!</span>
+    		<div v-show="bScaleKpiCard == 1" style="margin: auto;"><i class="icon-ali-load">loading...</i></div>
+	    	<div v-show="bScaleKpiCard == 3" style="margin: auto;">ScaleCard loaded unsuccessfully!</div>
     		<b-card header="TDD_LTE"
 	                header-tag="header"
 	                v-show="bScaleKpiCard == 2"
@@ -127,10 +129,17 @@
 			            :key="post.id"
 			            :class="post.col" 
 			        >
-				        <div class='scalecard' style="vertical-align: middle;">
+				        <div class='scalecard' v-show="post.img == '/public/img/huihua.png'" style="vertical-align: middle;">
 			        		<img class='floatleft' :src="post.img">
 			        		<div class="postdata" style="color: #fff; padding-top: 20px;">{{post.data}}</div>
 			        		<div class="posttype" style="color: #fff">{{post.name}}</div>
+			        	</div>
+			        	<div v-show="post.img == '/public/img/xinhao.png'" style="vertical-align: middle;">
+			        		<img class='floatleft' :src="post.img">
+			        		<div class="posttype" style="color: #000; padding-top: 20px;">{{post.name}}</div>
+			        		<div class="postdata" style="color: #000;">{{post.data}}/{{post.max}}</div>
+			        		<br />
+		        			<b-progress style='width: 80%; margin: auto;' :value="post.data" :max="post.max" variant='warning' show-progress animated></b-progress>
 			        	</div>
 			        	<!-- <div class='scalecard'>
 			        		<img class='floatleft' src="/public/img/huihua.png">
@@ -145,8 +154,8 @@
 	        </b-card>
 	    </b-card-group>
 	   	<b-card-group deck v-show="type == 'scaleoverview'">
-    		<span v-show="bScaleKpiCard == 1">Loading ScaleCard</span>
-			<span v-show="bScaleKpiCard == 3">ScaleCard loaded unsuccessfully!</span>
+    		<div v-show="bScaleKpiCard == 1" style="margin: auto;"><i class="icon-ali-load">loading...</i></div>
+	    	<div v-show="bScaleKpiCard == 3" style="margin: auto;">ScaleCard loaded unsuccessfully!</div>
     		<b-card header="FDD_LTE"
 	                header-tag="header"
 	                v-show="bScaleKpiCard == 2"
@@ -158,18 +167,30 @@
 			            :key="post.id"
 			            :class="post.col" 
 			        >
-			        	<div class='scalecard' style="vertical-align: middle;">
+			        	<div class='scalecard' v-show="post.img == '/public/img/huihua.png'" style="vertical-align: middle;">
 			        		<img class='floatleft' :src="post.img">
 			        		<div class="postdata" style="color: #fff; padding-top: 20px;">{{post.data}}</div>
 			        		<div class="posttype" style="color: #fff">{{post.name}}</div>
 			        	</div>
+			        	<div v-show="post.img == '/public/img/xinhao.png'" style="vertical-align: middle;">
+			        		<img class='floatleft' :src="post.img">
+			        		<div class="posttype" style="color: #000; padding-top: 20px;">{{post.name}}</div>
+			        		<div class="postdata" style="color: #000;">{{post.data}}/{{post.max}}</div>
+			        		<br />
+		        			<b-progress style='width: 80%; margin: auto;' :value="post.data" :max="post.max" variant='warning' show-progress animated></b-progress>
+			        	</div>
+			        	<!-- <div class='scalecard' style="vertical-align: middle;">
+			        		<img class='floatleft' :src="post.img">
+			        		<div class="postdata" style="color: #fff; padding-top: 20px;">{{post.data}}</div>
+			        		<div class="posttype" style="color: #fff">{{post.name}}</div>
+			        	</div> -->
 			        </div>
 				</div>
 	        </b-card>
     	</b-card-group>
     	<b-card-group deck v-show="type == 'scaleoverview'">
-    		<span v-show="bScaleKpiCard == 1">Loading ScaleCard</span>
-			<span v-show="bScaleKpiCard == 3">ScaleCard loaded unsuccessfully!</span>
+    		<div v-show="bScaleKpiCard == 1" style="margin: auto;"><i class="icon-ali-load">loading...</i></div>
+	    	<div v-show="bScaleKpiCard == 3" style="margin: auto;">ScaleCard loaded unsuccessfully!</div>
     		<b-card header="NBIOT"
 	                header-tag="header"
 	                :footer="overviewCn + city"
@@ -195,8 +216,10 @@
 
 
     	<b-card-group deck v-show="type == 'loadoverview'">
-    		<span v-show="bLoadKpiCard == 1">Loading LoadCard</span>
-			<span v-show="bLoadKpiCard == 3">LoadCard loaded unsuccessfully!</span>
+    		<div v-show="bLoadKpiCard == 1" style="margin: auto;"><i class="icon-ali-load">loading...</i></div>
+    		<div v-show="bLoadKpiCard == 3" style="margin: auto;">LoadCard loaded unsuccessfully!</div>
+    		<!-- <span v-show="bLoadKpiCard == 1">Loading LoadCard</span>
+			<span v-show="bLoadKpiCard == 3">LoadCard loaded unsuccessfully!</span> -->
     		<b-card header="TDD_LTE"
 	                header-tag="header"
 	                v-show="bLoadKpiCard == 2"
@@ -219,8 +242,8 @@
 	    </b-card-group>
 
 	    <b-card-group deck v-show="type == 'loadoverview'">
-    		<span v-show="bLoadKpiCard == 1">Loading LoadCard</span>
-			<span v-show="bLoadKpiCard == 3">LoadCard loaded unsuccessfully!</span>
+    		<div v-show="bLoadKpiCard == 1" style="margin: auto;"><i class="icon-ali-load">loading...</i></div>
+    		<div v-show="bLoadKpiCard == 3" style="margin: auto;">LoadCard loaded unsuccessfully!</div>
     		<b-card header="FDD_LTE"
 	                header-tag="header"
 	                v-show="bLoadKpiCard == 2"
@@ -243,8 +266,8 @@
 	    </b-card-group>
 
 	    <b-card-group deck v-show="type == 'loadoverview'">
-    		<span v-show="bLoadKpiCard == 1">Loading LoadCard</span>
-			<span v-show="bLoadKpiCard == 3">LoadCard loaded unsuccessfully!</span>
+    		<div v-show="bLoadKpiCard == 1" style="margin: auto;"><i class="icon-ali-load">loading...</i></div>
+    		<div v-show="bLoadKpiCard == 3" style="margin: auto;">LoadCard loaded unsuccessfully!</div>
     		<b-card header="NBIOT"
 	                header-tag="header"
 	                v-show="bLoadKpiCard == 2"
@@ -267,8 +290,8 @@
 	    </b-card-group>
 
 	    <b-card-group deck v-show="type == 'loadoverview'">
-    		<span v-show="bLoadKpiCard == 1">Loading LoadCard</span>
-			<span v-show="bLoadKpiCard == 3">LoadCard loaded unsuccessfully!</span>
+    		<div v-show="bLoadKpiCard == 1" style="margin: auto;"><i class="icon-ali-load">loading...</i></div>
+    		<div v-show="bLoadKpiCard == 3" style="margin: auto;">LoadCard loaded unsuccessfully!</div>
     		<b-card header="GSM"
 	                header-tag="header"
 	                v-show="bLoadKpiCard == 2"
@@ -389,7 +412,9 @@
 				GSMs:[],
 				data:[],
 				scale: [],
-				load:[]
+				load:[],
+				/*counter:75,*/
+				/*max:100*/
 			}
 		},
 		computed: {
@@ -408,7 +433,7 @@
 			bLoadKpiCard() {
 				this.load = this.$store.getters.getbLoadKpiCard
 				return this.$store.getters.getbLoadKpiCardStatus;
-			}
+			},
         },
 		created() {
 			/*this.$store.dispatch( 'loadBKpiCardStatus', {
