@@ -6,7 +6,7 @@
 			<b-button v-show="cityLoadStatus == 2"
 				v-for='post in posts'
 				:key='post.id'
-				@click='cityClick' variant="outline-primary">{{ post.name }}
+				@click='cityClick' variant="outline-primary" :pressed.sync="post.state">{{ post.name }}
 			</b-button>
 		</b-button-group>
 		<div v-for='post in posts' v-show="cityLoadStatus == 3">{{ post }}</div>
@@ -61,6 +61,15 @@
         },
 		methods: {
 			cityClick: function(event) {
+				event.target.innerHTML.replace(/\s+/g,"")
+				for (var i = 0; i < this.posts.length; i++) {
+					if( this.posts[i]['name'] == event.target.innerHTML.replace(/\s+/g,"") ) {
+						this.posts[i]['state'] = true
+					}else {
+						this.posts[i]['state'] = false
+					}
+				}
+				// console.log(event.target.innerHTML.replace(/\s+/g,""))
 				// this.bus.$emit('cityClick', event.target.innerHTML)
 				this.bus.$emit('cityClickData', event.target.innerHTML)
 			}
