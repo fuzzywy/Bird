@@ -22,11 +22,16 @@ export const bKpiCard = {
 			commit( 'setbKpiCardStatus', 1 );
 			BKpiCardAPI.getBKpiCard( data.type, data.city, data.overview )
 			.then( (response) => {
-				commit( 'setbKpiCard', response.data );
-				commit( 'setbKpiCardStatus', 2 );
+				if ( response.data != undefined ) {
+                    commit( 'setbKpiCard', response.data );
+					commit( 'setbKpiCardStatus', 2 );
+                }else {
+                    commit( 'setbKpiCard', [ response ] );
+					commit( 'setbKpiCardStatus', 3 );
+                }
 			} )
 			.catch( function() {
-				commit( 'setbKpiCard', {} );
+				commit( 'setbKpiCard', [ 'Connection failed' ] );
 				commit( 'setbKpiCardStatus', 3 );
 			} )
 		},
@@ -35,11 +40,16 @@ export const bKpiCard = {
 			commit( 'setbScaleKpiCardStatus', 1 );
 			BKpiCardAPI.getBScaleKpiCard( data.city, data.overview )
 			.then( (response) => {
-				commit( 'setbScaleKpiCard', response.data );
-				commit( 'setbScaleKpiCardStatus', 2);
+				if ( response.data != undefined ) {
+                    commit( 'setbScaleKpiCard', response.data );
+					commit( 'setbScaleKpiCardStatus', 2 );
+                }else {
+                    commit( 'setbScaleKpiCard', [ response ] );
+					commit( 'setbScaleKpiCardStatus', 3 );
+                }
 			} )
 			.catch( function() {
-				commit( 'setbScaleKpiCard', {} );
+				commit( 'setbScaleKpiCard', [ 'Connection failed' ] );
 				commit( 'setbScaleKpiCardStatus', 3);
 			} )
 		},
@@ -48,11 +58,16 @@ export const bKpiCard = {
 			commit( 'setbLoadKpiCardStatus', 1 );
 			BKpiCardAPI.getBLoadKpiCard( data.city, data.overview )
 			.then( (response) => {
-				commit( 'setbLoadKpiCard', response.data );
-				commit( 'setbLoadKpiCardStatus', 2 );
+				if ( response.data != undefined ) {
+                    commit( 'setbLoadKpiCard', response.data );
+					commit( 'setbLoadKpiCardStatus', 2 );
+                }else {
+                    commit( 'setbLoadKpiCard', [ response ] );
+					commit( 'setbLoadKpiCardStatus', 3 );
+                }
 			} )
 			.catch( function() {
-				commit( 'setbLoadKpiCard', {} );
+				commit( 'setbLoadKpiCard', [ 'Connection failed' ] );
 				commit( 'setbLoadKpiCardStatus', 3 );
 			} )
 		}

@@ -25,12 +25,17 @@ export const citys = {
 
             CityAPI.getCity(  )
                 .then( function( response ){
-                    commit( 'citys', response.data );
-                    commit( 'cityLoadStatus', 2 );
+                    if ( response.data != undefined ) {
+                        commit( 'citys', response.data );
+                        commit( 'cityLoadStatus', 2 );
+                    }else {
+                        commit( 'citys', [ response ] );
+                        commit( 'cityLoadStatus', 3 ); 
+                    }
                 })
-                .catch( function(){
-                    commit( 'citys', {} );
-                    commit( 'cityLoadStatus', 3 );
+                .catch( function( response ){
+                    commit( 'citys', [ 'Connection failed' ] );
+                    commit( 'cityLoadStatus', 3 ); 
                 });
 
         }

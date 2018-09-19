@@ -25,11 +25,17 @@ export const birdSideBar = {
 
             BirdSideBarAPI.getBirdSideBar(  )
                 .then( function( response ){
-                    commit( 'birdSideBar', response.data );
-                    commit( 'birdSideBarStatus', 2 );
+                    if ( response.data != undefined ) {
+                        commit( 'birdSideBar', response.data );
+                        commit( 'birdSideBarStatus', 2 );
+                    }else {
+                        commit( 'birdSideBar', [ response ] );
+                        commit( 'birdSideBarStatus', 3 ); 
+                    }
+                    
                 })
                 .catch( function(){
-                    commit( 'birdSideBar', {} );
+                    commit( 'birdSideBar', [ 'Connection failed' ] );
                     commit( 'birdSideBarStatus', 3 );
                 });
 

@@ -1,14 +1,16 @@
 <template>
 	<div>
-		<span v-show="cityLoadStatus == 1">Loading</span>
+		<!-- <span v-show="cityLoadStatus == 1">Loading</span> -->
+		<div v-show="cityLoadStatus == 1"><img src="/public/img/loading.gif">&nbsp;loading...</div>
 		<b-button-group>
 			<b-button v-show="cityLoadStatus == 2"
 				v-for='post in posts'
 				:key='post.id'
-				@click='cityClick'>{{ post.name }}
+				@click='cityClick' variant="outline-primary">{{ post.name }}
 			</b-button>
 		</b-button-group>
-		<span v-show="cityLoadStatus == 3">City loaded unsuccessfully!</span>
+		<div v-for='post in posts' v-show="cityLoadStatus == 3">{{ post }}</div>
+		<!-- <span v-for='post in posts' v-show="cityLoadStatus == 3" style="text-align: center;">{{ post }}City loaded unsuccessfully!</span> -->
 	</div>
 	<!-- <b-nav>
 		<span v-show="cityLoadStatus == 1">Loading</span>
@@ -20,6 +22,12 @@
         <span v-show="cityLoadStatus == 3">City loaded unsuccessfully!</span>
 	</b-nav> -->
 </template>
+
+<style>
+	.btn-outline-primary {
+		border-color: aliceblue;
+	}
+</style>
 
 <script>
 	export default {

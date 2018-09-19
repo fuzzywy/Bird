@@ -16,11 +16,16 @@ export const bLineChart = {
             commit( 'setbLineChartStatus', 1 );
             BLineChartAPI.getBLineChart( data.type, data.city, data.overview )
             .then( (response) => {
-                commit( 'setbLineChart', response.data );
-                commit( 'setbLineChartStatus', 2 );
+                if ( response.data != undefined ) {
+                    commit( 'setbLineChart', response.data );
+                    commit( 'setbLineChartStatus', 2 );
+                }else {
+                    commit( 'setbLineChart', [ response ] );
+                    commit( 'setbLineChartStatus', 3 );
+                }
             } )
             .catch( function() {
-                commit( 'setbLineChart', {} );
+                commit( 'setbLineChart', [ 'Connection failed' ] );
                 commit( 'setbLineChartStatus', 3 );
             } )
         }

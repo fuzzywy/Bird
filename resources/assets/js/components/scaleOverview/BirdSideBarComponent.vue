@@ -2,7 +2,7 @@
 	<div>
 		<b-card header="<b>网络概览</b>" @click='switches' :class='state'>
 			<b-list-group flush>
-				<span v-show="birdSideBarLoadStatus == 1">Loading</span>
+				<span v-show="birdSideBarLoadStatus == 1"><img src="/public/img/loading.gif">&nbsp;loading...</span>
 				<b-list-group-item button v-show="birdSideBarLoadStatus == 2"
 					v-for='(item, index) in posts'
 					:key='item.id'
@@ -11,7 +11,7 @@
 					@click='leftClick'
 				>{{ item.Content }}
 				</b-list-group-item>
-				<span v-show="birdSideBarLoadStatus == 3">SideBar loaded unsuccessfully!</span>
+				<span v-for='post in posts' v-show="birdSideBarLoadStatus == 3">{{post}}</span>
 			</b-list-group>
 		</b-card>
 	</div>

@@ -3,8 +3,8 @@
 		<b-card no-body v-show="type == 'indexoverview'">
 	        <b-tabs pills card>
 				<b-tab class='cardclass' :active="isActiveLTE" title='LTE' @click='show("LTE")'>
-					<div v-show="bKpiCardStatus == 1" style="text-align: center;"><i class="icon-ali-load">loading...</i></div>
-					<div v-show="bKpiCardStatus == 3" style="text-align: center;">Card loaded unsuccessfully!</div>
+					<div v-show="bKpiCardStatus == 1" style="text-align: center;"><img src="/public/img/loading.gif">&nbsp;loading...</div>
+					<div v-for='post in LTEs' v-show="bKpiCardStatus == 3" style="text-align: center;">{{post}}</div>
 					<div class="row" v-show="bKpiCardStatus == 2">
 						<div
 				            class="col-4 rowclass" 
@@ -24,8 +24,8 @@
 				    </div>
 				</b-tab>
 				<b-tab class='cardclass' title='VOLTE' @click='show("VOLTE")'>
-					<div v-show="bKpiCardStatus == 1" style="text-align: center;"><i class="icon-ali-load">loading...</i></div>
-					<div v-show="bKpiCardStatus == 3" style="text-align: center;">Card loaded unsuccessfully!</div>
+					<div v-show="bKpiCardStatus == 1" style="text-align: center;"><!-- <i class="icon-ali-load">loading...</i> --><img src="/public/img/loading.gif">&nbsp;loading...</div>
+					<div v-for='post in VOLTEs' v-show="bKpiCardStatus == 3" style="text-align: center;">{{post}}</div>
 					<div class="row" v-show="bKpiCardStatus == 2">
 						<div
 				            class="col-4 rowclass" 
@@ -45,8 +45,8 @@
 					</div>
 				</b-tab>
 				<b-tab class='cardclass' title='NBIOT' @click='show("NBIOT")'>
-					<div v-show="bKpiCardStatus == 1" style="text-align: center;"><i class="icon-ali-load">loading...</i></div>
-					<div v-show="bKpiCardStatus == 3" style="text-align: center;">Card loaded unsuccessfully!</div>
+					<div v-show="bKpiCardStatus == 1" style="text-align: center;"><img src="/public/img/loading.gif">&nbsp;loading...</div>
+					<div v-for='post in NBIOTs' v-show="bKpiCardStatus == 3" style="text-align: center;">{{post}}</div>
 					<div class="row" v-show="bKpiCardStatus == 2">
 						<div
 				            class="col-4 rowclass" 
@@ -66,8 +66,8 @@
 					</div>
 				</b-tab>
 				<b-tab class='cardclass' title='GSM' @click='show("GSM")'>
-					<div v-show="bKpiCardStatus == 1" style="text-align: center;"><i class="icon-ali-load">loading...</i></div>
-					<div v-show="bKpiCardStatus == 3" style="text-align: center;">Card loaded unsuccessfully!</div>
+					<div v-show="bKpiCardStatus == 1" style="text-align: center;"><img src="/public/img/loading.gif">&nbsp;loading...</div>
+					<div v-for='post in GSMs' v-show="bKpiCardStatus == 3" style="text-align: center;">{{post}}</div>
 					<div class="row" v-show="bKpiCardStatus == 2">
 						<div
 				            class="col-4 rowclass" 
@@ -91,15 +91,15 @@
 	    </b-card>
 
 	    <b-card-group deck v-show="type == 'scaleoverview'">
-	    	<div v-show="bScaleKpiCard == 1" style="margin: auto;"><i class="icon-ali-load">loading...</i></div>
-	    	<div v-show="bScaleKpiCard == 3" style="margin: auto;">ScaleCard loaded unsuccessfully!</div>
+	    	
 	    	<!-- <span v-show="bScaleKpiCard == 1">Loading ScaleCard</span>
 			<span v-show="bScaleKpiCard == 3">ScaleCard loaded unsuccessfully!</span> -->
 	        <b-card header="GSM"
 	                header-tag="header"
-	                v-show="bScaleKpiCard == 2"
 	               	>
-	            <div class="row">
+	            <div v-show="bScaleKpiCard == 1" style="margin: auto; width: fit-content"><img src="/public/img/loading.gif">&nbsp;loading...</div>
+	    		<div v-for='post in scale' v-show="bScaleKpiCard == 3" style="margin: auto; width: fit-content">{{post}}</div>
+	            <div class="row" v-show="bScaleKpiCard == 2">
 					<div
 			            style="text-align: center;padding-bottom: 15px"
 			            v-for="post in scale.GSMs" 
@@ -116,13 +116,14 @@
 	        </b-card>
     	</b-card-group>
     	<b-card-group deck v-show="type == 'scaleoverview'">
-    		<div v-show="bScaleKpiCard == 1" style="margin: auto;"><i class="icon-ali-load">loading...</i></div>
-	    	<div v-show="bScaleKpiCard == 3" style="margin: auto;">ScaleCard loaded unsuccessfully!</div>
+    		<!-- <div v-show="bScaleKpiCard == 1" style="margin: auto;"><img src="/public/img/loading.gif">&nbsp;loading...</div>
+	    	<div v-show="bScaleKpiCard == 3" style="margin: auto;">ScaleCard loaded unsuccessfully!</div> -->
     		<b-card header="TDD_LTE"
 	                header-tag="header"
-	                v-show="bScaleKpiCard == 2"
 	               	>
-	            <div class="row">
+	            <div v-show="bScaleKpiCard == 1" style="margin: auto; width: fit-content"><img src="/public/img/loading.gif">&nbsp;loading...</div>
+	    		<div v-for='post in scale' v-show="bScaleKpiCard == 3" style="margin: auto; width: fit-content">{{post}}</div>
+	            <div class="row" v-show="bScaleKpiCard == 2">
 					<div
 			            style="text-align: center;padding-bottom: 15px"
 			            v-for="post in scale.TDDLTEs" 
@@ -154,13 +155,12 @@
 	        </b-card>
 	    </b-card-group>
 	   	<b-card-group deck v-show="type == 'scaleoverview'">
-    		<div v-show="bScaleKpiCard == 1" style="margin: auto;"><i class="icon-ali-load">loading...</i></div>
-	    	<div v-show="bScaleKpiCard == 3" style="margin: auto;">ScaleCard loaded unsuccessfully!</div>
     		<b-card header="FDD_LTE"
 	                header-tag="header"
-	                v-show="bScaleKpiCard == 2"
 	               	>
-	            <div class="row">
+	            <div v-show="bScaleKpiCard == 1" style="margin: auto; width: fit-content"><img src="/public/img/loading.gif">&nbsp;loading...</div>
+	    		<div v-for='post in scale' v-show="bScaleKpiCard == 3" style="margin: auto; width: fit-content">{{post}}</div>
+	            <div class="row" v-show="bScaleKpiCard == 2">
 					<div
 			            style="text-align: center;padding-bottom: 15px"
 			            v-for="post in scale.FDDLTEs" 
@@ -189,15 +189,14 @@
 	        </b-card>
     	</b-card-group>
     	<b-card-group deck v-show="type == 'scaleoverview'">
-    		<div v-show="bScaleKpiCard == 1" style="margin: auto;"><i class="icon-ali-load">loading...</i></div>
-	    	<div v-show="bScaleKpiCard == 3" style="margin: auto;">ScaleCard loaded unsuccessfully!</div>
     		<b-card header="NBIOT"
 	                header-tag="header"
-	                :footer="overviewCn + city"
-	                footer-tag="footer"
-	                v-show="bScaleKpiCard == 2"
 	               	>
-	            <div class="row">
+	               <!-- :footer="overviewCn + city"
+	                footer-tag="footer" -->
+	            <div v-show="bScaleKpiCard == 1" style="margin: auto; width: fit-content"><img src="/public/img/loading.gif">&nbsp;loading...</div>
+	    		<div v-for='post in scale' v-show="bScaleKpiCard == 3" style="margin: auto; width: fit-content">{{post}}</div>
+	            <div class="row" v-show="bScaleKpiCard == 2">
 					<div
 			            style="text-align: center;padding-bottom: 15px"
 			            v-for="post in scale.NBIOTs" 
@@ -216,15 +215,16 @@
 
 
     	<b-card-group deck v-show="type == 'loadoverview'">
-    		<div v-show="bLoadKpiCard == 1" style="margin: auto;"><i class="icon-ali-load">loading...</i></div>
-    		<div v-show="bLoadKpiCard == 3" style="margin: auto;">LoadCard loaded unsuccessfully!</div>
+    		<!-- <div v-show="bLoadKpiCard == 1" style="margin: auto;"><img src="/public/img/loading.gif">&nbsp;loading...</div>
+    		<div v-show="bLoadKpiCard == 3" style="margin: auto;">LoadCard loaded unsuccessfully!</div> -->
     		<!-- <span v-show="bLoadKpiCard == 1">Loading LoadCard</span>
 			<span v-show="bLoadKpiCard == 3">LoadCard loaded unsuccessfully!</span> -->
     		<b-card header="TDD_LTE"
 	                header-tag="header"
-	                v-show="bLoadKpiCard == 2"
 	               	>
-	            <div class="row">
+	            <div v-show="bLoadKpiCard == 1" style="margin: auto; width: fit-content"><img src="/public/img/loading.gif">&nbsp;loading...</div>
+	    		<div v-for='post in load' v-show="bLoadKpiCard == 3" style="margin: auto; width: fit-content">{{post}}</div>
+	            <div class="row" v-show="bLoadKpiCard == 2">
 					<div
 			            style="text-align: center;padding-bottom: 15px"
 			            v-for="post in load.TDDLTEs" 
@@ -242,13 +242,12 @@
 	    </b-card-group>
 
 	    <b-card-group deck v-show="type == 'loadoverview'">
-    		<div v-show="bLoadKpiCard == 1" style="margin: auto;"><i class="icon-ali-load">loading...</i></div>
-    		<div v-show="bLoadKpiCard == 3" style="margin: auto;">LoadCard loaded unsuccessfully!</div>
     		<b-card header="FDD_LTE"
 	                header-tag="header"
-	                v-show="bLoadKpiCard == 2"
 	               	>
-	            <div class="row">
+	            <div v-show="bLoadKpiCard == 1" style="margin: auto; width: fit-content"><img src="/public/img/loading.gif">&nbsp;loading...</div>
+	    		<div v-for='post in load' v-show="bLoadKpiCard == 3" style="margin: auto; width: fit-content">{{post}}</div>
+	            <div class="row" v-show="bLoadKpiCard == 2">
 					<div
 			            style="text-align: center;padding-bottom: 15px"
 			            v-for="post in load.FDDLTEs" 
@@ -266,13 +265,12 @@
 	    </b-card-group>
 
 	    <b-card-group deck v-show="type == 'loadoverview'">
-    		<div v-show="bLoadKpiCard == 1" style="margin: auto;"><i class="icon-ali-load">loading...</i></div>
-    		<div v-show="bLoadKpiCard == 3" style="margin: auto;">LoadCard loaded unsuccessfully!</div>
     		<b-card header="NBIOT"
 	                header-tag="header"
-	                v-show="bLoadKpiCard == 2"
 	               	>
-	            <div class="row">
+	            <div v-show="bLoadKpiCard == 1" style="margin: auto; width: fit-content"><img src="/public/img/loading.gif">&nbsp;loading...</div>
+	    		<div v-for='post in load' v-show="bLoadKpiCard == 3" style="margin: auto; width: fit-content">{{post}}</div>
+	            <div class="row" v-show="bLoadKpiCard == 2">
 					<div
 			            style="text-align: center;padding-bottom: 15px"
 			            v-for="post in load.NBIOTs" 
@@ -290,13 +288,12 @@
 	    </b-card-group>
 
 	    <b-card-group deck v-show="type == 'loadoverview'">
-    		<div v-show="bLoadKpiCard == 1" style="margin: auto;"><i class="icon-ali-load">loading...</i></div>
-    		<div v-show="bLoadKpiCard == 3" style="margin: auto;">LoadCard loaded unsuccessfully!</div>
     		<b-card header="GSM"
 	                header-tag="header"
-	                v-show="bLoadKpiCard == 2"
 	               	>
-	            <div class="row">
+	            <div v-show="bLoadKpiCard == 1" style="margin: auto; width: fit-content"><img src="/public/img/loading.gif">&nbsp;loading...</div>
+	    		<div v-for='post in load' v-show="bLoadKpiCard == 3" style="margin: auto; width: fit-content">{{post}}</div>
+	            <div class="row" v-show="bLoadKpiCard == 2">
 					<div
 			            style="text-align: center;padding-bottom: 15px"
 			            v-for="post in load.GSMs" 
@@ -331,13 +328,25 @@
 	</div>
 </template>
 <style>
+	/*门限背景色*/
 	.red {
-		color: #d81e06;
+		background-color: #dd4b39;
+		/*color: #d81e06;*/
+		color: white;
 	}
 	.blue {
-		color: #1296db;
+		background-color: #00A65A;
+		/*color: #1296db;*/
+		color: white;
+	}
+	.red:hover {
+		background-color: #BC4031;
+	}
+	.blue:hover {
+		background-color: #008D4D;
 	}
 
+	/*箭头背景色*/
 	.icon-ali-jiantoushangsheng-blue {
 		color: #1296db;
 	}
@@ -345,6 +354,32 @@
 		color: #d81e06;
 	}
 
+	/*指标概览*/
+	.cardclass {
+		padding: 10px 25px 10px 10px 
+	}
+	.postclass {
+		cursor:pointer;
+		/*background-color: #DCDCDC;*/
+		border-radius: 3px;
+		margin-top: 5px;
+		margin-left: 0px;
+	}
+	.postclass:hover {
+		/*background-color: #CCCCCC;*/
+	}
+	.rowclass {
+		padding: 0px 0px 0px 15px
+	}
+	.postdata {
+		font-size: 25px
+	}
+	.posttype {
+		font-size: 15px
+	}
+
+
+	/*规模概览*/
 	.scalecard {
 		background-color: #20a8d8;
 		/*width:250px; */
@@ -365,31 +400,6 @@
 		padding: 20px 10px 20px 10px;
 		margin-top: 5px;
 		margin-left: 0px;
-	}
- 	
-
-
-	.cardclass {
-		padding: 10px 25px 10px 10px 
-	}
-	.postclass {
-		cursor:pointer;
-		background-color: #DCDCDC;
-		border-radius: 3px;
-		margin-top: 5px;
-		margin-left: 0px;
-	}
-	.postclass:hover {
-		background-color: #CCCCCC;
-	}
-	.rowclass {
-		padding: 0px 0px 0px 15px
-	}
-	.postdata {
-		font-size: 25px
-	}
-	.posttype {
-		font-size: 15px
 	}
 	
 </style>

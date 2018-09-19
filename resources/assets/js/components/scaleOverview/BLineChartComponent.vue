@@ -2,9 +2,9 @@
     <!-- <div class="hello">
         <div class="charts"> -->
     <div v-show="show == 2">
-        <div v-show="bLineChart == 1" style="text-align: center;"><i class="icon-ali-load">loading...</i></div>
+        <div v-show="bLineChart == 1" style="text-align: center;"><!-- <i class="icon-ali-load">loading...</i> --><img src="/public/img/loading.gif">&nbsp;loading...</div>
         <div :id="id" :option="option" v-show="bLineChart == 2" class="col-12" style="min-width: 400px; padding: 0px;"></div>
-        <div v-show="bLineChart == 3" style="text-align: center;">Highchart loaded unsuccessfully!</div>
+        <div v-for='post in option' v-show="bLineChart == 3" style="text-align: center;">{{post}}</div>
     </div>
     
         <!-- </div>
