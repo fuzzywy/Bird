@@ -23,13 +23,16 @@
 		      	}
 		    } else if (error.request) {
 			    // 发送请求但是没有响应返回
-			    return error.request
+			    return 'Request failed'
+			    // return error.request
 			    // console.log(error.request);
 		    } else {
 		      	// 其他错误
-		      	return error.message
+		      	return 'Other errors'
+		      	// return error.message
 		      	// console.log('Error', error.message);
 		    }
+		    return error.config
 		    // console.log(error.config);
 		});
  	},
@@ -53,11 +56,13 @@
 		      	}
 		    } else if (error.request) {
 			    // 发送请求但是没有响应返回
-			    return error.request
+			    return 'Request failed'
+			    // return error.request
 			    // console.log(error.request);
 		    } else {
 		      	// 其他错误
-		      	return error.message
+		      	return 'Other errors'
+		      	// return error.message
 		      	// console.log('Error', error.message);
 		    }
 		    // console.log(error.config);
@@ -83,11 +88,13 @@
 		      	}
 		    } else if (error.request) {
 			    // 发送请求但是没有响应返回
-			    return error.request
+			    return 'Request failed'
+			    // return error.request
 			    // console.log(error.request);
 		    } else {
 		      	// 其他错误
-		      	return error.message
+		      	return 'Other errors'
+		      	// return error.message
 		      	// console.log('Error', error.message);
 		    }
 		    // console.log(error.config);
