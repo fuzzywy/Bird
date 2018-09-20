@@ -29,7 +29,7 @@ export default new VueRouter({
                 BLocationNav: Vue.component('city-component', require('./components/scaleOverview/BLocationNavComponent.vue')),
                 BKpiCard: Vue.component('tab-component', require('./components/scaleOverview/BKpiCardComponent.vue')),
                 BLineChart: Vue.component('highchartsline-component', require('./components/scaleOverview/BLineChartComponent.vue')),
-                a: Vue.component('testVuex', require('./components/testVuex.vue'))
+                //a: Vue.component('testVuex', require('./components/testVuex.vue'))
             }
         }
     ]
