@@ -6,6 +6,13 @@ try {
 
 window.axios = require('axios');
 
+window.qs = require('qs');
+// Vue.prototype.$qs = qs;
+/*let qs = require('qs'); 
+let instance = axios.create({
+    headers: { 'content-type': 'application/x-www-form-urlencoded' }
+});*/
+
 window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 
 /**

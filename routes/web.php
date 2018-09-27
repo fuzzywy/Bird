@@ -31,6 +31,8 @@ Route::get('test', 'TestController@test');
 
 Route::get('getCity', 'NetworkOverviewController@getCity');
 Route::get('getBirdSideBar', 'NetworkOverviewController@getBirdSideBar');
+
+Route::post('uploadCog', 'UploadController@uploadCog');
 /*Route::get('/test', function() {
 	return view('test.test', ['name'=>'James']);
 });

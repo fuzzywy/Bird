@@ -17,6 +17,7 @@ import { citys } from './modules/getCity.js'
 import { birdSideBar } from './modules/getBirdSideBar.js'
 import { bKpiCard } from './modules/getBKpiCard.js'
 import { bLineChart } from './modules/getBLineChart.js'
+import { uploadCog } from './modules/uploadCog.js'
 /**
  * Export the data store.
  */
@@ -25,6 +26,7 @@ export default new Vuex.Store({
     	citys,
     	birdSideBar,
     	bKpiCard,
-    	bLineChart
+    	bLineChart,
+    	uploadCog
     }
 });

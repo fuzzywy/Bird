@@ -1,5 +1,11 @@
 @extends('layouts.app')
 
+@section('cog')
+
+  <router-view name="BCogForm"></router-view>
+
+@stop
+
 @section('content')
 <div class="container">
   <div class="row">

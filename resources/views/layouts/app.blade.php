@@ -123,6 +123,18 @@
                                 <a class="nav-link" href="{{ route('register') }}">{{ __('Register') }}</a>
                             </li>
                         @else
+
+                            
+                                
+                                    <!-- <i class="icon-ali-jiantouxia">test</i> -->
+                                    <!-- <i class="fa fa-dashboard"></i> -->
+                                    <!-- <img src="/public/img/cog.png" style="height: 15px;"> -->
+                                    <!-- @yield('cog') -->
+                                    @section('cog')
+                                    @show
+                               
+                           
+
                             <li class="nav-item dropdown">
                                 <a id="locale" href="#" class="nav-link" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                                     {{ trans('message.language') }}
@@ -140,7 +152,7 @@
                                     </li>
                                 </ul>
                             </li>
-                
+
                             <li class="nav-item dropdown">
                                 <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                                     {{ Auth::user()->name }} <span class="caret"></span>
@@ -158,6 +170,7 @@
                                     </form>
                                 </div>
                             </li>
+
                         @endguest
                     </ul>
                 </div>

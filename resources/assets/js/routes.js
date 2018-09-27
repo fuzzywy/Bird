@@ -24,11 +24,12 @@ export default new VueRouter({
             path: '/',
             name: 'home', 
             components: {
-                default: Vue.component('left-component', require('./components/scaleOverview/BirdSideBarComponent.vue')),
-                BirdSideBar: Vue.component('left-component', require('./components/scaleOverview/BirdSideBarComponent.vue')),
-                BLocationNav: Vue.component('city-component', require('./components/scaleOverview/BLocationNavComponent.vue')),
-                BKpiCard: Vue.component('tab-component', require('./components/scaleOverview/BKpiCardComponent.vue')),
-                BLineChart: Vue.component('highchartsline-component', require('./components/scaleOverview/BLineChartComponent.vue')),
+                default: Vue.component('BirdSideBarComponent', require('./components/scaleOverview/BirdSideBarComponent.vue')),
+                BirdSideBar: Vue.component('BirdSideBarComponent', require('./components/scaleOverview/BirdSideBarComponent.vue')),
+                BLocationNav: Vue.component('BLocationNavComponent', require('./components/scaleOverview/BLocationNavComponent.vue')),
+                BKpiCard: Vue.component('BKpiCardComponent', require('./components/scaleOverview/BKpiCardComponent.vue')),
+                BLineChart: Vue.component('BLineChartComponent', require('./components/scaleOverview/BLineChartComponent.vue')),
+                BCogForm: Vue.component('BCogFormComponent', require('./components/scaleOverview/BCogFormComponent.vue')),
                 //a: Vue.component('testVuex', require('./components/testVuex.vue'))
             }
         }
