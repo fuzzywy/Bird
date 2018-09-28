@@ -7,7 +7,10 @@
 @stop
 
 @section('content')
+<!-- Home Page -->
+<!-- <router-view name="Layout"></router-view> -->
 <div class="container">
+  <router-view name="BCogFormTable"></router-view>
   <div class="row">
     <div class="col-2">
       <!-- <router-view name="a"></router-view> -->
@@ -36,7 +39,17 @@
       <!-- <test></test> -->
     </div>
   </div>
-  
 </div>
+<!-- End Home Page -->
+
+<!-- Cog Page -->
+<!-- <div class="container">
+	<div class="row">
+		<div class="col-12">
+			<router-view name="BCogFormTable"></router-view>
+		</div>
+	</div>
+</div> -->
+<!-- End Cog Page -->
 
 @endsection

@@ -2,9 +2,10 @@
 	<div>
 		<li class="nav-item dropdown">
 			<a id="locale" href="#" class="nav-link cog" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-				<i class="icon-ali-cog"></i>
+				<router-link to="cog" tag="div"><i class="icon-ali-cog"></i></router-link>
 			</a>
-			<ul class="dropdown-menu dropdown-menu-right cog-form" aria-labelledby="navbarDropdown">
+
+			<!-- <ul class="dropdown-menu dropdown-menu-right cog-form" aria-labelledby="navbarDropdown">
 				<div>
 	                <b-form @submit="onSubmit" @reset="onReset" v-if="show">
 				      	<b-form-group id="ipInputGroup"
@@ -71,14 +72,13 @@
 				      	<b-form-group id="checkGroup">
 					        <b-form-checkbox-group v-model="form.checked" id="Checks">
 					          	<b-form-checkbox value="check">Check me out</b-form-checkbox>
-					          	<!-- <b-form-checkbox value="that">Check that out</b-form-checkbox> -->
 					        </b-form-checkbox-group>
 				      	</b-form-group>
 				      	<b-button type="submit" variant="primary">Submit</b-button>
 				      	<b-button type="reset" variant="danger">Reset</b-button>
 				    </b-form>
 				</div>
-            </ul>
+            </ul> -->
             <!-- <pre class="mt-3">{{ text }}</pre> -->
 		</li>
 	</div>

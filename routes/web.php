@@ -20,6 +20,8 @@ Auth::routes();
 Route::get('localeLang', 'NavController@localeLang');
 
 Route::get('/home', 'HomeController@index')->name('home');
+// Route::get('/cog', 'CogController@index')->name('cog');
+
 
 Route::get('getTabs', 'NetworkOverviewController@getTabs');
 Route::get('getScaleTabs', 'NetworkOverviewController@getScaleTabs');
@@ -33,6 +35,8 @@ Route::get('getCity', 'NetworkOverviewController@getCity');
 Route::get('getBirdSideBar', 'NetworkOverviewController@getBirdSideBar');
 
 Route::post('uploadCog', 'UploadController@uploadCog');
+Route::post('showCog', 'UploadController@showCog');
+Route::post('deleteCog', 'UploadController@deleteCog');
 /*Route::get('/test', function() {
 	return view('test.test', ['name'=>'James']);
 });
