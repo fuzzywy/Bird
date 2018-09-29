@@ -42,7 +42,7 @@ class GsmExtract extends Command
     {
 
         $dbc = new DataBaseConnection();
-        $db = $dbc->getDB("mongs");
+        $db = $dbc->getDB("Bird");
         $result = City::select("connName")->get();
         foreach ($result as $key => $value) {
             // print_r($value->connName);

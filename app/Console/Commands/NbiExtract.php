@@ -42,7 +42,7 @@ class NbiExtract extends Command
     public function handle()
     {   
         $dbc = new DataBaseConnection();
-        $db = $dbc->getDB("mongs");
+        $db = $dbc->getDB("Bird");
         $result = City::select("connName")->get();
         // print_r($result);exit;
         foreach ($result as $key => $value) {

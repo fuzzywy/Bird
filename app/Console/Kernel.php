@@ -20,6 +20,9 @@ class Kernel extends ConsoleKernel
         Commands\SLteExtract::class,
         Commands\SGsmExtract::class,
         Commands\BLNbiExtract::class,
+        Commands\BLGsmExtract::class,
+        Commands\BLTddExtract::class,
+        Commands\BLFddExtract::class,
 
     ];
 
@@ -40,6 +43,10 @@ class Kernel extends ConsoleKernel
         $schedule->command('SLte:backup')->cron("0 0 * * *");
         //B_S_GSM数据备份
         $schedule->command('SGsm:backup')->cron("20 0 * * *");
+        $schedule->command('BLNbi:backup')->cron("20 0 * * *");
+        $schedule->command('BLGsm:backup')->cron("20 * * * *");
+        $schedule->command('BLTdd:backup')->cron("20 1 * * *");
+        $schedule->command('BLFdd:backup')->cron("20 1 * * *");
         // $schedule->command('VolteExtract:backup')->cron("20 * * * *");
         // $schedule->command('inspire')
         //          ->hourly();

@@ -30,5 +30,23 @@ return [
 		"high_peed"=>"high_peed",
 		"co_enhance"=>"co_enhance",
 		"ca_agg"=>"ca_agg",
+	],
+	"loadSurvey"=>[
+		"flow"=>"flow",
+		"volte_traffic"=>"volte_traffic",
+		"rrc_users"=>"rrc_users",
+		"rrc_cell_user_mean"=>"rrc_cell_user_mean",
+		"rrc_cell_users_max"=>"rrc_cell_users_max",
+		"rrc_cell_band_users"=>"rrc_cell_band_users",
+		"flow_tti"=>"flow_tti",
+		"cce"=>"cce",
+		"prb"=>"prb",
+		"tel_traffic"=>"tel_traffic",
+		"data_traffic"=>"data_traffic",
+		"tel_traffic_tch"=>"tel_traffic_tch",
+		"data_traffic_pdch"=>"data_traffic_pdch",
+		"wireless_rate"=>"wireless_rate",
+		"rrc_users_cell"=>"rrc_users_cell",
+		"npdcch"=>"npdcch",
 	]
 ];

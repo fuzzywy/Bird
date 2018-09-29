@@ -43,7 +43,7 @@ class VolteExtract extends Command
     {
 
         $dbc = new DataBaseConnection();
-        $db = $dbc->getDB("mongs");
+        $db = $dbc->getDB("Bird");
         $result = City::select("connName")->get();
         foreach ($result as $key => $value) {
          $Volte_TDD = new LteBackup("B_VOLTE_TDD","city","hour",$value->connName,"TDD",$db);

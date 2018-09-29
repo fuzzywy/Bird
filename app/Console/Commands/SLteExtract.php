@@ -71,7 +71,6 @@ class SLteExtract extends Command
             $NbIotCell->save();
 
         }
-
         //B_S_LTE_TDD
 
         foreach ($cityList as $key => $value) {
@@ -80,9 +79,9 @@ class SLteExtract extends Command
             $cell    = EUtranCellTDD::whereIn('subNetWork',$subnet)->distinct('eUtranCellTDDId')->count('eUtranCellTDDId');
             $erbs    = EUtranCellTDD::whereIn('subNetWork',$subnet)->distinct('meContext')->count('meContext');
             
-            $high_peed=CoverageEnhancement::whereIn('subNetWork',$subnet)->where("functionName","高速移动性能")->distinct('meContext')->count('meContext');
-            $co_enhance=CoverageEnhancement::whereIn('subNetWork',$subnet)->where("functionName","上下行覆盖增强功能")->distinct('meContext')->count('meContext');
-            $ca_agg=CoverageEnhancement::whereIn('subNetWork',$subnet)->where("functionName","FDD+TDD载波聚合")->distinct('meContext')->count('meContext');
+            $high_peed=CoverageEnhancement::whereIn('subNetWork',$subnet)->where("functionName","高速移动性能")->where("remark","已开通")->distinct('meContext')->count('meContext');
+            $co_enhance=CoverageEnhancement::whereIn('subNetWork',$subnet)->where("functionName","上下行覆盖增强功能")->where("remark","已开通")->distinct('meContext')->count('meContext');
+            $ca_agg=CoverageEnhancement::whereIn('subNetWork',$subnet)->whereIn("functionName",["FDD+TDD载波聚合",'下行载波聚合','上行载波聚合'])->where("remark","已开通")->distinct('meContext')->count('meContext');
             // print_r($co_enhance)
             $EUtranCellTDD = new B_S_LTE_TDD;
             $EUtranCellTDD->day_id	   = date("Y-m-d");
@@ -98,16 +97,16 @@ class SLteExtract extends Command
 
         //B_S_LTE_FDD
 
-
        	foreach ($cityList as $key => $value) {
             $subnet = $dbc->getSubNetsArr("FDD",$value->cityChinese);
             $carrier = TempParameterRRUAndSlaveCount::whereIn('subNetWork',$subnet)->sum('sectorCarrierRef');
             $cell    = EUtranCellFDD::whereIn('subNetWork',$subnet)->distinct('eUtranCellFDDId')->count('eUtranCellFDDId');
             $erbs    = EUtranCellFDD::whereIn('subNetWork',$subnet)->distinct('meContext')->count('meContext');
             
-            $high_peed=CoverageEnhancement::whereIn('subNetWork',$subnet)->where("functionName","高速移动性能")->distinct('meContext')->count('meContext');
-            $co_enhance=CoverageEnhancement::whereIn('subNetWork',$subnet)->where("functionName","上下行覆盖增强功能")->distinct('meContext')->count('meContext');
-            $ca_agg=CoverageEnhancement::whereIn('subNetWork',$subnet)->where("functionName","FDD+TDD载波聚合")->distinct('meContext')->count('meContext');
+            $high_peed=CoverageEnhancement::whereIn('subNetWork',$subnet)->where("functionName","高速移动性能")->where("remark","已开通")->distinct('meContext')->count('meContext');
+            $co_enhance=CoverageEnhancement::whereIn('subNetWork',$subnet)->where("functionName","上下行覆盖增强功能")->where("remark","已开通")->distinct('meContext')->count('meContext');
+            $ca_agg=CoverageEnhancement::whereIn('subNetWork',$subnet)->whereIn("functionName",["FDD+TDD载波聚合",'下行载波聚合','上行载波聚合'])->where("remark","已开通")->distinct('meContext')->count('meContext');
+            
             // print_r($co_enhance)
             $EUtranCellFDD = new B_S_LTE_FDD;
             $EUtranCellFDD->day_id	   = date("Y-m-d");

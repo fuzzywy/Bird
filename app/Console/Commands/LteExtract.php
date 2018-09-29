@@ -42,9 +42,8 @@ class LteExtract extends Command
     public function handle()
     {
         $dbc = new DataBaseConnection();
-        $db = $dbc->getDB("mongs");
+        $db = $dbc->getDB("Bird");
         $result = City::select("connName")->get();
-        // print_r($result);exit;
         foreach ($result as $key => $value) {
          $Volte_TDD = new LteBackup("B_LTE_TDD","city","hour",$value->connName,"TDD",$db);
          $Volte_FDD = new LteBackup("B_LTE_FDD","city","hour",$value->connName,"FDD",$db);
