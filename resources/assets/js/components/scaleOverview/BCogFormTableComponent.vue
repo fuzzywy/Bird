@@ -26,7 +26,7 @@
 	          </b-input-group>
 	        </b-form-group>
 	      </b-col>
-	      <b-col md="6" class="my-1">
+	      <!-- <b-col md="6" class="my-1">
 	        <b-form-group horizontal label="Sort direction" class="mb-0">
 	          <b-input-group>
 	            <b-form-select v-model="sortDirection" slot="append">
@@ -35,6 +35,13 @@
 	              <option value="last">Last</option>
 	            </b-form-select>
 	          </b-input-group>
+	        </b-form-group>
+	      </b-col> -->
+	      <b-col md="6" class="my-1">
+	      	<b-form-group horizontal label="Add ip address" class="mb-0">
+	          <b-button size="sm" @click.stop="addColumn">
+		        Add
+		      </b-button>
 	        </b-form-group>
 	      </b-col>
 	      <b-col md="6" class="my-1">
@@ -58,26 +65,57 @@
 	             @filtered="onFiltered"
 	             v-show="showCog==2"
 	    >
-	      <template slot="name" slot-scope="row">{{row.value.first}} {{row.value.last}}</template>
-	      <template slot="isActive" slot-scope="row">{{row.value?'Yes :)':'No :('}}</template>
+	      <!-- <template slot="name" slot-scope="row">{{row.value.first}} {{row.value.last}}</template>
+	      <template slot="isActive" slot-scope="row">{{row.value?'Yes :)':'No :('}}</template> -->
 	      <template slot="actions" slot-scope="row">
 	        <!-- We use @click.stop here to prevent a 'row-clicked' event from also happening -->
 	        <b-button size="sm" @click.stop="del(row.item, row.index, $event.target)" class="mr-1">
-	          delete
+	          Delete
 	        </b-button>
-	        <b-button size="sm" @click.stop="info(row.item, row.index, $event.target)" class="mr-1">
+	        <!-- <b-button size="sm" @click.stop="modify(row.item, row.index, $event.target)" class="mr-1">
+	          modify
+	        </b-button> -->
+	        <!-- <b-button size="sm" @click.stop="info(row.item, row.index, $event.target)" class="mr-1">
 	          Info modal
-	        </b-button>
-	        <b-button size="sm" @click.stop="row.toggleDetails">
-	          {{ row.detailsShowing ? 'Hide' : 'Show' }} Details
+	        </b-button> -->
+	        <b-button size="sm" @click.stop="row.toggleDetails" @click.top="modifyData(row.item, row.index, $event.target)">
+	          {{ row.detailsShowing ? 'Hide' : 'Modify' }} Details
 	        </b-button>
 	      </template>
 	      <template slot="row-details" slot-scope="row">
-	        <b-card>
+	        <!-- <b-card>
 	          <ul>
-	            <li v-for="(value, key) in row.item" :key="key">{{ key }}: {{ value}}</li>
+	            <li v-for="(value, key) in row.item" :key="key">{{ key }}: {{ value }}</li>
 	          </ul>
-	        </b-card>
+	        </b-card> -->
+	        <!-- <div v-for="(value, key) in row.item" :key="key">
+	        	<b-input-group :prepend="key">
+	        		<b-form-input :value="value"></b-form-input>
+	        	</b-input-group>
+	        </div> -->
+	        <b-card>
+	        	<b-row class="mb-2" v-for="(value, key) in row.item" :key="key" v-if="key!== '_showDetails' && key!== 'id'">
+	          		<b-col sm="4" class="text-sm-right"><b>{{ key }}:</b></b-col>
+	          		<b-col md="5">
+	          			<b-form-input v-model="modify[key]" v-if="key !== 'type'"/>
+	          			<b-form-input placeholder="LTE or GSM" v-model="modify[key]" v-if="key === 'type'"/>
+	          			<!-- <b-form-group id="typeInputGroup"
+		                    label-for="typeInput">
+				        	<b-form-select id="typeInput"
+		                      	:options="types"
+		                      	required
+		                      	v-model="type"
+		                      	v-if="key === 'type'">
+				        	</b-form-select>
+				      	</b-form-group> -->
+	          		</b-col>
+	          		<!-- <b-col md="5"><b-form-input :value='modify[key]'/></b-col> -->
+	        	</b-row>
+	        	<div style="text-align: center;">
+	        		<b-button size="sm" @click="modifyOK">modify</b-button>
+	        		<!-- <b-button size="sm">cancel</b-button> -->
+	        	</div>
+	      	</b-card>
 	      </template>
 	    </b-table>
 
@@ -94,6 +132,10 @@
 
 	    <b-modal id="confirm" :title="confirm.title" @ok="handleOk" @hide="resetModal">
 	    	<pre> {{ confirm.content }} </pre>
+	    </b-modal>
+
+	    <b-modal id="confirmModify" :title="confirmModify.title">
+	    	<pre> {{ confirmModify.content }} </pre>
 	    </b-modal>
 
 	  </b-container>
@@ -128,14 +170,14 @@
 	  { isActive: false, age: 22, name: { first: 'Genevieve', last: 'Wilson' } },
 	  { isActive: true, age: 38, name: { first: 'John', last: 'Carney' } },
 	  { isActive: false, age: 29, name: { first: 'Dickqqqqq', last: 'Dunlap' } }*/
-	  { ip: '192.168.0.1', port: 3306, database: 't1', user: 'root', pwd: 'mongs', type: 'LTE' },
+	  /*{ ip: '192.168.0.1', port: 3306, database: 't1', user: 'root', pwd: 'mongs', type: 'LTE' },
 	  { isActive:false, ip: '192.168.0.1', port: 33060, database: 't2', user: 'root', pwd: 'mongs', type: 'GSM' },
 	  { isActive:false, ip: '192.168.0.1', port: 3306, database: 't1', user: 'root', pwd: 'mongs', type: 'LTE' },
 	  { isActive:false, ip: '192.168.0.1', port: 33060, database: 't2', user: 'root', pwd: 'mongs', type: 'GSM' },
 	  { isActive:false, ip: '192.168.0.1', port: 3306, database: 't1', user: 'root', pwd: 'mongs', type: 'LTE' },
 	  { isActive:false, ip: '192.168.0.1', port: 33060, database: 't2', user: 'root', pwd: 'mongs', type: 'GSM' },
 	  { isActive:false, ip: '192.168.0.1', port: 3306, database: 't1', user: 'root', pwd: 'mongs', type: 'LTE' },
-	  { isActive:false, ip: '192.168.0.1', port: 33060, database: 't2', user: 'root', pwd: 'mongs', type: 'GSM' },
+	  { isActive:false, ip: '192.168.0.1', port: 33060, database: 't2', user: 'root', pwd: 'mongs', type: 'GSM' },*/
 	]
 
 	export default {
@@ -165,8 +207,15 @@
 		      filter: null,
 		      modalInfo: { title: '', content: '' },
 		      confirm: { title: '', content: '' },
+		      confirmModify: { title: '', content: '' },
 		      delete: [],
-		      newItems: []
+		      newItems: [],
+		      modify: []/*,
+		      type: null,
+		      types: [
+	        	{ text: 'Select One', value: null },
+	        	'LTE', 'GSM'
+	      	  ]*/
 		    }
 		  },
 		  computed: {
@@ -185,6 +234,33 @@
 		  	this.$store.dispatch('showCog')
 		  },
 		  methods: {
+		  	addColumn () {
+		  		this.newItems = []
+		  		this.newItems.push({ id: '', _showDetails: true, ip: '', port: '', database: '', user: '', pwd: '', type: '' })
+		  		for (var i = this.items.length - 1; i >= 0; i--) {
+		  			this.newItems.push(this.items[i])
+		  		}
+		  		this.items = this.newItems
+		  		
+		  	},
+		  	modifyData ( item, index, button ) {
+		  		this.modify = item
+		  	},
+		  	modifyOK () {
+		  		this.$store.dispatch('uploadCog', {
+	      			ip: this.modify.ip,
+	      			port: this.modify.port,
+	      			database: this.modify.database,
+	      			user: this.modify.user,
+	      			pwd: this.modify.pwd,
+	      			type: this.modify.type
+	      		})
+	      		this.confirmModify.title = ''
+		  		this.confirmModify.content = '修改成功'
+		  		this.$root.$emit('bv::show::modal', 'confirmModify', '#confirmModify')
+		  		this.$store.dispatch('showCog')
+	      		// this.$store.dispatch('showCog')
+		  	},
 		  	del ( item, index, button ) {
 		  		this.delete = item
 		  		this.confirm.title = '确认删除'
@@ -211,8 +287,6 @@
 		  		this.items = this.newItems.sort(function(a, b) {
 		  			return a.id - b.id
 		  		})
-		  		// this.items.sort().splice(this.deleteId, 1)
-		  		// alert('关闭')
 		  	},
 		    info (item, index, button) {
 		    	/*this.$store.dispatch('uploadCog', {
