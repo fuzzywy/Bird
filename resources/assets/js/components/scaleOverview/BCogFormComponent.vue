@@ -2,7 +2,9 @@
 	<div>
 		<li class="nav-item dropdown">
 			<a id="locale" href="#" class="nav-link cog" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+				<!-- <router-link :to="{ name: 'cog' }" tag="div"><i class="icon-ali-cog"></i></router-link> -->
 				<router-link to="cog" tag="div"><i class="icon-ali-cog"></i></router-link>
+				<!-- <BCogFormTable></BCogFormTable> -->
 			</a>
 
 			<!-- <ul class="dropdown-menu dropdown-menu-right cog-form" aria-labelledby="navbarDropdown">
@@ -104,7 +106,11 @@
 </style>
 
 <script>
+	// import BCogFormTable from './BCogFormTableComponent.vue';
 	export default {
+		// components: {
+		// 	BCogFormTable
+		// },
 		data () {
 		    return {
 		      	form: {
