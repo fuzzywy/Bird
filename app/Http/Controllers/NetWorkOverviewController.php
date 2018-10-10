@@ -48,7 +48,7 @@ class NetworkOverviewController extends Controller
     }
 
     public function getLoadTabs() {
- 		 $city = input::get('city');
+ 		$city = input::get('city');
         $overview = input::get('overview');
         $arr = [];
       
@@ -73,7 +73,8 @@ class NetworkOverviewController extends Controller
                 $arr['GSMs'][$i]['id']=$i;
                 $arr['GSMs'][$i]['name']=trans("message.loadSurvey.".$key[$i+3]);
                 $arr['GSMs'][$i]['data']=round($res[0][$key[$i+3]],2);
-                $arr['GSMs'][$i]['img'] = '/public/img/huihua.png';
+                $arr['GSMs'][$i]['img'] = $this->getImage($key[$i+3]);
+
 
 
             }
@@ -91,10 +92,7 @@ class NetworkOverviewController extends Controller
                 $arr['TDDLTEs'][$i]['name']=trans("message.loadSurvey.".$key[$i+3]);
                 $arr['TDDLTEs'][$i]['data']=round($res[0][$key[$i+3]],2);
                 // $arr['TDDLTEs'][$i]['max']=intval($res[0]['erbs']);
-                $arr['TDDLTEs'][$i]['img'] = '/public/img/huihua.png';
-                if ( $i > 2 ) {
-                    $arr['TDDLTEs'][$i]['img'] = '/public/img/xinhao.png';
-                }
+                $arr['TDDLTEs'][$i]['img'] = $this->getImage($key[$i+3]);
 
             }
              // $res = B_S_LTE_FDD::select()->where("location",$city)->where("day_id",$day_id[0]['day_id'])->limit(1)->get()->toArray();
@@ -109,10 +107,7 @@ class NetworkOverviewController extends Controller
                 $arr['FDDLTEs'][$i]['id']=$i;
                 $arr['FDDLTEs'][$i]['name']=trans("message.loadSurvey.".$key[$i+3]);
                 $arr['FDDLTEs'][$i]['data']=round($res[0][$key[$i+3]],2);
-                $arr['FDDLTEs'][$i]['img'] = '/public/img/huihua.png';
-                if ( $i > 2 ) {
-                    $arr['FDDLTEs'][$i]['img'] = '/public/img/xinhao.png';
-                }
+                $arr['FDDLTEs'][$i]['img'] = $this->getImage($key[$i+3]);
 
             }
              $res = B_L_NBIOT::select()->where("location",$city)->where("day_id","2018-9-18")->limit(1)->get()->toArray();
@@ -123,8 +118,7 @@ class NetworkOverviewController extends Controller
                 $arr['NBIOTs'][$i]['id']=$i;
                 $arr['NBIOTs'][$i]['name']=trans("message.loadSurvey.".$key[$i+3]);
                 $arr['NBIOTs'][$i]['data']=round($res[0][$key[$i+3]],2);
-                $arr['NBIOTs'][$i]['img'] = '/public/img/huihua.png';
-
+                $arr['NBIOTs'][$i]['img'] = $this->getImage($key[$i+3]);
 
             }
 
@@ -152,22 +146,12 @@ class NetworkOverviewController extends Controller
                 $arr['GSMs'][$i]['id']=$i;
                 $arr['GSMs'][$i]['name']=trans("message.loadSurvey.".$key[$i]);
                 $arr['GSMs'][$i]['data']=round($res[0][$key[$i]],2);
-                $arr['GSMs'][$i]['img'] = '/public/img/huihua.png';
+                $arr['GSMs'][$i]['img'] = $this->getImage($key[$i]);
 
 
             }
 
             $day_id_TFN =B_S_LTE_TDD::select("day_id")->orderBy("id","desc")->limit(1)->get()->toArray();
-            // $res = B_S_LTE_TDD::select()->where("location",$city)->where("day_id",$day_id[0]['day_id'])->limit(1)->get()->toArray();
-            // $res = B_S_LTE_TDD::select()
-            //                 ->where("day_id",$day_id[0]['day_id'])
-            //                 ->select(array(\DB::raw("sum(carrier) as carrier"),
-            //                             \DB::raw("sum(cell) as cell"),
-            //                             \DB::raw("sum(erbs) as erbs"),
-            //                             \DB::raw("sum(high_peed) as high_peed"),
-            //                             \DB::raw("sum(co_enhance) as co_enhance"),
-            //                             \DB::raw("sum(ca_agg) as ca_agg")))
-            //                 ->get()->toArray();
 
              $res = B_L_TDD::where("day_id",function($query){
                                 $query->select('day_id')->from("B_L_TDD")->orderBy("day_id","desc")->limit(1);
@@ -188,21 +172,10 @@ class NetworkOverviewController extends Controller
                 $arr['TDDLTEs'][$i]['name']=trans("message.loadSurvey.".$key[$i]);
                 $arr['TDDLTEs'][$i]['data']=round($res[0][$key[$i]],2);
                 // $arr['TDDLTEs'][$i]['max']=intval($res[0]['erbs']);
-                $arr['TDDLTEs'][$i]['img'] = '/public/img/huihua.png';
-                if ( $i > 2 ) {
-                    $arr['TDDLTEs'][$i]['img'] = '/public/img/xinhao.png';
-                }
+                $arr['TDDLTEs'][$i]['img'] = $this->getImage($key[$i]);
 
             }
-            // $res = B_S_LTE_FDD::select()
-            //                 ->where("day_id",$day_id[0]['day_id'])
-            //                 ->select(array(\DB::raw("sum(carrier) as carrier"),
-            //                             \DB::raw("sum(cell) as cell"),
-            //                             \DB::raw("sum(erbs) as erbs"),
-            //                             \DB::raw("sum(high_peed) as high_peed"),
-            //                             \DB::raw("sum(co_enhance) as co_enhance"),
-            //                             \DB::raw("sum(ca_agg) as ca_agg")))
-            //                 ->get()->toArray();
+
              $res = B_L_FDD::where("day_id",function($query){
                                 $query->select('day_id')->from("B_L_FDD")->orderBy("day_id","desc")->limit(1);
                             })->select(array(\DB::raw("avg(flow) as flow"),
@@ -223,16 +196,11 @@ class NetworkOverviewController extends Controller
                 $arr['FDDLTEs'][$i]['data']=round($res[0][$key[$i]],2);
                 // $arr['FDDLTEs'][$i]['data']=3312;//intval($res[0][$key[$i]]);
                 // $arr['FDDLTEs'][$i]['max']=intval($res[0]['erbs']);
-                $arr['FDDLTEs'][$i]['img'] = '/public/img/huihua.png';
-                if ( $i > 2 ) {
-                    $arr['FDDLTEs'][$i]['img'] = '/public/img/xinhao.png';
-                }
+                $arr['FDDLTEs'][$i]['img'] = $this->getImage($key[$i]);
 
 
             }
   
-            // $res = B_L_NBIOT::select()->where("location",$city)->where("day_id","2018-9-18")->limit(1)->get()->toArray();
-            // $res = B_L_NBIOT::select()
              $res = B_L_NBIOT::where("day_id",function($query){
                                 $query->select('day_id')->from("B_L_NBIOT")->orderBy("day_id","desc")->limit(1);
                             })->select(array(
@@ -246,7 +214,7 @@ class NetworkOverviewController extends Controller
                 $arr['NBIOTs'][$i]['id']=$i;
                 $arr['NBIOTs'][$i]['name']=trans("message.loadSurvey.".$key[$i]);
                 $arr['NBIOTs'][$i]['data']=round($res[0][$key[$i]],2);
-                $arr['NBIOTs'][$i]['img'] = '/public/img/huihua.png';
+                $arr['NBIOTs'][$i]['img'] = $this->getImage($key[$i]);
 
 
             }
@@ -311,7 +279,7 @@ class NetworkOverviewController extends Controller
                 $arr['GSMs'][$i]['id']=$i;
                 $arr['GSMs'][$i]['name']=trans("message.scale.".$key[$i+3]);
                 $arr['GSMs'][$i]['data']=$res[0][$key[$i+3]];
-                $arr['GSMs'][$i]['img'] = '/public/img/huihua.png';
+                $arr['GSMs'][$i]['img'] = $this->getImage($key[$i+3]);
 
 
             }
@@ -321,46 +289,27 @@ class NetworkOverviewController extends Controller
 
             $key = array_keys($res[0]);
             $len = count($key);
-            // for($i=0;$i<$len-3;$i++){
-            //     $arr['TDDLTEs'][$i]['id']=$i;
-            //     $arr['TDDLTEs'][$i]['name']=trans("message.scale.".$key[$i+3]);
-            //     $arr['TDDLTEs'][$i]['data']=$res[0][$key[$i+3]];
-            //     $arr['TDDLTEs'][$i]['img'] = '/public/img/huihua.png';
 
-
-            // }
             for($i=0;$i<$len-3;$i++){
                 $arr['TDDLTEs'][$i]['id']=$i;
                 $arr['TDDLTEs'][$i]['name']=trans("message.scale.".$key[$i+3]);
                 $arr['TDDLTEs'][$i]['data']=intval($res[0][$key[$i+3]]);
                 $arr['TDDLTEs'][$i]['max']=intval($res[0]['erbs']);
-                $arr['TDDLTEs'][$i]['img'] = '/public/img/huihua.png';
-                if ( $i > 2 ) {
-                    $arr['TDDLTEs'][$i]['img'] = '/public/img/xinhao.png';
-                }
+                $arr['TDDLTEs'][$i]['img'] =$this->getImage($key[$i+3]);
+                // print_r($key[$i+3]);exit;
+                 // '/public/img/huihua.png';
 
             }
              $res = B_S_LTE_FDD::select()->where("location",$city)->where("day_id",$day_id[0]['day_id'])->limit(1)->get()->toArray();
 
             $key = array_keys($res[0]);
             $len = count($key);
-            // for($i=0;$i<$len-3;$i++){
-            //     $arr['FDDLTEs'][$i]['id']=$i;
-            //     $arr['FDDLTEs'][$i]['name']=trans("message.scale.".$key[$i+3]);
-            //     $arr['FDDLTEs'][$i]['data']=$res[0][$key[$i+3]];
-            //     $arr['FDDLTEs'][$i]['img'] = '/public/img/huihua.png';
-
-
-            // }
             for($i=0;$i<$len-3;$i++){
                 $arr['FDDLTEs'][$i]['id']=$i;
                 $arr['FDDLTEs'][$i]['name']=trans("message.scale.".$key[$i+3]);
                 $arr['FDDLTEs'][$i]['data']=intval($res[0][$key[$i+3]]);
                 $arr['FDDLTEs'][$i]['max']=intval($res[0]['erbs']);
-                $arr['FDDLTEs'][$i]['img'] = '/public/img/huihua.png';
-                if ( $i > 2 ) {
-                    $arr['FDDLTEs'][$i]['img'] = '/public/img/xinhao.png';
-                }
+                $arr['FDDLTEs'][$i]['img'] = $this->getImage($key[$i+3]);
 
             }
              $res = B_S_LTE_NBIOT::select()->where("location",$city)->where("day_id",$day_id[0]['day_id'])->limit(1)->get()->toArray();
@@ -371,19 +320,19 @@ class NetworkOverviewController extends Controller
                 $arr['NBIOTs'][$i]['id']=$i;
                 $arr['NBIOTs'][$i]['name']=trans("message.scale.".$key[$i+3]);
                 $arr['NBIOTs'][$i]['data']=$res[0][$key[$i+3]];
-                $arr['NBIOTs'][$i]['img'] = '/public/img/huihua.png';
+                $arr['NBIOTs'][$i]['img'] = $this->getImage($key[$i+3]);
 
 
             }
 
         }else{
             $day_id =B_S_GSM::select("day_id")->orderBy("id","desc")->limit(1)->get()->toArray();
-
-            // $res = B_S_GSM::select()->where("day_id",$day_id[0]['day_id'])->sum('cell','erbs')->get()->toArray();
             $res = B_S_GSM::select()
                             ->where("day_id",$day_id[0]['day_id'])
                             ->select(array(\DB::raw("sum(cell) as cell"),
-                                        \DB::raw("sum(erbs) as erbs")))
+                                        \DB::raw("sum(carrier) as carrier"),
+                                        \DB::raw("round(sum(tch),2) as tch"),
+                                        \DB::raw("round(sum(pdch),2) as pdch")))
                             ->get()->toArray();
             $key = array_keys($res[0]);
             $len = count($key);
@@ -391,7 +340,7 @@ class NetworkOverviewController extends Controller
                 $arr['GSMs'][$i]['id']=$i;
                 $arr['GSMs'][$i]['name']=trans("message.scale.".$key[$i]);
                 $arr['GSMs'][$i]['data']=$res[0][$key[$i]];
-                $arr['GSMs'][$i]['img'] = '/public/img/huihua.png';
+                $arr['GSMs'][$i]['img'] = $this->getImage($key[$i]);
 
 
             }
@@ -414,10 +363,7 @@ class NetworkOverviewController extends Controller
                 $arr['TDDLTEs'][$i]['name']=trans("message.scale.".$key[$i]);
                 $arr['TDDLTEs'][$i]['data']=intval($res[0][$key[$i]]);
                 $arr['TDDLTEs'][$i]['max']=intval($res[0]['erbs']);
-                $arr['TDDLTEs'][$i]['img'] = '/public/img/huihua.png';
-                if ( $i > 2 ) {
-                    $arr['TDDLTEs'][$i]['img'] = '/public/img/xinhao.png';
-                }
+                $arr['TDDLTEs'][$i]['img'] = $this->getImage($key[$i]);
 
             }
             $res = B_S_LTE_FDD::select()
@@ -438,10 +384,7 @@ class NetworkOverviewController extends Controller
                 $arr['FDDLTEs'][$i]['data']=intval($res[0][$key[$i]]);
                 // $arr['FDDLTEs'][$i]['data']=3312;//intval($res[0][$key[$i]]);
                 $arr['FDDLTEs'][$i]['max']=intval($res[0]['erbs']);
-                $arr['FDDLTEs'][$i]['img'] = '/public/img/huihua.png';
-                if ( $i > 2 ) {
-                    $arr['FDDLTEs'][$i]['img'] = '/public/img/xinhao.png';
-                }
+                $arr['FDDLTEs'][$i]['img'] = $this->getImage($key[$i]);
 
 
             }
@@ -457,7 +400,7 @@ class NetworkOverviewController extends Controller
                 $arr['NBIOTs'][$i]['id']=$i;
                 $arr['NBIOTs'][$i]['name']=trans("message.scale.".$key[$i]);
                 $arr['NBIOTs'][$i]['data']=$res[0][$key[$i]];
-                $arr['NBIOTs'][$i]['img'] = '/public/img/huihua.png';
+                $arr['NBIOTs'][$i]['img'] = $this->getImage($key[$i]);
 
 
             }
@@ -635,24 +578,12 @@ class NetworkOverviewController extends Controller
                 if(eval("return $str;")){
                     $arr[$id]['color']="blue"; 
                 }
-                // var_dump($result[0][$key[$i]]."\"$limit[$key[$i]]['operate']\""."'".$limit[$key[$i]]['value']."'");
-                // if($result[0][$key[$i]]."\"$limit[$key[$i]]['operate']\""."'".$limit[$key[$i]]['value']."'"){
-                //     $arr[$id]['color']="red"; 
-                // }
                 
             }
-            // if($result[0][$key[$i]] .$sss[$key[$i]]['operate'].$sss[$key[$i]]['value'])
 
             $id++;
         }
         return $arr;
-        // foreach ($result as $key => $value) {
-        //     $
-        // }
-
-
-         // for($i=)
-
     }
 
     public function getcharts() {
@@ -748,6 +679,63 @@ class NetworkOverviewController extends Controller
         $datas['ycategories'] = $ycategories;
         $datas['ydata'] = $ydata;
         return $datas;
+    }
+
+    public function getImage($name){
+       $image ="";
+       switch ($name){
+        case 'cell':
+        $image = "/public/img/小区.png";
+        break;
+        case 'carrier':
+        $image = "/public/img/载波.png";
+        break;
+         case 'erbs':
+        $image = "/public/img/基站.png";
+        break;
+        case 'ca_agg':
+        $image = "/public/img/载波聚合.png";
+        break;
+         case 'co_enhance':
+        $image = "/public/img/覆盖增强.png";
+        break;
+         case 'high_peed':
+        $image = "/public/img/高速移动.png";
+        break;
+         case 'tch':
+         case 'pdch':
+        $image = "/public/img/信道.png";
+        break;
+        case 'tel_traffic_tch':
+        case 'tel_traffic':
+        case 'volte_traffic':
+        $image = "/public/img/话务量.png";
+        break;
+        case 'flow':
+        case 'data_traffic':
+        case 'data_traffic_pdch':
+        $image = "/public/img/流量.png";
+        break;
+         case 'prb':
+         case 'cce':
+         case 'wireless_rate':
+         case 'npdcch':
+        $image = "/public/img/比率.png";
+        break;
+         case 'rrc_users':
+         case 'rrc_cell_user_mean':
+         case 'rrc_cell_users_max':
+         case 'rrc_users_cell':
+         case 'rrc_cell_band_users':
+        $image = "/public/img/用户数.png";
+        break;
+        default:
+        $image= "/public/img/huihua.png";
+        break;
+
+       }
+       return $image;
+
     }
 
 }
