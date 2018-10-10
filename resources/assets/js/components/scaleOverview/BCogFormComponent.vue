@@ -130,6 +130,10 @@
 		      	shows: true
 		    }
 		},
+		beforeDestroy () {
+	      	this.bus.$off('cityClickData', this.handle)
+	      	this.bus.$off('getTabsData', this.handle)
+	    },
 	  	methods: {
 	    	onSubmit (evt) {
 	      		evt.preventDefault();

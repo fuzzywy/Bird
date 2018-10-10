@@ -138,23 +138,14 @@
                     }
                     let series = charts.addSeries(val.ydata[i])  
                 }*/
+
             }   
         },
         mounted() {
             var charts = new Highcharts.chart(this.id, this.option)
             charts.reflow();
             this.charts = charts
-            /*this.$store.dispatch( 'loadBLineChartStatus', {
-                type: this.types,
-                city: this.city,
-                overview: this.overview
-            })*/
-            /*this.bus.$on('leftClick', overview => {
-                this.overview = overview
-            })
-            this.bus.$on('cityClick', city => {
-                this.city = city
-            })*/
+
             this.bus.$on('getTabsId', id=> {
                 this.cardId = id
                 if (this.overview == 'indexoverview') {
@@ -169,12 +160,6 @@
                         }
                         this.charts.addSeries(this.option.ydata[i])
                     }
-                    // this.charts = this.option
-                    /*this.$store.dispatch( 'loadBLineChartStatus', {
-                        type: this.types,
-                        city: this.city,
-                        overview: this.overview
-                    })*/
                 }
             })
             this.bus.$on('getTabsType', types=> {
@@ -182,53 +167,18 @@
                 this.types = types
             })
             this.bus.$on('leftClickData', overview => {
-                // this.overview = overview
-                // var obj = this.option
-                // var id = this.id
                 this.cardId = 0
                 this.overview = overview
 
-                // this.charts.splice(0, this.charts.length)
-                // this.charts = charts
-                if (this.overview == 'indexoverview') {
+                /*if (this.overview == 'indexoverview') {
                     this.$store.dispatch( 'loadBLineChartStatus', {
                         type: this.types,
                         city: this.city,
                         overview: this.overview
                     })
-                }
-                
-                /*axios.get('getcharts', {
-                    params: {
-                        data: this.types,
-                        city: this.city,
-                        overview: this.overview
-                    }
-                })
-                .then(function(response) {
-                    //clear data
-                    while (charts.series.length > 0) {
-                        charts.series[0].remove(true);
-                    }
-                    charts.setTitle(response.data.title, response.data.subtitle)
-                    charts.yAxis[0].setTitle(response.data.ytitle)
-                    charts.xAxis[0].setTitle(response.data.xtitle)                    
-
-                    charts.xAxis[0].categories = response.data.xcategories;
-                    charts.yAxis[0].categories = response.data.ycategories;
-
-                    for (var i = response.data.ydata.length - 1; i >= 0; i--) {
-                        var series = charts.addSeries(response.data.ydata[i])  
-                    }
-                })
-                .catch(function(error) {
-                    console.log(error)
-                })*/
+                }*/
             })
             this.bus.$on('cityClickData', city => {
-                // this.city = city
-                // var obj = this.option
-                // var id = this.id
                 this.cardId = 0
                 this.city = city
 
@@ -239,37 +189,8 @@
                         overview: this.overview
                     })
                 }
-                /*axios.get('getcharts', {
-                    params: {
-                        data: this.types,
-                        city: this.city,
-                        overview: this.overview
-                    }
-                })
-                .then(function(response) {
-                    //clear data
-                    while (charts.series.length > 0) {
-                        charts.series[0].remove(true);
-                    }
-                    charts.setTitle(response.data.title, response.data.subtitle)
-                    charts.yAxis[0].setTitle(response.data.ytitle)
-                    charts.xAxis[0].setTitle(response.data.xtitle)                    
-
-                    charts.xAxis[0].categories = response.data.xcategories;
-                    charts.yAxis[0].categories = response.data.ycategories;
-
-                    for (var i = response.data.ydata.length - 1; i >= 0; i--) {
-                        var series = charts.addSeries(response.data.ydata[i])  
-                    }
-                    charts.reflow();
-                })
-                .catch(function(error) {
-                    console.log(error)
-                })*/
             })
             this.bus.$on('getTabsData', types => {
-                // var obj = this.option
-                // var id = this.id
                 this.types = types
 
                 if (this.overview == 'indexoverview') {
@@ -279,35 +200,8 @@
                         overview: this.overview
                     })
                 }
-                /*axios.get('getcharts' , {
-                    params: {
-                        data: this.types,
-                        city: this.city,
-                        overview: this.overview
-                    }
-                })
-                .then(function(response) {
-                    //clear data
-                    while (charts.series.length > 0) {
-                        charts.series[0].remove(true);
-                    }
-                    charts.setTitle(response.data.title, response.data.subtitle)
-                    charts.yAxis[0].setTitle(response.data.ytitle)
-                    charts.xAxis[0].setTitle(response.data.xtitle)                    
-
-                    charts.xAxis[0].categories = response.data.xcategories;
-                    charts.yAxis[0].categories = response.data.ycategories;
-                    // charts.yAxis[0].tickPositions = response.data.ycategories;
-                    // console.log(charts)
-                    for (var i = response.data.ydata.length - 1; i >= 0; i--) {
-                        var series = charts.addSeries(response.data.ydata[i])  
-                    }
-                    charts.reflow();
-                })
-                .catch(function(error) {
-                    console.log(error)
-                })*/
             })
+
         }
         /*components: {
             XChart
