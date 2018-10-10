@@ -130,12 +130,12 @@
 			            :key="post.id"
 			            :class="post.col" 
 			        >
-				        <div class='scalecard' v-show="post.img == '/public/img/huihua.png'" style="vertical-align: middle;">
+				        <div class='scalecard' v-show="post.img == '/public/img/载波.png' || post.img == '/public/img/小区.png' || post.img == '/public/img/基站.png' || post.img == '/public/img/xinhao.png'" style="vertical-align: middle;">
 			        		<img class='floatleft' :src="post.img">
 			        		<div class="postdata" style="color: #fff; padding-top: 20px;">{{post.data}}</div>
 			        		<div class="posttype" style="color: #fff">{{post.name}}</div>
 			        	</div>
-			        	<div v-show="post.img == '/public/img/xinhao.png'" style="vertical-align: middle;">
+			        	<div v-show="post.img == '/public/img/载波聚合.png' || post.img == '/public/img/高速移动.png' || post.img == '/public/img/覆盖增强.png' || post.img == '/public/img/huihua.png'" style="vertical-align: middle;">
 			        		<img class='floatleft' :src="post.img">
 			        		<div class="posttype" style="color: #000; padding-top: 20px;">{{post.name}}</div>
 			        		<div class="postdata" style="color: #000;">{{post.data}}/{{post.max}}</div>
@@ -167,12 +167,12 @@
 			            :key="post.id"
 			            :class="post.col" 
 			        >
-			        	<div class='scalecard' v-show="post.img == '/public/img/huihua.png'" style="vertical-align: middle;">
+			        	<div class='scalecard' v-show="post.img == '/public/img/载波.png' || post.img == '/public/img/小区.png' || post.img == '/public/img/基站.png' || post.img == '/public/img/xinhao.png'" style="vertical-align: middle;">
 			        		<img class='floatleft' :src="post.img">
 			        		<div class="postdata" style="color: #fff; padding-top: 20px;">{{post.data}}</div>
 			        		<div class="posttype" style="color: #fff">{{post.name}}</div>
 			        	</div>
-			        	<div v-show="post.img == '/public/img/xinhao.png'" style="vertical-align: middle;">
+			        	<div v-show="post.img == '/public/img/载波聚合.png' || post.img == '/public/img/高速移动.png' || post.img == '/public/img/覆盖增强.png' || post.img == '/public/img/huihua.png'" style="vertical-align: middle;">
 			        		<img class='floatleft' :src="post.img">
 			        		<div class="posttype" style="color: #000; padding-top: 20px;">{{post.name}}</div>
 			        		<div class="postdata" style="color: #000;">{{post.data}}/{{post.max}}</div>
