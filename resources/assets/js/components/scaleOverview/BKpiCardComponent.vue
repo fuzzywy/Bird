@@ -387,6 +387,8 @@
 		border-radius: 3px;
 	}
 	.floatleft {
+		position: relative;
+		padding: 10px 10px;
 		vertical-align: middle;
 		/*background-color: #20a8d8;*/
 		width: 100px;
