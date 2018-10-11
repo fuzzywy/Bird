@@ -52,7 +52,8 @@
 	    </b-row>
 
 	    <!-- Main table element -->
-	    <b-table show-empty
+	    <b-table striped 
+	    		 show-empty
 	             stacked="md"
 	             :items="items"
 	             :fields="fields"
@@ -62,6 +63,7 @@
 	             :sort-by.sync="sortBy"
 	             :sort-desc.sync="sortDesc"
 	             :sort-direction="sortDirection"
+	             :fixed="fixed"
 	             @filtered="onFiltered"
 	             v-show="showCog==2"
 	    >
@@ -143,7 +145,16 @@
 </template>
 
 <style>
-	
+	/*.test{
+		background-color: red;
+	}*/
+	.line-limit-length {
+		max-width: 200px;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		white-space: nowrap;
+
+	}
 </style>
 
 <script>
@@ -185,18 +196,24 @@
 		    return {
 		      items: [],
 		      fields: [
+		      	{ key: 'type', label: 'Type', sortable: true, class: 'text-center' },
+		      	{ key: 'connname', label: 'ConnName', sortable: true, sortDirection: 'desc' },
+		      	{ key: 'city', label: 'city', sortable: true, sortDirection: 'desc' },
 		      	{ key: 'ip', label: 'IP address', sortable: true, sortDirection: 'desc' },
 		      	{ key: 'port', label: 'Port', sortable: true, class: 'text-center' },
 		      	{ key: 'database', label: 'Database' },
 		      	{ key: 'user', label: 'User' },
 		      	{ key: 'pwd', label: 'Password' },
-		      	{ key: 'type', label: 'Type' },
+		      	{ key: 'subnetwork', label: 'subNetwork', class: 'line-limit-length' },
+		      	{ key: 'subnetworkfdd', label: 'subNetworkFdd', class: 'line-limit-length' },
+		      	{ key: 'subnetworknbiot', label: 'subNetworkNbiot', class: 'line-limit-length' },
 		        { key: 'actions', label: 'Actions' }
 		        /*{ key: 'name', label: 'Person Full name', sortable: true, sortDirection: 'desc' },
 		        { key: 'age', label: 'Person age', sortable: true, 'class': 'text-center' },
 		        { key: 'isActive', label: 'is Active' },
 		        { key: 'actions', label: 'Actions' }*/
 		      ],
+		      fixed: false,
 		      currentPage: 1,
 		      perPage: 5,
 		      totalRows: items.length,
@@ -236,7 +253,7 @@
 		  methods: {
 		  	addColumn () {
 		  		this.newItems = []
-		  		this.newItems.push({ id: '', _showDetails: true, ip: '', port: '', database: '', user: '', pwd: '', type: '' })
+		  		this.newItems.push({ id: '', _showDetails: true, ip: '', connname: '', city: '', port: '', database: '', user: '', pwd: '', type: '', subnetwork: '', subnetworkfdd: '', subnetworknbiot: '' })
 		  		for (var i = this.items.length - 1; i >= 0; i--) {
 		  			this.newItems.push(this.items[i])
 		  		}
@@ -249,11 +266,16 @@
 		  	modifyOK () {
 		  		this.$store.dispatch('uploadCog', {
 	      			ip: this.modify.ip,
+	      			connname: this.modify.connname,
+	      			city: this.modify.city,
 	      			port: this.modify.port,
 	      			database: this.modify.database,
 	      			user: this.modify.user,
 	      			pwd: this.modify.pwd,
-	      			type: this.modify.type
+	      			type: this.modify.type,
+	      			subnetwork: this.modify.subnetwork,
+	      			subnetworkfdd: this.modify.subnetworkfdd,
+	      			subnetworknbiot: this.modify.subnetworknbiot
 	      		})
 	      		this.confirmModify.title = ''
 		  		this.confirmModify.content = '修改成功'
@@ -271,11 +293,16 @@
 		  		// evt.preventDefault()
 		  		this.$store.dispatch('deleteCog', {
 	      			ip: this.delete.ip,
+	      			connname: this.delete.connname,
+	      			city: this.delete.city,
 	      			port: this.delete.port,
 	      			database: this.delete.database,
 	      			user: this.delete.user,
 	      			pwd: this.delete.pwd,
-	      			type: this.delete.type
+	      			type: this.delete.type,
+	      			subnetwork: this.delete.subnetwork,
+	      			subnetworkfdd: this.delete.subnetworkfdd,
+	      			subnetworknbiot: this.delete.subnetworknbiot
 	      		})
 		  		// this.$store.dispatch('showCog')
 		  		this.newItems = []

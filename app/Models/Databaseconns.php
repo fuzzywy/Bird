@@ -9,5 +9,5 @@ class Databaseconns extends Model
     public $timestamps = false;
     protected $connection = 'Bird';
     protected $table = 'databaseconn';
-    protected $fillable = ['connName', 'cityChinese'];//
+    protected $fillable = ['connName', 'cityChinese', 'port', 'host', 'dbName', 'userName', 'password', 'subNetwork', 'subNetworkFdd', 'subNetworkNbiot'];//
 }

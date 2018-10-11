@@ -14,7 +14,7 @@ let instance = axios.create({
 });*/
 
 window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
-
+// window.axios.defaults.headers.common['Content-Type'] = "application/x-www-form-urlencoded;charset=UTF-8";
 /**
  * Next we will register the CSRF Token as a common header with Axios so that
  * all outgoing HTTP requests automatically have it attached. This is just
@@ -22,6 +22,10 @@ window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
  */
 
 let token = document.head.querySelector('meta[name="csrf-token"]');
+
+/*window.axios.defaults.headers = {
+    "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8"
+}*/
 
 if (token) {
     window.axios.defaults.headers.common['X-CSRF-TOKEN'] = token.content;

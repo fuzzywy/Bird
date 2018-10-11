@@ -46,6 +46,12 @@ export default new VueRouter({
                 BCogFormBack: Vue.component('BCogFormBackComponent', require('./components/scaleOverview/BCogFormBackComponent.vue')),
                 BCogFormTable: Vue.component('BCogFormComponent', require('./components/scaleOverview/BCogFormTableComponent.vue')),
             }
+        },{
+            path: '/piechart',
+            name: 'BPieChart',
+            components: {
+                BPieChart: Vue.component('BPieChartComponent', require('./components/scaleOverview/BPieChartComponent.vue')),
+            }
         }
     ]
 });
