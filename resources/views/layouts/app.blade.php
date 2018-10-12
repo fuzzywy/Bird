@@ -65,6 +65,16 @@
         .content{
             margin-top: 100px;
         }*/
+        .header{
+            position: fixed; 
+            left: 0; 
+            right: 0; 
+            z-index: 999; 
+            height: 50px;
+            width: 100%; 
+            min-width: 1000px; 
+        }
+
         .container {
           margin-right: 0px;
           margin-left: 0px;
@@ -96,7 +106,7 @@
 </head>
 <body>
     <div id="app">
-        <nav class="navbar navbar-expand-md navbar-light navbar-laravel">
+        <nav class="navbar navbar-expand-md navbar-light navbar-laravel header">
             <div class="container">
                 <a class="navbar-brand" href="{{ url('/') }}">
                     {{ config('app.name', 'Laravel') }}

@@ -1,6 +1,6 @@
 <template>
 	<div class='container'>
-	  <div class="row">
+	  <div class="row top">
 	    <div class="col-2">
 	          <BirdSideBarComponent></BirdSideBarComponent>
 	    </div>
@@ -16,7 +16,9 @@
 </template>
 
 <style>
-	
+	.top {
+		margin-top: 50px;
+	}
 </style>
 
 <script>

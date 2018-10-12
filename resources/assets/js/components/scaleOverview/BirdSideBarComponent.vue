@@ -1,5 +1,5 @@
 <template>
-	<div>
+	<div class="siderbar">
 		<b-card header="<b>网络概览</b>" @click='switches' :class='state'>
 			<b-list-group flush>
 				<span v-show="birdSideBarLoadStatus == 1"><img src="/public/img/loading.gif">&nbsp;loading...</span>
@@ -24,7 +24,12 @@
 		/*-webkit-transition:height 2s;*/ /* Safari and Chrome */
 		/*-o-transition:height 2s;*/ /* Opera */
 	/*}*/
-
+	.siderbar {
+	    position: fixed;
+		left: 15px;
+		right: 20px;
+		width: 225px;
+	}
 	.card-body-disappear > .card-body {
 		/*height: 0px;*/
 		display: none;
