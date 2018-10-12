@@ -136,7 +136,7 @@
 	    	<pre> {{ confirm.content }} </pre>
 	    </b-modal>
 
-	    <b-modal id="confirmModify" :title="confirmModify.title">
+	    <b-modal id="confirmModify" :title="confirmModify.title" @ok="updateok">
 	    	<pre> {{ confirmModify.content }} </pre>
 	    </b-modal>
 
@@ -226,7 +226,7 @@
 		      confirm: { title: '', content: '' },
 		      confirmModify: { title: '', content: '' },
 		      delete: [],
-		      newItems: [],
+		      // newItems: [],
 		      modify: []/*,
 		      type: null,
 		      types: [
@@ -252,12 +252,22 @@
 		  },
 		  methods: {
 		  	addColumn () {
-		  		this.newItems = []
-		  		this.newItems.push({ id: '', _showDetails: true, ip: '', connname: '', city: '', port: '', database: '', user: '', pwd: '', type: '', subnetwork: '', subnetworkfdd: '', subnetworknbiot: '' })
+		  		// this.$store.dispatch('showCog')
+		  		this.filter = null
+		  		this.currentPage = 1
+		  		this.modify = []
+		  		this.modify.push({ id: '-1', _showDetails: true, ip: '', connname: '', city: '', port: '', database: '', user: '', pwd: '', type: '', subnetwork: '', subnetworkfdd: '', subnetworknbiot: '' })
+		  		//限制add数量只能是一个
 		  		for (var i = this.items.length - 1; i >= 0; i--) {
-		  			this.newItems.push(this.items[i])
+		  			if( this.items[i].id == -1 ) {
+		  				this.items[i]._showDetails = true
+			  			return;
+			  		}
 		  		}
-		  		this.items = this.newItems
+		  		for (var i = this.items.length - 1; i >= 0; i--) {
+		  			this.modify.push(this.items[i])
+		  		}
+		  		this.items = this.modify
 		  		
 		  	},
 		  	modifyData ( item, index, button ) {
@@ -280,7 +290,7 @@
 	      		this.confirmModify.title = ''
 		  		this.confirmModify.content = '修改成功'
 		  		this.$root.$emit('bv::show::modal', 'confirmModify', '#confirmModify')
-		  		this.$store.dispatch('showCog')
+		  		// this.$store.dispatch('showCog')
 	      		// this.$store.dispatch('showCog')
 		  	},
 		  	del ( item, index, button ) {
@@ -305,15 +315,21 @@
 	      			subnetworknbiot: this.delete.subnetworknbiot
 	      		})
 		  		// this.$store.dispatch('showCog')
-		  		this.newItems = []
+		  		this.modify = []
 		  		for (var i = this.items.length - 1; i >= 0; i--) {
 		  			if( this.items[i].id != this.delete.id ) {
-		  				this.newItems.push(this.items[i])
+		  				this.modify.push(this.items[i])
 		  			}
 		  		}
-		  		this.items = this.newItems.sort(function(a, b) {
+		  		this.items = this.modify.sort(function(a, b) {
 		  			return a.id - b.id
 		  		})
+		  	},
+		  	//更新table
+		  	updateok () {
+		  		this.$store.dispatch('showCog')
+		  		this.modify = []
+		  		// this.newItems = []
 		  	},
 		    info (item, index, button) {
 		    	/*this.$store.dispatch('uploadCog', {

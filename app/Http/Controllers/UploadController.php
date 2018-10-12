@@ -33,7 +33,7 @@ class UploadController extends Controller
 					$connname = $d[1];
 					break;
 				case 'city':
-					$city = $d[1];
+					$city = urldecode($d[1]);
 					break;		
 				case 'type':
 					$type = $d[1];
@@ -51,42 +51,34 @@ class UploadController extends Controller
 					$pwd = $d[1];
 					break;
 				case 'subnetwork':
-					$subnetwork = $d[1];
+					$subnetwork = urldecode($d[1]);
 					break;
 				case 'subnetworkfdd':
-					$subnetworkfdd = $d[1];
+					$subnetworkfdd = urldecode($d[1]);
 					break;
 				case 'subnetworknbiot':
-					$subnetworknbiot = $d[1];
+					$subnetworknbiot = urldecode($d[1]);
 					break;	
 				default:
 					break;
 			}
 		}
-		print_r($this->unicodeDecode($city));
 		if ( strtoupper( $type ) === 'LTE' ) {
 			Databaseconns::firstOrCreate(['host' => $ip]);
 			Databaseconns::where('host', $ip)
-				->update(['connName' => $connname, 'cityChinese' => $this->unicodeDecode($city), 'port' => $port, 'dbName' => $database, 'userName' => $user, 'password' => $pwd, 'subNetwork' => $subnetwork, 'subNetworkFdd' => $subnetworkfdd, 'subNetworkNbiot' => $subnetworknbiot ]);
+				->update(['connName' => $connname, 'cityChinese' => $city, 'port' => $port, 'dbName' => $database, 'userName' => $user, 'password' => $pwd, 'subNetwork' => $subnetwork, 'subNetworkFdd' => $subnetworkfdd, 'subNetworkNbiot' => $subnetworknbiot ]);
 
 			/*Databaseconns::updateOrCreate(
 				[ 'host' => $ip ],
 				[ 'connName' => $connname ]
 			);*/
 		} elseif ( strtoupper( $type ) === 'GSM' ) {
-			Databaseconns2G::updateOrCreate(['host' => $ip]);
-			Databaseconns2G::where('host', $ip)
-				->update(['connName' => $connname, 'cityChinese' => $city, 'dbName' => $database, 'userName' => $user, 'password' => $pwd, 'subNetwork' => $subnetwork, 'subNetworkFdd' => $subnetworkfdd, 'subNetworkNbiot' =>$subnetworknbiot ]);
+			Databaseconn2G::firstOrCreate(['host' => $ip]);
+			Databaseconn2G::where('host', $ip)
+				->update(['connName' => $connname, 'cityChinese' => $city, 'port' => $port, 'dbName' => $database, 'userName' => $user, 'password' => $pwd ]);
 		} else {
 			// return false;
 		}
-	}
-
-	function unicodeDecode($unicode_str){
-	    $json = '{"str":"'.$unicode_str.'"}';
-	    $arr = json_decode($json,true);
-	    if(empty($arr)) return '';
-	    return $arr['str'];
 	}
 
 	public function showCog() {
@@ -156,7 +148,7 @@ class UploadController extends Controller
 			// print_r(Databaseconns::where('host', $ip)->delete()->toSql());
 			// return true;
 		} elseif ( strtoupper( $type ) === 'GSM' ) {
-			Databaseconns2G::where('host', $ip)->delete();
+			Databaseconn2G::where('host', $ip)->delete();
 			// return true;
 		} else {
 			// return false;
