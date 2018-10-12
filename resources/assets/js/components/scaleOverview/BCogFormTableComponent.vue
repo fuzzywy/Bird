@@ -1,5 +1,5 @@
 <template>
-	<div style="background-color: white; padding: 15px 15px 15px 15px;">
+	<div class="top">
 		<b-container fluid>
 	    <!-- User Interface controls -->
 	    <b-row>
@@ -148,6 +148,11 @@
 	/*.test{
 		background-color: red;
 	}*/
+	.top {
+		background-color: white; 
+		padding: 15px 15px 15px 15px;
+		margin-top: 50px;
+	}
 	.line-limit-length {
 		max-width: 200px;
 		overflow: hidden;
