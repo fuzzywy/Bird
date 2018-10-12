@@ -1,5 +1,5 @@
 <template>
-	<div class="top">
+	<div class="top-cog">
 		<b-container fluid>
 	    <!-- User Interface controls -->
 	    <b-row>
@@ -148,7 +148,7 @@
 	/*.test{
 		background-color: red;
 	}*/
-	.top {
+	.top-cog {
 		background-color: white; 
 		padding: 15px 15px 15px 15px;
 		margin-top: 50px;
