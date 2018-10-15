@@ -72,7 +72,7 @@ class NetworkOverviewController extends Controller
             for($i=0;$i<$len-3;$i++){
                 $arr['GSMs'][$i]['id']=$i;
                 $arr['GSMs'][$i]['name']=trans("message.loadSurvey.".$key[$i+3]);
-                $arr['GSMs'][$i]['data']=round($res[0][$key[$i+3]],2);
+                $arr['GSMs'][$i]['data']=round($res[0][$key[$i+3]],2).$this->getUnit($key[$i+3]);
                 $arr['GSMs'][$i]['img'] = $this->getImage($key[$i+3]);
 
 
@@ -90,7 +90,7 @@ class NetworkOverviewController extends Controller
             for($i=0;$i<$len-3;$i++){
                 $arr['TDDLTEs'][$i]['id']=$i;
                 $arr['TDDLTEs'][$i]['name']=trans("message.loadSurvey.".$key[$i+3]);
-                $arr['TDDLTEs'][$i]['data']=round($res[0][$key[$i+3]],2);
+                $arr['TDDLTEs'][$i]['data']=round($res[0][$key[$i+3]],2).$this->getUnit($key[$i+3]);
                 // $arr['TDDLTEs'][$i]['max']=intval($res[0]['erbs']);
                 $arr['TDDLTEs'][$i]['img'] = $this->getImage($key[$i+3]);
 
@@ -106,7 +106,7 @@ class NetworkOverviewController extends Controller
             for($i=0;$i<$len-3;$i++){
                 $arr['FDDLTEs'][$i]['id']=$i;
                 $arr['FDDLTEs'][$i]['name']=trans("message.loadSurvey.".$key[$i+3]);
-                $arr['FDDLTEs'][$i]['data']=round($res[0][$key[$i+3]],2);
+                $arr['FDDLTEs'][$i]['data']=round($res[0][$key[$i+3]],2).$this->getUnit($key[$i+3]);
                 $arr['FDDLTEs'][$i]['img'] = $this->getImage($key[$i+3]);
 
             }
@@ -125,13 +125,7 @@ class NetworkOverviewController extends Controller
         }else{
             $day_id =B_S_GSM::select("day_id")->orderBy("id","desc")->limit(1)->get()->toArray();
 
-            // $res = B_S_GSM::select()->where("day_id",$day_id[0]['day_id'])->sum('cell','erbs')->get()->toArray();
-            // $res = B_S_GSM::select()
-            //                 ->where("day_id",$day_id[0]['day_id'])
-            //                 ->select(array(\DB::raw("sum(cell) as cell"),
-            //                             \DB::raw("sum(erbs) as erbs")))
-            //                 ->get()->toArray();
-              $res = B_L_GSM_Day::where("day_id",function($query){
+            $res = B_L_GSM_Day::where("day_id",function($query){
                                 $query->select('day_id')->from("B_L_GSM_Day")->orderBy("day_id","desc")->limit(1);
                             })->select(array(\DB::raw("avg(tel_traffic) as tel_traffic"),
                                             \DB::raw("avg(data_traffic) as data_traffic"),
@@ -145,7 +139,7 @@ class NetworkOverviewController extends Controller
             for($i=0;$i<$len;$i++){
                 $arr['GSMs'][$i]['id']=$i;
                 $arr['GSMs'][$i]['name']=trans("message.loadSurvey.".$key[$i]);
-                $arr['GSMs'][$i]['data']=round($res[0][$key[$i]],2);
+                $arr['GSMs'][$i]['data']=round($res[0][$key[$i]],2).$this->getUnit($key[$i]);
                 $arr['GSMs'][$i]['img'] = $this->getImage($key[$i]);
 
 
@@ -170,7 +164,7 @@ class NetworkOverviewController extends Controller
             for($i=0;$i<$len;$i++){
                 $arr['TDDLTEs'][$i]['id']=$i;
                 $arr['TDDLTEs'][$i]['name']=trans("message.loadSurvey.".$key[$i]);
-                $arr['TDDLTEs'][$i]['data']=round($res[0][$key[$i]],2);
+                $arr['TDDLTEs'][$i]['data']=round($res[0][$key[$i]],2).$this->getUnit($key[$i]);
                 // $arr['TDDLTEs'][$i]['max']=intval($res[0]['erbs']);
                 $arr['TDDLTEs'][$i]['img'] = $this->getImage($key[$i]);
 
@@ -193,9 +187,7 @@ class NetworkOverviewController extends Controller
             for($i=0;$i<$len;$i++){
                 $arr['FDDLTEs'][$i]['id']=$i;
                 $arr['FDDLTEs'][$i]['name']=trans("message.loadSurvey.".$key[$i]);
-                $arr['FDDLTEs'][$i]['data']=round($res[0][$key[$i]],2);
-                // $arr['FDDLTEs'][$i]['data']=3312;//intval($res[0][$key[$i]]);
-                // $arr['FDDLTEs'][$i]['max']=intval($res[0]['erbs']);
+                $arr['FDDLTEs'][$i]['data']=round($res[0][$key[$i]],2).$this->getUnit($key[$i]);
                 $arr['FDDLTEs'][$i]['img'] = $this->getImage($key[$i]);
 
 
@@ -207,7 +199,6 @@ class NetworkOverviewController extends Controller
                                         \DB::raw("max(rrc_users_cell) as rrc_users_cell"),
                                         \DB::raw("max(npdcch) as npdcch")))
                             ->get()->toArray();
-            // print_r($res);exit;
             $key = array_keys($res[0]);
             $len = count($key);
             for($i=0;$i<$len;$i++){
@@ -458,7 +449,6 @@ class NetworkOverviewController extends Controller
         }
         // $data ="GSM";
         $overview = input::get('overview');
-        // $db = new PDO("mysql:host=10.39.148.186;port=13306;dbname=Bird", 'root', 'mongs');
 
         if($data=="GSM"){
                 if($city=="全省"||$city=="province"){
@@ -681,7 +671,7 @@ class NetworkOverviewController extends Controller
         return $datas;
     }
 
-    public function getImage($name){
+    protected function getImage($name){
        $image ="";
        switch ($name){
         case 'cell':
@@ -736,6 +726,25 @@ class NetworkOverviewController extends Controller
        }
        return $image;
 
+    }
+
+    protected function getUnit($name){
+        $str = "";
+        switch($name){
+            case 'flow':
+            case 'data_traffic':
+                $str="G";
+            break;
+            case 'volte_traffic':
+            case 'tel_traffic':
+            $str="M";
+            break;
+            default:
+            $str ="";
+            break;
+
+        }
+        return $str;
     }
 
 }
