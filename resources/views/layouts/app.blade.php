@@ -105,6 +105,11 @@
     </style>
 </head>
 <body>
+    <!-- <div id='test'>
+        @can('Setting')
+            测试验证方法
+        @endcan
+    </div> -->
     <div id="app">
         <nav class="navbar navbar-expand-md navbar-light navbar-laravel header">
             <div class="container">
@@ -140,8 +145,10 @@
                                     <!-- <i class="fa fa-dashboard"></i> -->
                                     <!-- <img src="/public/img/cog.png" style="height: 15px;"> -->
                                     <!-- @yield('cog') -->
+                                @can('Set interface')
                                     @section('cog')
                                     @show
+                                @endcan
                                
                            
 

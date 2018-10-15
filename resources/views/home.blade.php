@@ -10,6 +10,8 @@
 @section('content')
 <router-view name="HomeComponent"></router-view>
 <router-view name="BCogFormTable"></router-view>
+
+<router-view name="BPieChart"></router-view>
 <!-- Home Page -->
 <!-- <div class="container">
   <router-view name="BCogFormTable"></router-view>
