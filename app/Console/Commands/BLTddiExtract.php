@@ -92,6 +92,9 @@ class BLTddExtract extends Command
 
             }
 
+            if(!$item){
+                continue;
+            }
 
             // print_r(count($item));exit;
             $item_len = count($item);

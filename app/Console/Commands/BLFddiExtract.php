@@ -89,7 +89,10 @@ class BLFddExtract extends Command
                 }        
 
             }
-            // print_r($item);
+
+            if(!$item){
+                continue;
+            }
             // print_r(count($item));exit;
             $item_len = count($item);
             $len     = count($item[0]);

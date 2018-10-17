@@ -56,20 +56,22 @@ class SLteExtract extends Command
         $db = $dbc->getDB("kget",$kgetdb);
         // print_r($kgetdb);exit;
         //备份B_S_LTE_NBIOT
-        foreach ($cityList as $key => $value) {
+        if($dbc->tableIfExists($kgetdb,"NbIotCell")){
+            foreach ($cityList as $key => $value) {
 
-            $subnet = $dbc->getSubNetsArr("NBIOT",$value->cityChinese);
+                $subnet = $dbc->getSubNetsArr("NBIOT",$value->cityChinese);
 
-            $cell    = NbIotCell::whereIn('subNetWork',$subnet)->distinct('nbIotCellId')->count('nbIotCellId');
-            $erbs    = NbIotCell::whereIn('subNetWork',$subnet)->distinct('meContext')->count('meContext');
-   
-            $NbIotCell = new B_S_LTE_NBIOT;
-            $NbIotCell->day_id   = date("Y-m-d");
-            $NbIotCell->location = $value->cityChinese;
-            $NbIotCell->cell     = $cell;
-            $NbIotCell->erbs     = $erbs;
-            $NbIotCell->save();
+                $cell    = NbIotCell::whereIn('subNetWork',$subnet)->distinct('nbIotCellId')->count('nbIotCellId');
+                $erbs    = NbIotCell::whereIn('subNetWork',$subnet)->distinct('meContext')->count('meContext');
+       
+                $NbIotCell = new B_S_LTE_NBIOT;
+                $NbIotCell->day_id   = date("Y-m-d");
+                $NbIotCell->location = $value->cityChinese;
+                $NbIotCell->cell     = $cell;
+                $NbIotCell->erbs     = $erbs;
+                $NbIotCell->save();
 
+            }
         }
         //B_S_LTE_TDD
 

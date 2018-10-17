@@ -87,32 +87,38 @@ class NetworkOverviewController extends Controller
                             ->where("day_id",function($query){
                                 $query->select('day_id')->from("B_L_TDD")->orderBy("day_id","desc")->limit(1);
                             })->get()->toArray();
-            $key = array_keys($res[0]);
-            $len = count($key);
+            if($res){
+                $key = array_keys($res[0]);
+                $len = count($key);
 
-            for($i=0;$i<$len-3;$i++){
-                $arr['TDDLTEs'][$i]['id']=$i;
-                $arr['TDDLTEs'][$i]['name']=trans("message.loadSurvey.".$key[$i+3]);
-                $arr['TDDLTEs'][$i]['data']=round($res[0][$key[$i+3]],2).$this->getUnit($key[$i+3]);
-                // $arr['TDDLTEs'][$i]['max']=intval($res[0]['erbs']);
-                $arr['TDDLTEs'][$i]['img'] = $this->getImage($key[$i+3]);
+                for($i=0;$i<$len-3;$i++){
+                    $arr['TDDLTEs'][$i]['id']=$i;
+                    $arr['TDDLTEs'][$i]['name']=trans("message.loadSurvey.".$key[$i+3]);
+                    $arr['TDDLTEs'][$i]['data']=round($res[0][$key[$i+3]],2).$this->getUnit($key[$i+3]);
+                    // $arr['TDDLTEs'][$i]['max']=intval($res[0]['erbs']);
+                    $arr['TDDLTEs'][$i]['img'] = $this->getImage($key[$i+3]);
 
+                }
             }
+
              // $res = B_S_LTE_FDD::select()->where("location",$city)->where("day_id",$day_id[0]['day_id'])->limit(1)->get()->toArray();
             $res = B_L_FDD::where("location",$city)
                             ->where("day_id",function($query){
                                 $query->select('day_id')->from("B_L_FDD")->orderBy("day_id","desc")->limit(1);
                             })->get()->toArray();
-            $key = array_keys($res[0]);
-            $len = count($key);
+            if($res){
+                $key = array_keys($res[0]);
+                $len = count($key);
 
-            for($i=0;$i<$len-3;$i++){
-                $arr['FDDLTEs'][$i]['id']=$i;
-                $arr['FDDLTEs'][$i]['name']=trans("message.loadSurvey.".$key[$i+3]);
-                $arr['FDDLTEs'][$i]['data']=round($res[0][$key[$i+3]],2).$this->getUnit($key[$i+3]);
-                $arr['FDDLTEs'][$i]['img'] = $this->getImage($key[$i+3]);
+                for($i=0;$i<$len-3;$i++){
+                    $arr['FDDLTEs'][$i]['id']=$i;
+                    $arr['FDDLTEs'][$i]['name']=trans("message.loadSurvey.".$key[$i+3]);
+                    $arr['FDDLTEs'][$i]['data']=round($res[0][$key[$i+3]],2).$this->getUnit($key[$i+3]);
+                    $arr['FDDLTEs'][$i]['img'] = $this->getImage($key[$i+3]);
 
+                }
             }
+
              $res = B_L_NBIOT::select()->where("location",$city)->where("day_id",function($query){
                                 $query->select('day_id')->from("B_L_NBIOT")->orderBy("day_id","desc")->limit(1);
                             })->limit(1)->get()->toArray();
@@ -332,17 +338,18 @@ class NetworkOverviewController extends Controller
              $res = B_S_LTE_NBIOT::select()->where("location",$city)->where("day_id",function($query){
                                 $query->select('day_id')->from("B_S_LTE_NBIOT")->orderBy("day_id","desc")->limit(1);
                             })->limit(1)->get()->toArray();
+             if($res){
 
-            $key = array_keys($res[0]);
-            $len = count($key);
-            for($i=0;$i<$len-3;$i++){
-                $arr['NBIOTs'][$i]['id']=$i;
-                $arr['NBIOTs'][$i]['name']=trans("message.scale.".$key[$i+3]);
-                $arr['NBIOTs'][$i]['data']=$res[0][$key[$i+3]];
-                $arr['NBIOTs'][$i]['img'] = $this->getImage($key[$i+3]);
+                $key = array_keys($res[0]);
+                $len = count($key);
+                for($i=0;$i<$len-3;$i++){
+                    $arr['NBIOTs'][$i]['id']=$i;
+                    $arr['NBIOTs'][$i]['name']=trans("message.scale.".$key[$i+3]);
+                    $arr['NBIOTs'][$i]['data']=$res[0][$key[$i+3]];
+                    $arr['NBIOTs'][$i]['img'] = $this->getImage($key[$i+3]);
 
-
-            }
+                }
+             }
 
         }else{
             $day_id =B_S_GSM::select("day_id")->orderBy("id","desc")->limit(1)->get()->toArray();
@@ -355,7 +362,7 @@ class NetworkOverviewController extends Controller
                                         \DB::raw("round(sum(tch),2) as tch"),
                                         \DB::raw("round(sum(pdch),2) as pdch")))
                             ->get()->toArray();
-            if($res){
+            if($res[0]['cell']!=''){
                 $key = array_keys($res[0]);
                 $len = count($key);
                 for($i=0;$i<$len;$i++){
@@ -422,16 +429,19 @@ class NetworkOverviewController extends Controller
                                         \DB::raw("sum(cell) as cell"),
                                         \DB::raw("sum(erbs) as erbs")))
                             ->get()->toArray();
-            $key = array_keys($res[0]);
-            $len = count($key);
-            for($i=0;$i<$len;$i++){
-                $arr['NBIOTs'][$i]['id']=$i;
-                $arr['NBIOTs'][$i]['name']=trans("message.scale.".$key[$i]);
-                $arr['NBIOTs'][$i]['data']=$res[0][$key[$i]];
-                $arr['NBIOTs'][$i]['img'] = $this->getImage($key[$i]);
+            if($res[0]['cell']!=''){
+                $key = array_keys($res[0]);
+                $len = count($key);
+                for($i=0;$i<$len;$i++){
+                    $arr['NBIOTs'][$i]['id']=$i;
+                    $arr['NBIOTs'][$i]['name']=trans("message.scale.".$key[$i]);
+                    $arr['NBIOTs'][$i]['data']=$res[0][$key[$i]];
+                    $arr['NBIOTs'][$i]['img'] = $this->getImage($key[$i]);
 
 
+                }
             }
+         
         }
 
         //每行显示个数GSMs
@@ -468,7 +478,7 @@ class NetworkOverviewController extends Controller
             }
         }
         //每行显示个数NBIOTs
-        if(array_key_exists("TDDLTEs", $arr)){
+        if(array_key_exists("NBIOTs", $arr)){
             $num = 12/count($arr['NBIOTs']);
             if ( $num < 8 ) {
                 $num = 6;
