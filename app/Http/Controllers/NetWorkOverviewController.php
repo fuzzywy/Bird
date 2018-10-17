@@ -113,7 +113,9 @@ class NetworkOverviewController extends Controller
                 $arr['FDDLTEs'][$i]['img'] = $this->getImage($key[$i+3]);
 
             }
-             $res = B_L_NBIOT::select()->where("location",$city)->where("day_id","2018-9-18")->limit(1)->get()->toArray();
+             $res = B_L_NBIOT::select()->where("location",$city)->where("day_id",function($query){
+                                $query->select('day_id')->from("B_L_NBIOT")->orderBy("day_id","desc")->limit(1);
+                            })->limit(1)->get()->toArray();
              // print_r($res);exit;
              if($res){
                    $key = array_keys($res[0]);
