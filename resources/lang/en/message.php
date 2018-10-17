@@ -25,7 +25,8 @@ return [
 		"清远"=>"qingyuan",
 		"芜湖"=>"wuhu",
 		"马鞍山"=>"maanshan",
-		"蚌埠"=>"bengbu"
+		"蚌埠"=>"bengbu",
+		"韶关"=>"shaoguan"
 	],
 	"scale"=>[
 		"carrier"=>"carrier",
