@@ -4,9 +4,9 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class B_L_NBIOT extends Model
+class Limits extends Model
 {
-    public $timestamps = false;
+   public $timestamps = false;
     protected $connection = 'Bird';
-    protected $table = 'B_L_NBIOT';
+    protected $table = 'Limits';
 }
