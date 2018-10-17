@@ -23,6 +23,9 @@ return [
 		"镇江"=>"zhenjiang",
 		"南通"=>"nantong",
 		"清远"=>"qingyuan",
+		"芜湖"=>"wuhu",
+		"马鞍山"=>"maanshan",
+		"蚌埠"=>"bengbu"
 	],
 	"scale"=>[
 		"carrier"=>"carrier",
