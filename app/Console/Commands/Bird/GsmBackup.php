@@ -32,7 +32,12 @@ class GsmBackup{
 	    $userName = $dbinfo[0]['userName'];
 	    $password = $dbinfo[0]['password'];
 	    $pmDbDSN  = "dblib:host=".$host.":".$port.";dbname=".$dbName;
-	    $pmDB     = new PDO($pmDbDSN, $userName, $password);
+	    try {
+	    	$pmDB     = new PDO($pmDbDSN, $userName, $password);
+	    } catch (\Exception $e) {
+	    	return;
+	    }
+
 	    if($pmDB){
 	    	 // $db = new PDO("mysql:host=10.39.148.186;dbname=mongs", 'root', 'mongs');
 		     if($this->timeDim == "hour") {

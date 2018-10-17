@@ -50,7 +50,13 @@ class SGsmExtract extends Command
             $userName = $value['userName'];
             $password = $value['password'];
             $pmDbDSN  = "dblib:host=".$host.":".$port.";dbname=".$dbName;
-            $pmDB     = new PDO($pmDbDSN, $userName, $password);
+
+            try {
+                
+                $pmDB     = new PDO($pmDbDSN, $userName, $password);
+            } catch (\Exception $e) {
+                return;
+            }
 
             if($pmDB){
                 $sql = "select CONVERT (CHAR(10), date_id) AS date_id,count(distinct BSC) as BSC,count(distinct CELL_NAME) as cell from dc.DC_E_BSS_CELL_PS_RAW WHERE date_id >= '$startTime' AND date_id < '$endTime' group by date_id" ;

@@ -4,6 +4,7 @@ namespace App\Console\Commands\Bird;
 use App\Models\Databaseconns;
 use App\Console\Commands\Bird\LoadCounters;
 use App\Console\Commands\Bird\LteQuery;
+use App\Http\Controllers\Common\DataBaseConnection;
 use PDO;
 class LteBackup{
 
@@ -55,6 +56,9 @@ class LteBackup{
 	      $result = $OssGetTogether->is_2oss($this->db,$dbServers,$counters,$this->template,$this->locationDim,$this->timeDim,$this->type,$startTime,$endTime);
 		}else{
 		  $subNets  = LoadCounters::getSubNets($this->db,$this->city,$this->type);
+         if(!$subNets){
+            return;
+         }
 		  $result = LteQuery::queryTemplate($this->db,$dbServers,$subNets,$counters,$this->template,$this->locationDim,$this->timeDim,$this->city,$this->type,$this->interval);
 		}
         // print_r($result);exit;
@@ -332,7 +336,7 @@ class OssGetTogether{
         $index        = 0;
         foreach ($tables as $table) {
             $countersForQuery = array_keys($counterMap, $table);
-            $tableSQL         = $this->createTempTable($locationDim, $selectSQL, $whereSQL, $table, $countersForQuery, $aggGroupSQL, $aggTypes, $nosum_map, $counterMap, $format, $resultText);
+            $tableSQL         = $this->createTempTable($locationDim, $selectSQL, $whereSQL, $table, $countersForQuery, $aggGroupSQL, $aggTypes, $nosum_map, $counterMap, $format, $resultText,$city);
             $tableSQL         = $tableSQL."as AGG_TABLE$index ";
             if ($index == 0) {
                 if ($index != (sizeof($tables) - 1)) {
@@ -378,7 +382,7 @@ class OssGetTogether{
 
     }//end createSQL()
 
-    function createTempTable($locationDim, $selectSQL, $whereSQL, $tableName, $counters, $groupSQL, $aggTypes, $nosum_map, $counterMap, $format, &$resultText
+    function createTempTable($locationDim, $selectSQL, $whereSQL, $tableName, $counters, $groupSQL, $aggTypes, $nosum_map, $counterMap, $format, &$resultText,$city
     ) {
         $tables = array_keys(array_count_values($counterMap));
         $flag   = 'true';
@@ -459,7 +463,9 @@ class OssGetTogether{
 
         $selectSQL = substr($selectSQL, 0, (strlen($selectSQL) - 1));
         // if (!$local_flag) {
-            return "($selectSQL from dc.$tableName $whereSQL $groupSQL)";
+            $dbc = new DataBaseConnection();
+            $dc = $dbc->getDC($city);
+            return "($selectSQL from ".$dc."$tableName $whereSQL $groupSQL)";
         // } else {
         //     $tableName = substr("$tableName", 0, strripos("$tableName", "_"));
         //     if ($locationDim == 'city') {

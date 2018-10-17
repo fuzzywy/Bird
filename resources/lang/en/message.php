@@ -22,6 +22,7 @@ return [
 		"无锡"=>"wuxi",
 		"镇江"=>"zhenjiang",
 		"南通"=>"nantong",
+		"清远"=>"qingyuan",
 	],
 	"scale"=>[
 		"carrier"=>"carrier",

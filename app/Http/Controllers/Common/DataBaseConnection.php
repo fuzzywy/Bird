@@ -178,4 +178,37 @@ class DataBaseConnection
         }
         return $SN;
     }
+    public  function getDC($oss) {
+        $dc = "";
+
+        switch ($oss){
+            case "qingyuan":
+            $dc = "";
+            break;
+            default:
+            $dc = "dc.";
+        }
+        return $dc;
+    }
+    /**
+     * Check数据表是否存在
+     *
+     * @param string $schema 数据库名
+     * 
+     * @param string $table 数据表名
+     *
+     * @return boolean
+     */
+    public function tableIfExists($schema, $table)
+    {
+        $dbn = $this->getDB('mongs', 'information_schema');
+        $sql = "select TABLE_NAME FROM information_schema.TABLES WHERE TABLE_SCHEMA = '$schema' AND TABLE_NAME='$table'";
+        $rs = $dbn->query($sql)->fetchcolumn();
+        if ($rs) {
+            return true;
+        } else {
+            return false;
+        }
+
+    }//end tableIfExists()
 }//end class

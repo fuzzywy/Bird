@@ -90,20 +90,22 @@ class BLNbiExtract extends Command
 
             }
                         // print_r($item);exit;
-            // print_r($item);exit;
-            $new_item = array();
-            foreach ($item as $key => $value) {
-                $new_item['day_id'] = $startTime;
-                $new_item['rrc_users_cell'][] = $value['rrc_users_cell']?$value['rrc_users_cell']:'0';
-                $new_item['npdcch'][] = $value['npdcch']?$value['npdcch']:'0';
+            if($item){
+                $new_item = array();
+                foreach ($item as $key => $value) {
+                    $new_item['day_id'] = $startTime;
+                    $new_item['rrc_users_cell'][] = $value['rrc_users_cell']?$value['rrc_users_cell']:'0';
+                    $new_item['npdcch'][] = $value['npdcch']?$value['npdcch']:'0';
+                }
+                // print_r($new_item);exit;
+                $B_L_NBIOT = new B_L_NBIOT;
+                $B_L_NBIOT->day_id = $new_item['day_id'];
+                $B_L_NBIOT->location=$values['cityChinese'];
+                $B_L_NBIOT->rrc_users_cell=max($new_item['rrc_users_cell']);
+                $B_L_NBIOT->npdcch=max($new_item['npdcch']);
+                $B_L_NBIOT->save();
             }
-            // print_r($new_item);exit;
-            $B_L_NBIOT = new B_L_NBIOT;
-            $B_L_NBIOT->day_id = $new_item['day_id'];
-            $B_L_NBIOT->location=$values['cityChinese'];
-            $B_L_NBIOT->rrc_users_cell=max($new_item['rrc_users_cell']);
-            $B_L_NBIOT->npdcch=max($new_item['npdcch']);
-            $B_L_NBIOT->save();
+
             // var_dump(max($new_item['pmRrcConnMax']));
 
 

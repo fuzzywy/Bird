@@ -67,17 +67,20 @@ class NetworkOverviewController extends Controller
                             // })
                             // ->toSql();
             // print_r($res);exit;
-            $key = array_keys($res[0]);
-            $len = count($key);
-            for($i=0;$i<$len-3;$i++){
-                $arr['GSMs'][$i]['id']=$i;
-                $arr['GSMs'][$i]['name']=trans("message.loadSurvey.".$key[$i+3]);
-                $arr['GSMs'][$i]['data']=round($res[0][$key[$i+3]],2).$this->getUnit($key[$i+3]);
-                $arr['GSMs'][$i]['img'] = $this->getImage($key[$i+3]);
+            if($res){
+                $key = array_keys($res[0]);
+                $len = count($key);
+                for($i=0;$i<$len-3;$i++){
+                    $arr['GSMs'][$i]['id']=$i;
+                    $arr['GSMs'][$i]['name']=trans("message.loadSurvey.".$key[$i+3]);
+                    $arr['GSMs'][$i]['data']=round($res[0][$key[$i+3]],2).$this->getUnit($key[$i+3]);
+                    $arr['GSMs'][$i]['img'] = $this->getImage($key[$i+3]);
 
 
 
+                }
             }
+           
             // print_r($day_id[0]['day_id']);
 
              $res = B_L_TDD::where("location",$city)
@@ -112,15 +115,18 @@ class NetworkOverviewController extends Controller
             }
              $res = B_L_NBIOT::select()->where("location",$city)->where("day_id","2018-9-18")->limit(1)->get()->toArray();
              // print_r($res);exit;
-            $key = array_keys($res[0]);
-            $len = count($key);
-            for($i=0;$i<$len-3;$i++){
-                $arr['NBIOTs'][$i]['id']=$i;
-                $arr['NBIOTs'][$i]['name']=trans("message.loadSurvey.".$key[$i+3]);
-                $arr['NBIOTs'][$i]['data']=round($res[0][$key[$i+3]],2);
-                $arr['NBIOTs'][$i]['img'] = $this->getImage($key[$i+3]);
+             if($res){
+                   $key = array_keys($res[0]);
+                    $len = count($key);
+                    for($i=0;$i<$len-3;$i++){
+                        $arr['NBIOTs'][$i]['id']=$i;
+                        $arr['NBIOTs'][$i]['name']=trans("message.loadSurvey.".$key[$i+3]);
+                        $arr['NBIOTs'][$i]['data']=round($res[0][$key[$i+3]],2);
+                        $arr['NBIOTs'][$i]['img'] = $this->getImage($key[$i+3]);
 
-            }
+                    }
+             }
+         
 
         }else{
             $day_id =B_S_GSM::select("day_id")->orderBy("id","desc")->limit(1)->get()->toArray();
@@ -199,52 +205,64 @@ class NetworkOverviewController extends Controller
                                         \DB::raw("max(rrc_users_cell) as rrc_users_cell"),
                                         \DB::raw("max(npdcch) as npdcch")))
                             ->get()->toArray();
-            $key = array_keys($res[0]);
-            $len = count($key);
-            for($i=0;$i<$len;$i++){
-                $arr['NBIOTs'][$i]['id']=$i;
-                $arr['NBIOTs'][$i]['name']=trans("message.loadSurvey.".$key[$i]);
-                $arr['NBIOTs'][$i]['data']=round($res[0][$key[$i]],2);
-                $arr['NBIOTs'][$i]['img'] = $this->getImage($key[$i]);
+            if($res){
+                $key = array_keys($res[0]);
+                $len = count($key);
+                for($i=0;$i<$len;$i++){
+                    $arr['NBIOTs'][$i]['id']=$i;
+                    $arr['NBIOTs'][$i]['name']=trans("message.loadSurvey.".$key[$i]);
+                    $arr['NBIOTs'][$i]['data']=round($res[0][$key[$i]],2);
+                    $arr['NBIOTs'][$i]['img'] = $this->getImage($key[$i]);
 
 
+                }
+            }
+            
+        }
+
+        //每行显示个数GSMs
+        if(array_key_exists("GSMs", $arr)){
+             $num = 12/count($arr['GSMs']);
+            if ( $num < 3 ) {
+                $num = 4;
+            }
+            // print_r($num);exit;
+            for ($i=0; $i < count($arr['GSMs']); $i++) { 
+                $arr['GSMs'][$i]['col'] = 'col-'. $num;
+            }
+        }
+       
+
+        //每行显示个数TDDLTEs
+        if(array_key_exists("TDDLTEs", $arr)){
+            $num = 12/count($arr['TDDLTEs']);
+            if ( $num < 6 ) {
+                $num = 4;
+            }
+            for ($i=0; $i < count($arr['TDDLTEs']); $i++) { 
+                $arr['TDDLTEs'][$i]['col'] = 'col-'. $num;
             }
         }
 
-        //每行显示个数GSMs
-        $num = 12/count($arr['GSMs']);
-        if ( $num < 3 ) {
-            $num = 4;
-        }
-        // print_r($num);exit;
-        for ($i=0; $i < count($arr['GSMs']); $i++) { 
-            $arr['GSMs'][$i]['col'] = 'col-'. $num;
-        }
-
-        //每行显示个数GSMs
-        $num = 12/count($arr['TDDLTEs']);
-        if ( $num < 6 ) {
-            $num = 4;
-        }
-        for ($i=0; $i < count($arr['TDDLTEs']); $i++) { 
-            $arr['TDDLTEs'][$i]['col'] = 'col-'. $num;
-        }
-
-        //每行显示个数GSMs
-        $num = 12/count($arr['FDDLTEs']);
-        if ( $num < 6 ) {
-            $num = 4;
-        }
-        for ($i=0; $i < count($arr['FDDLTEs']); $i++) { 
-            $arr['FDDLTEs'][$i]['col'] = 'col-'. $num;
+        //每行显示个数FDDLTEs
+        if(array_key_exists("FDDLTEs", $arr)){
+            $num = 12/count($arr['FDDLTEs']);
+            if ( $num < 6 ) {
+                $num = 4;
+            }
+            for ($i=0; $i < count($arr['FDDLTEs']); $i++) { 
+                $arr['FDDLTEs'][$i]['col'] = 'col-'. $num;
+            }
         }
         //每行显示个数GSMs
-        $num = 12/count($arr['NBIOTs']);
-        if ( $num < 8 ) {
-            $num = 6;
-        }
-        for ($i=0; $i < count($arr['NBIOTs']); $i++) { 
-            $arr['NBIOTs'][$i]['col'] = 'col-'. $num;
+        if(array_key_exists("NBIOTs", $arr)){
+            $num = 12/count($arr['NBIOTs']);
+            if ( $num < 8 ) {
+                $num = 6;
+            }
+            for ($i=0; $i < count($arr['NBIOTs']); $i++) { 
+                $arr['NBIOTs'][$i]['col'] = 'col-'. $num;
+            }
         }
 
         return $arr;
@@ -262,21 +280,25 @@ class NetworkOverviewController extends Controller
             }
             $day_id =B_S_GSM::select("day_id")->orderBy("id","desc")->limit(1)->get()->toArray();
 
-            $res = B_S_GSM::select()->where("location",$city)->where("day_id",$day_id[0]['day_id'])->limit(1)->get()->toArray();
-
-            $key = array_keys($res[0]);
-            $len = count($key);
-            for($i=0;$i<$len-3;$i++){
-                $arr['GSMs'][$i]['id']=$i;
-                $arr['GSMs'][$i]['name']=trans("message.scale.".$key[$i+3]);
-                $arr['GSMs'][$i]['data']=$res[0][$key[$i+3]];
-                $arr['GSMs'][$i]['img'] = $this->getImage($key[$i+3]);
-
-
+            $res = B_S_GSM::select()->where("location",$city)->where("day_id",function($query){
+                                $query->select('day_id')->from("B_S_GSM")->orderBy("day_id","desc")->limit(1);
+                            })->limit(1)->get()->toArray();
+            if($res){
+                $key = array_keys($res[0]);
+                $len = count($key);
+                for($i=0;$i<$len-3;$i++){
+                    $arr['GSMs'][$i]['id']=$i;
+                    $arr['GSMs'][$i]['name']=trans("message.scale.".$key[$i+3]);
+                    $arr['GSMs'][$i]['data']=$res[0][$key[$i+3]];
+                    $arr['GSMs'][$i]['img'] = $this->getImage($key[$i+3]);
+                }
             }
+
             // print_r($day_id[0]['day_id']);
             $day_id_TFN =B_S_LTE_TDD::select("day_id")->orderBy("id","desc")->limit(1)->get()->toArray();
-            $res = B_S_LTE_TDD::select()->where("location",$city)->where("day_id",$day_id[0]['day_id'])->limit(1)->get()->toArray();
+            $res = B_S_LTE_TDD::select()->where("location",$city)->where("day_id",function($query){
+                                $query->select('day_id')->from("B_S_LTE_TDD")->orderBy("day_id","desc")->limit(1);
+                            })->limit(1)->get()->toArray();
 
             $key = array_keys($res[0]);
             $len = count($key);
@@ -291,7 +313,9 @@ class NetworkOverviewController extends Controller
                  // '/public/img/huihua.png';
 
             }
-             $res = B_S_LTE_FDD::select()->where("location",$city)->where("day_id",$day_id[0]['day_id'])->limit(1)->get()->toArray();
+             $res = B_S_LTE_FDD::select()->where("location",$city)->where("day_id",function($query){
+                                $query->select('day_id')->from("B_S_LTE_FDD")->orderBy("day_id","desc")->limit(1);
+                            })->limit(1)->get()->toArray();
 
             $key = array_keys($res[0]);
             $len = count($key);
@@ -303,7 +327,9 @@ class NetworkOverviewController extends Controller
                 $arr['FDDLTEs'][$i]['img'] = $this->getImage($key[$i+3]);
 
             }
-             $res = B_S_LTE_NBIOT::select()->where("location",$city)->where("day_id",$day_id[0]['day_id'])->limit(1)->get()->toArray();
+             $res = B_S_LTE_NBIOT::select()->where("location",$city)->where("day_id",function($query){
+                                $query->select('day_id')->from("B_S_LTE_NBIOT")->orderBy("day_id","desc")->limit(1);
+                            })->limit(1)->get()->toArray();
 
             $key = array_keys($res[0]);
             $len = count($key);
@@ -319,27 +345,32 @@ class NetworkOverviewController extends Controller
         }else{
             $day_id =B_S_GSM::select("day_id")->orderBy("id","desc")->limit(1)->get()->toArray();
             $res = B_S_GSM::select()
-                            ->where("day_id",$day_id[0]['day_id'])
+                            ->where("day_id",function($query){
+                                $query->select('day_id')->from("B_S_GSM")->orderBy("day_id","desc")->limit(1);
+                            })
                             ->select(array(\DB::raw("sum(cell) as cell"),
                                         \DB::raw("sum(carrier) as carrier"),
                                         \DB::raw("round(sum(tch),2) as tch"),
                                         \DB::raw("round(sum(pdch),2) as pdch")))
                             ->get()->toArray();
-            $key = array_keys($res[0]);
-            $len = count($key);
-            for($i=0;$i<$len;$i++){
-                $arr['GSMs'][$i]['id']=$i;
-                $arr['GSMs'][$i]['name']=trans("message.scale.".$key[$i]);
-                $arr['GSMs'][$i]['data']=$res[0][$key[$i]];
-                $arr['GSMs'][$i]['img'] = $this->getImage($key[$i]);
+            if($res){
+                $key = array_keys($res[0]);
+                $len = count($key);
+                for($i=0;$i<$len;$i++){
+                    $arr['GSMs'][$i]['id']=$i;
+                    $arr['GSMs'][$i]['name']=trans("message.scale.".$key[$i]);
+                    $arr['GSMs'][$i]['data']=$res[0][$key[$i]];
+                    $arr['GSMs'][$i]['img'] = $this->getImage($key[$i]);
 
 
+                }
             }
+         
 
-            $day_id_TFN =B_S_LTE_TDD::select("day_id")->orderBy("id","desc")->limit(1)->get()->toArray();
-            $res = B_S_LTE_TDD::select()->where("location",$city)->where("day_id",$day_id[0]['day_id'])->limit(1)->get()->toArray();
             $res = B_S_LTE_TDD::select()
-                            ->where("day_id",$day_id[0]['day_id'])
+                            ->where("day_id",function($query){
+                                $query->select('day_id')->from("B_S_LTE_TDD")->orderBy("day_id","desc")->limit(1);
+                            })
                             ->select(array(\DB::raw("sum(carrier) as carrier"),
                                         \DB::raw("sum(cell) as cell"),
                                         \DB::raw("sum(erbs) as erbs"),
@@ -358,7 +389,9 @@ class NetworkOverviewController extends Controller
 
             }
             $res = B_S_LTE_FDD::select()
-                            ->where("day_id",$day_id[0]['day_id'])
+                            ->where("day_id",function($query){
+                                $query->select('day_id')->from("B_S_LTE_FDD")->orderBy("day_id","desc")->limit(1);
+                            })
                             ->select(array(\DB::raw("sum(carrier) as carrier"),
                                         \DB::raw("sum(cell) as cell"),
                                         \DB::raw("sum(erbs) as erbs"),
@@ -380,7 +413,9 @@ class NetworkOverviewController extends Controller
 
             }
              $res = B_S_LTE_NBIOT::select()
-                            ->where("day_id",$day_id[0]['day_id'])
+                            ->where("day_id",function($query){
+                                $query->select('day_id')->from("B_S_LTE_NBIOT")->orderBy("day_id","desc")->limit(1);
+                            })
                             ->select(array(
                                         \DB::raw("sum(cell) as cell"),
                                         \DB::raw("sum(erbs) as erbs")))
@@ -398,38 +433,47 @@ class NetworkOverviewController extends Controller
         }
 
         //每行显示个数GSMs
-        $num = 12/count($arr['GSMs']);
-        if ( $num < 3 ) {
-            $num = 3;
+        if(array_key_exists("GSMs", $arr)){
+             $num = 12/count($arr['GSMs']);
+            if ( $num < 3 ) {
+                $num = 3;
+            }
+            for ($i=0; $i < count($arr['GSMs']); $i++) { 
+                $arr['GSMs'][$i]['col'] = 'col-'. $num;
+            }
         }
-        for ($i=0; $i < count($arr['GSMs']); $i++) { 
-            $arr['GSMs'][$i]['col'] = 'col-'. $num;
+       
+
+        //每行显示个数TDDLTEs
+        if(array_key_exists("TDDLTEs", $arr)){
+            $num = 12/count($arr['TDDLTEs']);
+            if ( $num < 6 ) {
+                $num = 4;
+            }
+            for ($i=0; $i < count($arr['TDDLTEs']); $i++) { 
+                $arr['TDDLTEs'][$i]['col'] = 'col-'. $num;
+            }
         }
 
-        //每行显示个数GSMs
-        $num = 12/count($arr['TDDLTEs']);
-        if ( $num < 6 ) {
-            $num = 4;
+        //每行显示个数FDDLTEs
+        if(array_key_exists("FDDLTEs", $arr)){
+            $num = 12/count($arr['FDDLTEs']);
+            if ( $num < 6 ) {
+                $num = 4;
+            }
+            for ($i=0; $i < count($arr['FDDLTEs']); $i++) { 
+                $arr['FDDLTEs'][$i]['col'] = 'col-'. $num;
+            }
         }
-        for ($i=0; $i < count($arr['TDDLTEs']); $i++) { 
-            $arr['TDDLTEs'][$i]['col'] = 'col-'. $num;
-        }
-
-        //每行显示个数GSMs
-        $num = 12/count($arr['FDDLTEs']);
-        if ( $num < 6 ) {
-            $num = 4;
-        }
-        for ($i=0; $i < count($arr['FDDLTEs']); $i++) { 
-            $arr['FDDLTEs'][$i]['col'] = 'col-'. $num;
-        }
-        //每行显示个数GSMs
-        $num = 12/count($arr['NBIOTs']);
-        if ( $num < 8 ) {
-            $num = 6;
-        }
-        for ($i=0; $i < count($arr['NBIOTs']); $i++) { 
-            $arr['NBIOTs'][$i]['col'] = 'col-'. $num;
+        //每行显示个数NBIOTs
+        if(array_key_exists("TDDLTEs", $arr)){
+            $num = 12/count($arr['NBIOTs']);
+            if ( $num < 8 ) {
+                $num = 6;
+            }
+            for ($i=0; $i < count($arr['NBIOTs']); $i++) { 
+                $arr['NBIOTs'][$i]['col'] = 'col-'. $num;
+            }
         }
 
         return $arr;

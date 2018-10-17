@@ -51,7 +51,11 @@ class BLGsmExtract extends Command
             $userName = $value['userName'];
             $password = $value['password'];
             $pmDbDSN  = "dblib:host=".$host.":".$port.";dbname=".$dbName;
-            $pmDB     = new PDO($pmDbDSN, $userName, $password);
+            try {
+                $pmDB     = new PDO($pmDbDSN, $userName, $password);
+            } catch (\Exception $e) {
+                return;
+            }
             if($value['connName']=="changzhou"){
             	$k="0.69";
             }elseif($value['connName']=="suzhou"){

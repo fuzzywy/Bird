@@ -2,19 +2,19 @@
 
 namespace App\Console\Commands\Bird;
 use App\Console\Commands\Bird\LoadCounters;
+use App\Http\Controllers\Common\DataBaseConnection;
 use PDO;
 
 class LteQuery{
 
 
 	public static function queryTemplate($db,$dbServers,$subNets,$counters,$template,$locationDim,$timeDim,$city,$type,$interval){
-
 			$host     = $dbServers[0]['host'];
 		    $port     = $dbServers[0]['port'];
 		    $dbName   = $dbServers[0]['dbName'];
 		    $userName = $dbServers[0]['userName'];
 		    $password = $dbServers[0]['password'];
-		    $pmDbDSN  = "dblib:host=".$host.":".$port.";dbname=".$dbName;
+		    $pmDbDSN = "dblib:host=".$host.":".$port.";".((float)phpversion()>7.0?'dbName':'dbname')."=".$dbName;
 		    $pmDB     = new PDO($pmDbDSN, $userName, $password);
 
 
@@ -87,7 +87,9 @@ class LteQuery{
         $citySQL = LoadCounters::getSubnetWork($city);
 
 	    //$citySQL = "substring($tableName.SN,charindex('=',substring($tableName.SN,32,25))+32,charindex(',',substring($tableName.SN,32,25))-charindex('=',substring($tableName.SN,32,25))-1)";
-	    $joinSql = "dc." . $tableName;
+	    $dbc = new DataBaseConnection();
+	    $dc = $dbc->getDC($city);
+	    $joinSql = $dc. $tableName;
 	    $time_id = ($timeDim=="day")? "date_id" : "datetime_id";
 
 	    $whereSQL = " where $time_id>='$startTime' and $time_id<'$endTime' and $citySQL in $location";
@@ -197,7 +199,7 @@ class LteQuery{
 	    $index = 0;
 	    foreach ($tables as $table) {
 	        $countersForQuery = array_keys($counterMap, $table);
-	        $tableSQL = self::createTempTable($selectSQL, $whereSQL, $table, $countersForQuery,$aggGroupSQL);
+	        $tableSQL = self::createTempTable($selectSQL, $whereSQL, $table, $countersForQuery,$aggGroupSQL,$city);
 	        //print_r($tableSQL);
 	        $tableSQL = $tableSQL . "as AGG_TABLE$index ";
 	        if ($index == 0) {
@@ -290,7 +292,7 @@ class LteQuery{
 	 * @param mixed $counters
 	 * @return
 	 */
-	public static function createTempTable($selectSQL, $whereSQL, $tableName, $counters, $groupSQL)
+	public static function createTempTable($selectSQL, $whereSQL, $tableName, $counters, $groupSQL,$city)
 	{
 	    foreach ($counters as $counter) {
 	        $counter = trim($counter);
@@ -315,7 +317,9 @@ class LteQuery{
 	        
 	    }
 	    $selectSQL = substr($selectSQL, 0, strlen($selectSQL) - 1);
-	    return "($selectSQL from dc.$tableName $whereSQL $groupSQL)";
+	     $dbc = new DataBaseConnection();
+	    $dc = $dbc->getDC($city);
+	    return "($selectSQL from ".$dc."$tableName $whereSQL $groupSQL)";
 	}
 	/**
 	 * covertInternalCounter()
