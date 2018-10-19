@@ -161,6 +161,7 @@ class DataBaseConnection
         $SN = "";
         switch ($oss) {
             case 'wuxiENM':
+            case "zhenjiang":
                 $SN = "substring(substring(SN, 0, charindex(',',SN)-1), 12)";
                 break;
             case "wuxi1":
@@ -169,6 +170,9 @@ class DataBaseConnection
           case "wuxi":
             $SN = "substring(SN, 12, charindex(',', SN)-12)";
             break;
+            case "zhenjiang1":
+                $SN = "substring(substring(SN, charindex(',', SN)+12), 0, charindex(',', substring(SN, charindex(',', SN)+12))-1)";
+                break;
             case "suzhou3":
                 $SN = "substring(SN, 12, charindex(',', SN)-12)";
                 break;
@@ -211,4 +215,14 @@ class DataBaseConnection
         }
 
     }//end tableIfExists()
+
+
+    public function getCddDB(){
+        $dbn = $this->getDB('mongs', 'information_schema');
+        $sql = "select TABLE_SCHEMA FROM information_schema.TABLES WHERE TABLE_SCHEMA like 'CDD_20______' order by TABLE_SCHEMA desc limit 1";
+        $res = $dbn->query($sql)->fetchall(PDO::FETCH_ASSOC);
+        return ($res[0]['TABLE_SCHEMA']);
+
+    }
+
 }//end class
