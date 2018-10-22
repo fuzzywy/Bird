@@ -50,8 +50,26 @@ class BLTddExtract extends Command
   
         $db_kget = $dbc->getDB("kget",$kgetName);
         foreach ($City as $key => $values) {
-        	// print_r($values);exit;
-        
+            $subNetWorkStr = $dbc->getSubNetsStr("TDD",$values['cityChinese']);
+
+            $sql = "select sum(t.t) as tti from (SELECT
+                            CASE
+                        WHEN subframeAssignment = 1
+                        AND specialSubframePattern = 5 THEN
+                            3600 * 100 * 8
+                        WHEN subframeAssignment = 1
+                        AND specialSubframePattern in(6,7)
+                        THEN 3600*100*10
+                        when subframeAssignment=2 AND specialSubframePattern=5
+                        then 3600*100*8
+                        when subframeAssignment=2 AND specialSubframePattern in(6,7)
+                        then 3600*100*10
+                        END as t
+                        FROM
+                            EUtranCellTDD where subNetWork in ($subNetWorkStr))t";
+            $tti = $db_kget->query($sql)->fetch(PDO::FETCH_ASSOC);
+
+
             $dbserve = Databaseconns::select()->where("cityChinese",$values['cityChinese'])->get()->toArray();
             $item = array();
             $item2= array();
@@ -59,7 +77,6 @@ class BLTddExtract extends Command
                 $subNetWork = $dbc->getSubNetsByconnName("TDD",$value['connName']);
                 $SN         = $dbc->getSN($value['connName']);
                 $dc         = $dbc->getDC($value['connName']);
-                
                 $result = array();
                 if($subNetWork){
                     $host = $value['host'];
@@ -145,6 +162,7 @@ class BLTddExtract extends Command
             if($item2){
                 $results = $this->getItem($item2);
                 $B_L_TDD->flow= $results['flow'];
+                $B_L_TDD->flow_tti=$results['flow']/($num*1000*$tti['tti']);
                 $B_L_TDD->volte_traffic=$results['volte_traffic'];
                 $B_L_TDD->cce=$results['cce'];
                 $B_L_TDD->prb=$results['prb'];

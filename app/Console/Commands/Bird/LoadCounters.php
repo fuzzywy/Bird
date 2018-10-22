@@ -46,24 +46,28 @@ class LoadCounters{
 
 	} 
 	 public static function getSubnetWork($oss) {
-    	$SN = "";
-      	switch ($oss) {
-      		case 'wuxiENM':
-      			$SN = "substring(substring(SN, 0, charindex(',',SN)-1), 12)";
-      			break;
-      		case "wuxi1":
-      			$SN = "substring(SN, 12, charindex(',', SN)-12)";
-      			break;
+         $SN = "";
+        switch ($oss) {
+            case 'wuxiENM':
+            case "zhenjiang":
+                $SN = "substring(substring(SN, 0, charindex(',',SN)-1), 12)";
+                break;
+            case "wuxi1":
+                $SN = "substring(SN, 12, charindex(',', SN)-12)";
+                break;
           case "wuxi":
             $SN = "substring(SN, 12, charindex(',', SN)-12)";
             break;
-      		case "suzhou3":
-      			$SN = "substring(SN, 12, charindex(',', SN)-12)";
-      			break;
-      		default:
-      			$SN = "substring(SN,charindex('=',substring(SN,32,25))+32,charindex(',',substring(SN,32,25))-charindex('=',substring(SN,32,25))-1)";
-      			break;
-      	}
+            case "zhenjiang1":
+                $SN = "substring(substring(SN, charindex(',', SN)+12), 0, charindex(',', substring(SN, charindex(',', SN)+12))-1)";
+                break;
+            case "suzhou3":
+                $SN = "substring(SN, 12, charindex(',', SN)-12)";
+                break;
+            default:
+                $SN = "substring(SN,charindex('=',substring(SN,32,25))+32,charindex(',',substring(SN,32,25))-charindex('=',substring(SN,32,25))-1)";
+                break;
+        }
       	return $SN;
     }
 

@@ -793,7 +793,7 @@ class NetworkOverviewController extends Controller
             break;
             case 'volte_traffic':
             case 'tel_traffic':
-            $str="M";
+            $str="erl";
             break;
             default:
             $str ="";
