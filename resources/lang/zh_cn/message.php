@@ -29,7 +29,7 @@ return [
 		"韶关"=>"韶关"
 	],
 	"scale"=>[
-		"carrier"=>"载波",
+		"carrier"=>"载频",
 		"cell"=>"小区",
 		"erbs"=>"基站",
 		"high_peed"=>"开启高速移动基站",
@@ -45,7 +45,6 @@ return [
 		"rrc_cell_user_mean"=>"忙时每小区RRC平均用户",
 		"rrc_cell_users_max"=>"忙时每小区RRC最大用户均值",
 		"rrc_cell_band_users"=>"单位频段每小区RRC用户数",
-		"flow_tti"=>"flow_tti",
 		"cce"=>"忙时CCE利用率均值",
 		"prb"=>"忙时PRB利用率均值",
 		"tel_traffic"=>"忙时2G语音话务量",
