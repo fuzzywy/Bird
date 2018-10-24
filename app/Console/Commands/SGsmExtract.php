@@ -58,12 +58,10 @@ class SGsmExtract extends Command
                 if($dsn->tableIfExists($cddDB,'RXMOP_RXOTRX')){
                     $sql="SELECT count(DISTINCT mo) as mo FROM `RXMOP_RXOTRX` where bsc in (SELECT distinct(bsc) from GSM_SERIAL_INFO where city='".$value['cityChinese']."');";
                     $carrier = $cddcon->query($sql)->fetch(PDO::FETCH_ASSOC);
-                    $B_S_GSM->cell    = $carrier['mo'];
-
+                    $B_S_GSM->carrier    = $carrier['mo'];
                 }
                 
             }
-
             $host     = $value['host'];
             $port     = $value['port'];
             $dbName   = $value['dbName'];
@@ -81,10 +79,10 @@ class SGsmExtract extends Command
            
             if($pmDB){
 
-                $sql="SELECT AGG_TABLE0.day,cast(SUM((CLTCH_TAVAACC)/(CLTCH_TAVASCAN+0.0001)) as decimal(18,2)) as kpi0,cast(SUM(CELLGPRS_ALLPDCHACTACC/(CELLGPRS_ALLPDCHSCAN+0.0001)) as decimal(18,2)) as kpi1 FROM (SELECT CONVERT(char(10),date_id) as day, sum(CLTCH_TAVAACC) as 'CLTCH_TAVAACC', sum(CLTCH_TAVASCAN) as 'CLTCH_TAVASCAN' from dc.DC_E_BSS_CELL_CS_RAW where date_id>='$startTime' and date_id<='$startTime' AND TIMELEVEL='HOUR' GROUP BY day)as AGG_TABLE0 left join(SELECT CONVERT(char(10),date_id) as day, sum(CELLGPRS_ALLPDCHACTACC) as 'CELLGPRS_ALLPDCHACTACC', sum(CELLGPRS_ALLPDCHSCAN) as 'CELLGPRS_ALLPDCHSCAN' from dc.DC_E_BSS_CELL_PS_RAW where date_id>='$startTime' and date_id<='$startTime' AND TIMELEVEL='HOUR' GROUP BY day)as AGG_TABLE1 on AGG_TABLE0.day = AGG_TABLE1.day GROUP BY AGG_TABLE0.day ORDER BY AGG_TABLE0.day";
+                $sql="SELECT AGG_TABLE0.day,round(SUM(cltch_tnuchcnt),2) as kpi0,round(SUM(CELLGPRS_ALLPDCHACTACC/(CELLGPRS_ALLPDCHSCAN)),2) as kpi1 FROM (SELECT CONVERT(char(10),date_id) as day, sum(cltch_tnuchcnt) as 'cltch_tnuchcnt' from dc.DC_E_BSS_CELL_CS_RAW where date_id>='$startTime' and date_id<='$startTime' AND TIMELEVEL='HOUR' GROUP BY day)as AGG_TABLE0 left join(SELECT CONVERT(char(10),date_id) as day, sum(CELLGPRS_ALLPDCHACTACC) as 'CELLGPRS_ALLPDCHACTACC', max(CELLGPRS_ALLPDCHSCAN) as 'CELLGPRS_ALLPDCHSCAN' from dc.DC_E_BSS_CELL_PS_RAW where date_id>='$startTime' and date_id<='$startTime' AND TIMELEVEL='HOUR' GROUP BY day)as AGG_TABLE1 on AGG_TABLE0.day = AGG_TABLE1.day GROUP BY AGG_TABLE0.day ORDER BY AGG_TABLE0.day";
+
 
                 $res = $pmDB->query($sql)->fetch(PDO::FETCH_ASSOC);  
-
                   if($res){
                     $B_S_GSM->tch     = $res['kpi0'];
                     $B_S_GSM->pdch    = $res['kpi1'];
