@@ -49,6 +49,7 @@
     <!--阿里图标库http://www.iconfont.cn-->
     <link href="{{ asset('icon/iconfont.css') }}" rel="stylesheet">
 
+    <link rel="shortcut icon" href="{{ asset('favicon.ico') }}" type="image/x-icon">
     <!-- <link href="{{ asset('css/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
     <link href="{{ asset('css/metisMenu/metisMenu.min.css') }}" rel="stylesheet">
     <link href="{{ asset('css/sb-admin-2.css') }}" rel="stylesheet">
