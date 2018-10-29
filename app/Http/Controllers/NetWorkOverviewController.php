@@ -296,7 +296,7 @@ class NetworkOverviewController extends Controller
                 $len = count($key);
                 for($i=0;$i<$len-3;$i++){
                     $arr['GSMs'][$i]['id']=$i;
-                    $arr['GSMs'][$i]['name']=trans("message.scale.".$key[$i+3]);
+                    $arr['GSMs'][$i]['name']=trans("message.scaleGSM.".$key[$i+3]);
                     $arr['GSMs'][$i]['data']=$res[0][$key[$i+3]];
                     $arr['GSMs'][$i]['img'] = $this->getImage($key[$i+3]);
                 }
@@ -367,7 +367,7 @@ class NetworkOverviewController extends Controller
                 $len = count($key);
                 for($i=0;$i<$len;$i++){
                     $arr['GSMs'][$i]['id']=$i;
-                    $arr['GSMs'][$i]['name']=trans("message.scale.".$key[$i]);
+                    $arr['GSMs'][$i]['name']=trans("message.scaleGSM.".$key[$i]);
                     $arr['GSMs'][$i]['data']=$res[0][$key[$i]];
                     $arr['GSMs'][$i]['img'] = $this->getImage($key[$i]);
 

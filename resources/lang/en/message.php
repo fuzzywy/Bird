@@ -22,11 +22,6 @@ return [
 		"无锡"=>"wuxi",
 		"镇江"=>"zhenjiang",
 		"南通"=>"nantong",
-		"清远"=>"qingyuan",
-		"芜湖"=>"wuhu",
-		"马鞍山"=>"maanshan",
-		"蚌埠"=>"bengbu",
-		"韶关"=>"shaoguan"
 	],
 	"scale"=>[
 		"carrier"=>"carrier",
@@ -35,6 +30,12 @@ return [
 		"high_peed"=>"high_peed",
 		"co_enhance"=>"co_enhance",
 		"ca_agg"=>"ca_agg",
+	],
+	"scaleGSM"=>[
+		"carrier"=>"carrier",
+		"cell"=>"cell",
+		"tch"=>"tch",
+		"pdch"=>"pdch",
 	],
 	"loadSurvey"=>[
 		"flow"=>"flow",

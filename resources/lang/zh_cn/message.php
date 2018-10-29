@@ -29,12 +29,18 @@ return [
 		"韶关"=>"韶关"
 	],
 	"scale"=>[
-		"carrier"=>"载频",
+		"carrier"=>"载波",
 		"cell"=>"小区",
 		"erbs"=>"基站",
 		"high_peed"=>"开启高速移动基站",
 		"co_enhance"=>"开启覆盖增强基站",
 		"ca_agg"=>"开启载波聚合基站",
+		"tch"=>"TCH信道数",
+		"pdch"=>"PDCH信道数",
+	],
+	"scaleGSM"=>[
+		"carrier"=>"载频",
+		"cell"=>"小区",
 		"tch"=>"TCH信道数",
 		"pdch"=>"PDCH信道数",
 	],
