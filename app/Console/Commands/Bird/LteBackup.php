@@ -124,8 +124,7 @@ class OssGetTogether{
              
 
             }
-
-           $columnMax = array_unique($columnMax);
+            $columnMax = array_unique($columnMax);
             $getTextAndRows = [];
             // if(($locationDim == 'city' || $locationDim == 'subNetworkGroup' || $locationDim == 'erbsGroup'|| $locationDim == 'cellGroup') && ($timeDim == 'day'||$timeDim == 'daygroup'|| $timeDim == 'hour' || $timeDim == 'hourgroup' || $timeDim == 'quarter')) {
             //合并pm值

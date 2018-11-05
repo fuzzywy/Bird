@@ -517,8 +517,8 @@ class NetworkOverviewController extends Controller
                 }
         }elseif($data=="LTE"){
                 if($city=="全省"||$city=="province"){
-                    $sql1 ="SELECT id,day_id,hour_id,'全省',round(avg(access),2) AS access,round(avg(lost),2) AS lost,round(avg(handover),2) AS handover FROM `B_LTE_FDD` GROUP BY hour_id,day_id ORDER BY id DESC,day_id desc,hour_id desc limit 2";
-                    $sql2 ="SELECT id,day_id,hour_id,'全省',round(avg(access),2) AS access,round(avg(lost),2) AS lost,round(avg(handover),2) AS handover FROM `B_LTE_TDD` GROUP BY hour_id,day_id ORDER BY id DESC,day_id desc,hour_id desc limit 2";
+                    $sql1 ="SELECT id,day_id,hour_id,'全省',round(avg(access),2) AS access,round(avg(lost),2) AS lost,round(avg(handover),2) AS handover,round(avg(interfererate),2) AS interfererate FROM `B_LTE_FDD` GROUP BY hour_id,day_id ORDER BY id DESC,day_id desc,hour_id desc limit 2";
+                    $sql2 ="SELECT id,day_id,hour_id,'全省',round(avg(access),2) AS access,round(avg(lost),2) AS lost,round(avg(handover),2) AS handover,round(avg(interfererate),2) AS interfererate FROM `B_LTE_TDD` GROUP BY hour_id,day_id ORDER BY id DESC,day_id desc,hour_id desc limit 2";
                     $result1 = $db->query($sql1)->fetchall(PDO::FETCH_ASSOC);
                     $result2 = $db->query($sql2)->fetchall(PDO::FETCH_ASSOC);
                     $result = $this->getAvg($result1,$result2);
@@ -545,7 +545,7 @@ class NetworkOverviewController extends Controller
                 }
         }elseif($data=="NBIOT"){
              if($city=="全省"||$city=="province"){
-                    $sql ="SELECT id,day_id,hour_id,'全省',round(avg(access),2) AS access FROM `B_NBIOT` GROUP BY hour_id,day_id ORDER BY id DESC,day_id desc,hour_id desc limit 2";
+                    $sql ="SELECT id,day_id,hour_id,'全省',round(avg(access),2) AS access,round(avg(interfererate),2) AS interfererate FROM `B_NBIOT` GROUP BY hour_id,day_id ORDER BY id DESC,day_id desc,hour_id desc limit 2";
                     $result = $db->query($sql)->fetchall(PDO::FETCH_ASSOC);
                     $arr = $this->getCompare($result,$data,$overview);
                 }else{

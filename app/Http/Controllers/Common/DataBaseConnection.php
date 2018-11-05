@@ -176,6 +176,12 @@ class DataBaseConnection
             case "suzhou3":
                 $SN = "substring(SN, 12, charindex(',', SN)-12)";
                 break;
+            case "changzhou3":
+              $SN = "substring(SN, charindex('=', SN)+1, charindex(',', SN)-charindex('=', SN)-1)";
+              break;
+            case "suzhou4":
+              $SN = "substring(SN, charindex('=', SN)+1, charindex(',', SN)-charindex('=', SN)-1)";
+              break;
             default:
                 $SN = "substring(SN,charindex('=',substring(SN,32,25))+32,charindex(',',substring(SN,32,25))-charindex('=',substring(SN,32,25))-1)";
                 break;

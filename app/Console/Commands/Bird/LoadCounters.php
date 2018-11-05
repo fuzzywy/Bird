@@ -58,6 +58,12 @@ class LoadCounters{
           case "wuxi":
             $SN = "substring(SN, 12, charindex(',', SN)-12)";
             break;
+            case "changzhou3":
+              $SN = "substring(SN, charindex('=', SN)+1, charindex(',', SN)-charindex('=', SN)-1)";
+              break;
+            case "suzhou4":
+              $SN = "substring(SN, charindex('=', SN)+1, charindex(',', SN)-charindex('=', SN)-1)";
+              break;
             case "zhenjiang1":
                 $SN = "substring(substring(SN, charindex(',', SN)+12), 0, charindex(',', substring(SN, charindex(',', SN)+12))-1)";
                 break;
