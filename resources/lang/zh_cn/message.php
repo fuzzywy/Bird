@@ -13,6 +13,7 @@ return [
 		'lost'		=>	'无线掉线率',
 		'handover'	=>	'切换成功率',
 		'srvcc'	=>	'SRVCC切换成功率',
+		'interfererate'	=>	'高干扰比例',
 		'upackagelost'	=>	'上行丢包率',
 		'dpackagelost'	=>	'下行丢包率',
 	],

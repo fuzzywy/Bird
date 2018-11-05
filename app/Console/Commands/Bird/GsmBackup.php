@@ -31,7 +31,9 @@ class GsmBackup{
 	    $dbName   = $dbinfo[0]['dbName'];
 	    $userName = $dbinfo[0]['userName'];
 	    $password = $dbinfo[0]['password'];
-	    $pmDbDSN  = "dblib:host=".$host.":".$port.";dbname=".$dbName;
+	    // $pmDbDSN  = "dblib:host=".$host.":".$port.";dbname=".$dbName;
+        $pmDbDSN = "dblib:host=".$host.":".$port.";".((float)phpversion()>7.0?'dbName':'dbname')."=".$dbName;
+
 	    try {
 	    	$pmDB     = new PDO($pmDbDSN, $userName, $password);
 	    } catch (\Exception $e) {

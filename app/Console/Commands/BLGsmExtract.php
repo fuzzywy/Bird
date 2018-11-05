@@ -50,7 +50,8 @@ class BLGsmExtract extends Command
             $dbName   = $value['dbName'];
             $userName = $value['userName'];
             $password = $value['password'];
-            $pmDbDSN  = "dblib:host=".$host.":".$port.";dbname=".$dbName;
+            // $pmDbDSN  = "dblib:host=".$host.":".$port.";dbname=".$dbName;
+            $pmDbDSN = "dblib:host=".$host.":".$port.";".((float)phpversion()>7.0?'dbName':'dbname')."=".$dbName;
             try {
                 $pmDB     = new PDO($pmDbDSN, $userName, $password);
             } catch (\Exception $e) {

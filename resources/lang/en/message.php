@@ -13,6 +13,7 @@ return [
 		'lost'		=>	'lost',
 		'handover'	=>	'handover',
 		'srvcc'	=>	'srvcc',
+		'interfererate'	=>	'interfererate',
 		'upackagelost'	=>	'upackagelost',
 		'dpackagelost'	=>	'dpackagelost',
 	],
