@@ -6,6 +6,6 @@ use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
 
 abstract class TestCase extends BaseTestCase
 {
-    // Test 3	
+    // Test gerrit	
     use CreatesApplication;
 }
