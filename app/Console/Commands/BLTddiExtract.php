@@ -51,24 +51,40 @@ class BLTddExtract extends Command
         $db_kget = $dbc->getDB("kget",$kgetName);
         foreach ($City as $key => $values) {
             $subNetWorkStr = $dbc->getSubNetsStr("TDD",$values['cityChinese']);
-
-            $sql = "select sum(t.t) as tti from (SELECT
-                            CASE
-                        WHEN subframeAssignment = 1
-                        AND specialSubframePattern = 5 THEN
-                            3600 * 100 * 8
-                        WHEN subframeAssignment = 1
-                        AND specialSubframePattern in(6,7)
-                        THEN 3600*100*10
-                        when subframeAssignment=2 AND specialSubframePattern=5
-                        then 3600*100*8
-                        when subframeAssignment=2 AND specialSubframePattern in(6,7)
-                        then 3600*100*10
-                        END as t
-                        FROM
-                            EUtranCellTDD where subNetWork in ($subNetWorkStr))t";
+            $sql="select sum(t.t)/1000 as d_tti,sum(t.s)/1000 as u_tti from(SELECT
+                                CASE
+                            WHEN subframeAssignment = 1
+                            AND specialSubframePattern = 5 THEN
+                                3600 * 100 * 4*channelBandwidth
+                            WHEN subframeAssignment = 1
+                            AND specialSubframePattern IN (6, 7) THEN
+                                3600 * 100 * 6*channelBandwidth
+                            WHEN subframeAssignment = 2
+                            AND specialSubframePattern = 5 THEN
+                                3600 * 100 * 6*channelBandwidth
+                            WHEN subframeAssignment = 2
+                            AND specialSubframePattern IN (6, 7) THEN
+                                3600 * 100 * 8*channelBandwidth
+                            END AS t,
+                             CASE
+                            WHEN subframeAssignment = 1
+                            AND specialSubframePattern = 5 THEN
+                                3600 * 100 * 4*channelBandwidth
+                            WHEN subframeAssignment = 1
+                            AND specialSubframePattern IN (6, 7) THEN
+                                3600 * 100 * 4*channelBandwidth
+                            WHEN subframeAssignment = 2
+                            AND specialSubframePattern = 5 THEN
+                                3600 * 100 * 2*channelBandwidth
+                            WHEN subframeAssignment = 2
+                            AND specialSubframePattern IN (6, 7) THEN
+                                3600 * 100 * 2*channelBandwidth
+                            END AS s
+                            FROM
+                                EUtranCellTDD
+                            WHERE
+                                subNetWork IN ($subNetWorkStr ))t";
             $tti = $db_kget->query($sql)->fetch(PDO::FETCH_ASSOC);
-
 
             $dbserve = Databaseconns::select()->where("cityChinese",$values['cityChinese'])->get()->toArray();
             $item = array();
@@ -86,8 +102,13 @@ class BLTddExtract extends Command
                     $password = $value['password'];
                     $city = $value['connName'];
                     $pmDbDSN = "dblib:host=".$host.":".$port.";".((float)phpversion()>7.0?'dbName':'dbname')."=".$dbName;
-                    $pmDB = new PDO($pmDbDSN, $userName, $password);
-                    
+                    try {
+                        
+                        $pmDB = new PDO($pmDbDSN, $userName, $password);
+                    } catch (\Exception $e) {
+                        echo '连接失败';
+                        continue;
+                    }
                      $sql="select convert(char(10),date_id) as day,hour_id as hour,min_id as minute,'".$value['connName']."' as location,COUNT(DISTINCT(EutranCellTDD)) AS cellNum,sum(pmRrcConnLevSum/pmRrcConnLevSamp) as 'agg1',sum(pmRrcConnMax) as 'agg0' from ".$dc."DC_E_ERBS_EUTRANCELLTDD_raw where date_id>='$startTime' and date_id<='$startTime' and $SN in ($subNetWork) group by date_id,hour_id,min_id,location";
                      // echo $sql;exit;
                      $res = $pmDB->query($sql)->fetchAll(PDO::FETCH_ASSOC);
@@ -161,8 +182,15 @@ class BLTddExtract extends Command
 			$B_L_TDD->rrc_cell_band_users=max($rrc_users)/$num*1000;
             if($item2){
                 $results = $this->getItem($item2);
-                $B_L_TDD->flow= $results['flow'];
-                $B_L_TDD->flow_tti=$results['flow']/($num*1000*$tti['tti']);
+                // var_dump("上行：".$results['flow_u']);
+                // var_dump("下行：".$results['flow_d']);
+                // var_dump("上行tti：".$tti['u_tti']);
+                // var_dump("下行tti：".$tti['d_tti']);
+                // var_dump("channelBandwidth:".$num);
+                // exit;
+                $B_L_TDD->flow= $results['flow_u']+$results['flow_d'];
+                $B_L_TDD->flow_tti_u=$results['flow_u']/($tti['u_tti']);
+                $B_L_TDD->flow_tti_d=$results['flow_d']/($tti['d_tti']);
                 $B_L_TDD->volte_traffic=$results['volte_traffic'];
                 $B_L_TDD->cce=$results['cce'];
                 $B_L_TDD->prb=$results['prb'];
@@ -192,13 +220,24 @@ class BLTddExtract extends Command
         }
 
         foreach ($item[0] as $key => $value) {
-        	$flow[]=($value['pmpdcpvoluldrb']+$value['pmpdcpvoldldrb'])/(1024*8*1024);
+            $flow_u[]=($value['pmpdcpvoluldrb'])/(1024*8*1024);
+            $flow_d[]=($value['pmpdcpvoldldrb'])/(1024*8*1024);
         	$volte_traffic[]=($value['pmerabqcilevsum_2']+$value['pmerabqcilevsum_1'])/(180*4);
-            $cce[]=(($value['pmpdcchcceutil_0'] ) * 2.5+ ( $value['pmpdcchcceutil_1'] ) * 7.5+ ( $value['pmpdcchcceutil_2'] ) * 12.5+ ( $value['pmpdcchcceutil_3'] ) * 17.5+ ( $value['pmpdcchcceutil_4'] ) * 22.5+ ( $value['pmpdcchcceutil_5'] ) * 27.5+ ( $value['pmpdcchcceutil_6'] ) * 32.5+ ( $value['pmpdcchcceutil_7'] ) * 37.5+ ( $value['pmpdcchcceutil_8'] ) * 42.5+ ( $value['pmpdcchcceutil_9'] ) * 47.5+ ( $value['pmpdcchcceutil_10'] ) * 52.5+ ( $value['pmpdcchcceutil_11'] ) * 57.5+ ( $value['pmpdcchcceutil_12'] ) * 62.5+ ( $value['pmpdcchcceutil_13'] ) * 67.5+ ( $value['pmpdcchcceutil_14'] ) * 72.5+ ( $value['pmpdcchcceutil_15'] ) * 77.5+ ( $value['pmpdcchcceutil_16'] ) * 82.5+ ( $value['pmpdcchcceutil_17'] ) * 87.5+ ( $value['pmpdcchcceutil_18'] ) * 92.5+ ( $value['pmpdcchcceutil_19'] ) * 97.5 ) / ($value['pmpdcchcceutil_0'] + $value['pmpdcchcceutil_1'] + $value['pmpdcchcceutil_2'] + $value['pmpdcchcceutil_3'] + $value['pmpdcchcceutil_4'] + $value['pmpdcchcceutil_5'] + $value['pmpdcchcceutil_6'] + $value['pmpdcchcceutil_7'] + $value['pmpdcchcceutil_8'] + $value['pmpdcchcceutil_9'] + $value['pmpdcchcceutil_10'] + $value['pmpdcchcceutil_11'] + $value['pmpdcchcceutil_12'] + $value['pmpdcchcceutil_13'] + $value['pmpdcchcceutil_14'] + $value['pmpdcchcceutil_15'] + $value['pmpdcchcceutil_16'] + $value['pmpdcchcceutil_17'] + $value['pmpdcchcceutil_18'] + $value['pmpdcchcceutil_19']); 
+            if(($value['pmpdcchcceutil_0'] + $value['pmpdcchcceutil_1'] + $value['pmpdcchcceutil_2'] + $value['pmpdcchcceutil_3'] + $value['pmpdcchcceutil_4'] + $value['pmpdcchcceutil_5'] + $value['pmpdcchcceutil_6'] + $value['pmpdcchcceutil_7'] + $value['pmpdcchcceutil_8'] + $value['pmpdcchcceutil_9'] + $value['pmpdcchcceutil_10'] + $value['pmpdcchcceutil_11'] + $value['pmpdcchcceutil_12'] + $value['pmpdcchcceutil_13'] + $value['pmpdcchcceutil_14'] + $value['pmpdcchcceutil_15'] + $value['pmpdcchcceutil_16'] + $value['pmpdcchcceutil_17'] + $value['pmpdcchcceutil_18'] + $value['pmpdcchcceutil_19'])==0){
+                $cce[]=0;
+            }else{
+                 $cce[]=(($value['pmpdcchcceutil_0'] ) * 2.5+ ( $value['pmpdcchcceutil_1'] ) * 7.5+ ( $value['pmpdcchcceutil_2'] ) * 12.5+ ( $value['pmpdcchcceutil_3'] ) * 17.5+ ( $value['pmpdcchcceutil_4'] ) * 22.5+ ( $value['pmpdcchcceutil_5'] ) * 27.5+ ( $value['pmpdcchcceutil_6'] ) * 32.5+ ( $value['pmpdcchcceutil_7'] ) * 37.5+ ( $value['pmpdcchcceutil_8'] ) * 42.5+ ( $value['pmpdcchcceutil_9'] ) * 47.5+ ( $value['pmpdcchcceutil_10'] ) * 52.5+ ( $value['pmpdcchcceutil_11'] ) * 57.5+ ( $value['pmpdcchcceutil_12'] ) * 62.5+ ( $value['pmpdcchcceutil_13'] ) * 67.5+ ( $value['pmpdcchcceutil_14'] ) * 72.5+ ( $value['pmpdcchcceutil_15'] ) * 77.5+ ( $value['pmpdcchcceutil_16'] ) * 82.5+ ( $value['pmpdcchcceutil_17'] ) * 87.5+ ( $value['pmpdcchcceutil_18'] ) * 92.5+ ( $value['pmpdcchcceutil_19'] ) * 97.5 ) / ($value['pmpdcchcceutil_0'] + $value['pmpdcchcceutil_1'] + $value['pmpdcchcceutil_2'] + $value['pmpdcchcceutil_3'] + $value['pmpdcchcceutil_4'] + $value['pmpdcchcceutil_5'] + $value['pmpdcchcceutil_6'] + $value['pmpdcchcceutil_7'] + $value['pmpdcchcceutil_8'] + $value['pmpdcchcceutil_9'] + $value['pmpdcchcceutil_10'] + $value['pmpdcchcceutil_11'] + $value['pmpdcchcceutil_12'] + $value['pmpdcchcceutil_13'] + $value['pmpdcchcceutil_14'] + $value['pmpdcchcceutil_15'] + $value['pmpdcchcceutil_16'] + $value['pmpdcchcceutil_17'] + $value['pmpdcchcceutil_18'] + $value['pmpdcchcceutil_19']); 
+            }
+           if($value['pmprbavailul']&&$value['pmprbuseddlfirsttrans']&&$value['pmprbavaildl']){
+
             $prb[]=(100 * ( $value['pmprbuseduldtch'] + $value['pmprbusedulsrb'] ) / ( $value['pmprbavailul'] / 100 ) / 96 + 100 * ( ( $value['pmprbuseddldtch'] + $value['pmprbuseddlbcch'] + $value['pmprbuseddlpcch'] ) + ( $value['pmprbuseddlsrbfirsttrans'] ) * ( 1+ ( $value['pmprbuseddlretrans'] ) / ( $value['pmprbuseddlfirsttrans'] ) ) ) / ( $value['pmprbavaildl'] / 100 ) / 100) / 2;
+           }else{
+            $prb[]=0;
+           }
         }
         $new_item = array();
-        $new_item['flow']=max($flow);
+        $new_item['flow_u']=max($flow_u);
+        $new_item['flow_d']=max($flow_d);
         $new_item['volte_traffic']=max($volte_traffic);
         $new_item['cce']=max($cce);
         $new_item['prb']=max($prb);

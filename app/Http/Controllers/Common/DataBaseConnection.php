@@ -176,7 +176,7 @@ class DataBaseConnection
             case "suzhou3":
                 $SN = "substring(SN, 12, charindex(',', SN)-12)";
                 break;
-            case "changzhou3":
+            case "changzhou":
               $SN = "substring(SN, charindex('=', SN)+1, charindex(',', SN)-charindex('=', SN)-1)";
               break;
             case "suzhou4":
@@ -231,4 +231,30 @@ class DataBaseConnection
 
     }
 
+
+        /**
+     * 获得NBI城市名
+     *
+     * @param string $city 中文城市名
+     *
+     * @return string NBI城市名
+     */
+    public function getNbiOptions($city)
+    {
+        $nbiCity = '';
+        if ($city == 'changzhou') {
+            $nbiCity = 'ERICSSON-CMJS-CZ';
+        } else if ($city == 'wuxi') {
+            $nbiCity = 'ERICSSON-CMJS-WX';
+        } else if ($city == 'zhenjiang') {
+            $nbiCity = 'ERICSSON-CMJS-ZJ';
+        } else if ($city == 'nantong') {
+            $nbiCity = 'ERICSSON-CMJS-NT';
+        } else if ($city == 'suzhou') {
+            $nbiCity = 'ERICSSON-CMJS-SZ';
+        }
+
+        return $nbiCity;
+
+    }//end getNbiOptions()
 }//end class
