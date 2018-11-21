@@ -8,7 +8,6 @@ pipeline {
                 sh 'cd Docker-Bird'
 		sh 'chmod +x build/build-product.sh'
 		sh 'build/build-product.sh'
-	        sh 'rm -rf ../Docker-Bird'
 	    }
 	}
 	stage('Test') {
@@ -19,6 +18,11 @@ pipeline {
 	stage('Deploy'){
 	    steps {
 	        echo 'Deploying...'
+	    }
+	}
+	stage('Clean'){
+	    steps {
+	        sh 'rm -rf ../Docker-Bird'
 	    }
 	}
     }
