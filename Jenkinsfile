@@ -4,11 +4,8 @@ pipeline {
     stages {
         stage('Build') {
 	    steps {
-	        sh 'git clone https://eDeploy:ehub1234@github.com/fuzzywy/Docker-Bird.git'
-                sh 'cd Docker-Bird'
-		sh 'echo $PWD'
-		sh 'chmod +x build/build-product.sh'
-		sh 'build/build-product.sh'
+	        sh 'chmod +x build.sh'
+		sh 'build.sh'
 	    }
 	}
 	stage('Test') {
@@ -23,7 +20,7 @@ pipeline {
 	}
 	stage('Clean'){
 	    steps {
-	        sh 'rm -rf ../Docker-Bird'
+	        sh 'rm -rf Docker-Bird'
 	    }
 	}
     }
