@@ -55,5 +55,11 @@ return [
 		"wireless_rate"=>"wireless_rate",
 		"rrc_users_cell"=>"rrc_users_cell",
 		"npdcch"=>"npdcch",
+	],
+	"home" => [
+	        "genius" => "Genius",
+		"gmonitor" => "Gmonitor",
+		"bird" => "Bird",
+		"qat" => "Qat"
 	]
 ];
