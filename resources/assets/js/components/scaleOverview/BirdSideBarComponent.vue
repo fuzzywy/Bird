@@ -1,5 +1,5 @@
 <template>
-	<div class="siderbar">
+	<div class="siderbar" v-bind:style="{ width: width}">
 		<b-card header="<b>网络概览</b>" @click='switches' :class='state'>
 			<b-list-group flush>
 				<span v-show="birdSideBarLoadStatus == 1"><img src="/public/img/loading.gif">&nbsp;loading...</span>
@@ -28,7 +28,6 @@
 	    position: fixed;
 		left: 15px;
 		right: 20px;
-		width: 225px;
 	}
 	.card-body-disappear > .card-body {
 		/*height: 0px;*/
@@ -43,6 +42,19 @@
 </style>
 
 <script>
+	var userAgent = navigator.userAgent; 
+	var fixWidth = document.body.scrollWidth;
+    var isAndroid = userAgent.indexOf('Android') > -1 || userAgent.indexOf('Adr') > -1;
+    var isPC = userAgent.indexOf('Windows') > -1 || userAgent.indexOf('Adr') > -1;
+    var isPad = userAgent.indexOf('iPad') > -1 || userAgent.indexOf('Adr') > -1;
+    var Width;
+    if (isPC) {
+    	Width = '225px';
+    } else if (isAndroid) {
+    	Width = fixWidth+'px';
+    } else if (isPad) {
+    	Width = fixWidth+'px';
+    }
 	export default {
 		data() {
 			return {
@@ -50,7 +62,8 @@
 					/*{ id: 1, Content: '指标概览', routertag: 'indexoverview' },
 					{ id: 2, Content: '规模概览', routertag: 'scaleoverview' }*/
 				],
-				state: 'card-body-appear'
+				state: 'card-body-appear',
+				width:Width,
 			}
 		},
 		created() {

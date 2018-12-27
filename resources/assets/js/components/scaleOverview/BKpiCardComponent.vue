@@ -7,7 +7,7 @@
 					<div v-for='post in LTEs' v-show="bKpiCardStatus == 3" style="text-align: center;">{{post}}</div>
 					<div class="row" v-show="bKpiCardStatus == 2">
 						<div
-				            class="col-4 rowclass" 
+				            :class="device" 
 				            style="text-align: center;" 
 				            v-for="post in LTEs"
 				            :key="post.id"
@@ -28,7 +28,7 @@
 					<div v-for='post in VOLTEs' v-show="bKpiCardStatus == 3" style="text-align: center;">{{post}}</div>
 					<div class="row" v-show="bKpiCardStatus == 2">
 						<div
-				            class="col-4 rowclass" 
+				            :class="device1" 
 				            style="text-align: center;" 
 				            v-for="post in VOLTEs"
 				            :key="post.id"
@@ -49,7 +49,7 @@
 					<div v-for='post in NBIOTs' v-show="bKpiCardStatus == 3" style="text-align: center;">{{post}}</div>
 					<div class="row" v-show="bKpiCardStatus == 2">
 						<div
-				            class="col-4 rowclass" 
+				            :class="device1" 
 				            style="text-align: center;" 
 				            v-for="post in NBIOTs"
 				            :key="post.id"
@@ -70,7 +70,7 @@
 					<div v-for='post in GSMs' v-show="bKpiCardStatus == 3" style="text-align: center;">{{post}}</div>
 					<div class="row" v-show="bKpiCardStatus == 2">
 						<div
-				            class="col-4 rowclass" 
+				            :class="device1" 
 				            style="text-align: center;" 
 				            v-for="post in GSMs"
 				            :key="post.id"
@@ -96,7 +96,8 @@
 			<span v-show="bScaleKpiCard == 3">ScaleCard loaded unsuccessfully!</span> -->
 	        <b-card header="GSM"
 	                header-tag="header"
-	               	>
+	                v-bind:style="{width: width1}"
+	                >
 	            <div v-show="bScaleKpiCard == 1" style="margin: auto; width: fit-content"><img src="/public/img/loading.gif">&nbsp;loading...</div>
 	    		<div v-for='post in scale' v-show="bScaleKpiCard == 3" style="margin: auto; width: fit-content">{{post}}</div>
 	            <div class="row" v-show="bScaleKpiCard == 2">
@@ -104,9 +105,9 @@
 			            style="text-align: center;padding-bottom: 15px"
 			            v-for="post in scale.GSMs" 
 			            :key="post.id"
-			            :class="post.col" 
+			            :class="col" 
 			        >
-			        	<div class='scalecard' style="vertical-align: middle;">
+			        	<div class='scalecard' style="vertical-align: middle;" v-bind:style="{ height: height+'px',width: width+'px'}">
 			        		<img class='floatleft' :src= "post.img">
 			        		<div class="postdata" style="color: #fff; padding-top: 20px;">{{post.data}}</div>
 			        		<div class="posttype" style="color: #fff">{{post.name}}</div>
@@ -120,6 +121,7 @@
 	    	<div v-show="bScaleKpiCard == 3" style="margin: auto;">ScaleCard loaded unsuccessfully!</div> -->
     		<b-card header="TDD_LTE"
 	                header-tag="header"
+	                v-bind:style="{width: width1}"
 	               	>
 	            <div v-show="bScaleKpiCard == 1" style="margin: auto; width: fit-content"><img src="/public/img/loading.gif">&nbsp;loading...</div>
 	    		<div v-for='post in scale' v-show="bScaleKpiCard == 3" style="margin: auto; width: fit-content">{{post}}</div>
@@ -128,14 +130,14 @@
 			            style="text-align: center;padding-bottom: 15px"
 			            v-for="post in scale.TDDLTEs" 
 			            :key="post.id"
-			            :class="post.col" 
+			            :class="col" 
 			        >
-				        <div class='scalecard' v-show="post.img == '/public/img/载波.png' || post.img == '/public/img/小区.png' || post.img == '/public/img/基站.png' || post.img == '/public/img/xinhao.png'" style="vertical-align: middle;">
+				        <div class='scalecard' v-show="post.img == '/public/img/载波.png' || post.img == '/public/img/小区.png' || post.img == '/public/img/基站.png' || post.img == '/public/img/xinhao.png'" style="vertical-align: middle;" v-bind:style="{ height: height+'px',width: width+'px'}">
 			        		<img class='floatleft' :src="post.img">
 			        		<div class="postdata" style="color: #fff; padding-top: 20px;">{{post.data}}</div>
 			        		<div class="posttype" style="color: #fff">{{post.name}}</div>
 			        	</div>
-			        	<div v-show="post.img == '/public/img/载波聚合.png' || post.img == '/public/img/高速移动.png' || post.img == '/public/img/覆盖增强.png' || post.img == '/public/img/huihua.png'" class="processcard">
+			        	<div v-show="post.img == '/public/img/载波聚合.png' || post.img == '/public/img/高速移动.png' || post.img == '/public/img/覆盖增强.png' || post.img == '/public/img/huihua.png'" class="processcard" v-bind:style="{ height: height+'px',width: width+'px'}">
 			        		<img class='floatleft' :src="post.img">
 			        		<div class="posttype" style="color: #000; padding-top: 20px;">{{post.name}}</div>
 			        		<div class="postdata" style="color: #000;">{{post.data}}/{{post.max}}</div>
@@ -157,6 +159,7 @@
 	   	<b-card-group deck v-show="type == 'scaleoverview'">
     		<b-card header="FDD_LTE"
 	                header-tag="header"
+	                v-bind:style="{width: width1}"
 	               	>
 	            <div v-show="bScaleKpiCard == 1" style="margin: auto; width: fit-content"><img src="/public/img/loading.gif">&nbsp;loading...</div>
 	    		<div v-for='post in scale' v-show="bScaleKpiCard == 3" style="margin: auto; width: fit-content">{{post}}</div>
@@ -165,14 +168,14 @@
 			            style="text-align: center;padding-bottom: 15px"
 			            v-for="post in scale.FDDLTEs" 
 			            :key="post.id"
-			            :class="post.col" 
+			            :class="col"
 			        >
-			        	<div class='scalecard' v-show="post.img == '/public/img/载波.png' || post.img == '/public/img/小区.png' || post.img == '/public/img/基站.png' || post.img == '/public/img/xinhao.png'" style="vertical-align: middle;">
+			        	<div class='scalecard' v-show="post.img == '/public/img/载波.png' || post.img == '/public/img/小区.png' || post.img == '/public/img/基站.png' || post.img == '/public/img/xinhao.png'" style="vertical-align: middle;"v-bind:style="{ height: height+'px',width: width+'px'}">
 			        		<img class='floatleft' :src="post.img">
 			        		<div class="postdata" style="color: #fff; padding-top: 20px;">{{post.data}}</div>
 			        		<div class="posttype" style="color: #fff">{{post.name}}</div>
 			        	</div>
-			        	<div v-show="post.img == '/public/img/载波聚合.png' || post.img == '/public/img/高速移动.png' || post.img == '/public/img/覆盖增强.png' || post.img == '/public/img/huihua.png'" class="processcard">
+			        	<div v-show="post.img == '/public/img/载波聚合.png' || post.img == '/public/img/高速移动.png' || post.img == '/public/img/覆盖增强.png' || post.img == '/public/img/huihua.png'" class="processcard" v-bind:style="{ height: height+'px',width: width+'px'}">
 			        		<img class='floatleft' :src="post.img">
 			        		<div class="posttype" style="color: #000; padding-top: 20px;">{{post.name}}</div>
 			        		<div class="postdata" style="color: #000;">{{post.data}}/{{post.max}}</div>
@@ -191,6 +194,7 @@
     	<b-card-group deck v-show="type == 'scaleoverview'">
     		<b-card header="NBIOT"
 	                header-tag="header"
+	                v-bind:style="{width: width1}"
 	               	>
 	               <!-- :footer="overviewCn + city"
 	                footer-tag="footer" -->
@@ -201,9 +205,9 @@
 			            style="text-align: center;padding-bottom: 15px"
 			            v-for="post in scale.NBIOTs" 
 			            :key="post.id"
-			            :class="post.col" 
+			            :class="col" 
 			        >
-			        	<div class='scalecard' style="vertical-align: middle;">
+			        	<div class='scalecard' style="vertical-align: middle;" v-bind:style="{ height: height+'px',width: width+'px'}">
 			        		<img class='floatleft' :src="post.img">
 			        		<div class="postdata" style="color: #fff; padding-top: 20px;">{{post.data}}</div>
 			        		<div class="posttype" style="color: #fff">{{post.name}}</div>
@@ -221,6 +225,7 @@
 			<span v-show="bLoadKpiCard == 3">LoadCard loaded unsuccessfully!</span> -->
     		<b-card header="TDD_LTE"
 	                header-tag="header"
+	                v-bind:style="{width: width1}"
 	               	>
 	            <div v-show="bLoadKpiCard == 1" style="margin: auto; width: fit-content"><img src="/public/img/loading.gif">&nbsp;loading...</div>
 	    		<div v-for='post in load' v-show="bLoadKpiCard == 3" style="margin: auto; width: fit-content">{{post}}</div>
@@ -229,9 +234,9 @@
 			            style="text-align: center;padding-bottom: 15px"
 			            v-for="post in load.TDDLTEs" 
 			            :key="post.id"
-			            :class="post.col" 
+			            :class="col"
 			        >
-				        <div class='scalecard' style="vertical-align: middle;">
+				        <div class='scalecard' style="vertical-align: middle;" v-bind:style="{ height: height+'px',width: width+'px'}">
 			        		<img class='floatleft' :src="post.img">
 			        		<div class="postdata" style="color: #fff; padding-top: 20px;">{{post.data}}</div>
 			        		<div class="posttype" style="color: #fff">{{post.name}}</div>
@@ -244,6 +249,7 @@
 	    <b-card-group deck v-show="type == 'loadoverview'">
     		<b-card header="FDD_LTE"
 	                header-tag="header"
+	                v-bind:style="{width: width1}"
 	               	>
 	            <div v-show="bLoadKpiCard == 1" style="margin: auto; width: fit-content"><img src="/public/img/loading.gif">&nbsp;loading...</div>
 	    		<div v-for='post in load' v-show="bLoadKpiCard == 3" style="margin: auto; width: fit-content">{{post}}</div>
@@ -252,9 +258,9 @@
 			            style="text-align: center;padding-bottom: 15px"
 			            v-for="post in load.FDDLTEs" 
 			            :key="post.id"
-			            :class="post.col" 
+			            :class="col" 
 			        >
-				        <div class='scalecard' style="vertical-align: middle;">
+				        <div class='scalecard' style="vertical-align: middle;" v-bind:style="{ height: height+'px',width: width+'px'}">
 			        		<img class='floatleft' :src="post.img">
 			        		<div class="postdata" style="color: #fff; padding-top: 20px;">{{post.data}}</div>
 			        		<div class="posttype" style="color: #fff">{{post.name}}</div>
@@ -267,6 +273,7 @@
 	    <b-card-group deck v-show="type == 'loadoverview'">
     		<b-card header="NBIOT"
 	                header-tag="header"
+	                v-bind:style="{width: width1}"
 	               	>
 	            <div v-show="bLoadKpiCard == 1" style="margin: auto; width: fit-content"><img src="/public/img/loading.gif">&nbsp;loading...</div>
 	    		<div v-for='post in load' v-show="bLoadKpiCard == 3" style="margin: auto; width: fit-content">{{post}}</div>
@@ -275,9 +282,9 @@
 			            style="text-align: center;padding-bottom: 15px"
 			            v-for="post in load.NBIOTs" 
 			            :key="post.id"
-			            :class="post.col" 
+			            :class="col" 
 			        >
-				        <div class='scalecard' style="vertical-align: middle;">
+				        <div class='scalecard' style="vertical-align: middle;" v-bind:style="{ height: height+'px',width: width+'px'}">
 			        		<img class='floatleft' :src="post.img">
 			        		<div class="postdata" style="color: #fff; padding-top: 20px;">{{post.data}}</div>
 			        		<div class="posttype" style="color: #fff">{{post.name}}</div>
@@ -290,6 +297,7 @@
 	    <b-card-group deck v-show="type == 'loadoverview'">
     		<b-card header="GSM"
 	                header-tag="header"
+	                v-bind:style="{width: width1}"
 	               	>
 	            <div v-show="bLoadKpiCard == 1" style="margin: auto; width: fit-content"><img src="/public/img/loading.gif">&nbsp;loading...</div>
 	    		<div v-for='post in load' v-show="bLoadKpiCard == 3" style="margin: auto; width: fit-content">{{post}}</div>
@@ -298,9 +306,9 @@
 			            style="text-align: center;padding-bottom: 15px"
 			            v-for="post in load.GSMs" 
 			            :key="post.id"
-			            :class="post.col" 
+			            :class="col" 
 			        >
-				        <div class='scalecard' style="vertical-align: middle;">
+				        <div class='scalecard' style="vertical-align: middle;" v-bind:style="{ height: height+'px',width: width+'px'}">
 			        		<img class='floatleft' :src="post.img">
 			        		<div class="postdata" style="color: #fff; padding-top: 20px;">{{post.data}}</div>
 			        		<div class="posttype" style="color: #fff">{{post.name}}</div>
@@ -391,7 +399,7 @@
 	.scalecard {
 		background-color: #20a8d8;
 		/*width:250px; */
-		height: 120px;
+		/*height: 120px;*/
 		border-radius: 3px;
 	}
 	.floatleft {
@@ -415,6 +423,35 @@
 </style>
 <script>
 	// Vue.component('tabsdata-component', require('./TabsdataComponent.vue'));
+	var userAgent = navigator.userAgent; 
+	var fixWidth = document.body.scrollWidth;
+    var isAndroid = userAgent.indexOf('Android') > -1 || userAgent.indexOf('Adr') > -1;
+    var isIphone = userAgent.indexOf('iPhone') > -1 || userAgent.indexOf('Adr') > -1;
+    var isPC = userAgent.indexOf('Windows') > -1 || userAgent.indexOf('Adr') > -1;
+    var isPad = userAgent.indexOf('iPad') > -1 || userAgent.indexOf('Adr') > -1;
+    var Width,Height,Device,Col,Device1,Width1;
+    if (isPC) {
+    	Device = "col-4 rowclass";
+    	Col = "col-3";
+    	Width = 250;
+    	Width1 = "auto";
+    	Height = 170;
+    	Device1 = "col-4 rowclass";
+    } else if (isAndroid || isIphone) {
+    	Device = "col-6 rowclass";
+    	Col = "col-6";
+    	Width = (fixWidth-72.6)/2;
+    	Width1 = fixWidth+"px";
+    	Height = 170;
+    	Device1 = "col-6 rowclass";
+    } else if (isPad) {
+    	Device = "col-4 rowclass";
+    	Col = "col-4";
+    	Width = (fixWidth-226)/4;
+    	Width1 = fixWidth+"px";
+    	Height = 150;
+    	Device1 = "col-4 rowclass";
+    }
 	export default {
 		name: 'tabs',
 		data() {
@@ -433,6 +470,12 @@
 				data:[],
 				scale: [],
 				load:[],
+				width:Width,
+				width1:Width1,
+				height:Height,
+				device:Device,
+				col:Col,
+				device1:Device1,
 				/*counter:75,*/
 				/*max:100*/
 			}
