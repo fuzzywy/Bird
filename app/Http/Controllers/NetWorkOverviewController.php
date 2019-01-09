@@ -94,7 +94,7 @@ class NetworkOverviewController extends Controller
                 for($i=0;$i<$len-3;$i++){
                     $arr['TDDLTEs'][$i]['id']=$i;
                     $arr['TDDLTEs'][$i]['name']=trans("message.loadSurvey.".$key[$i+3]);
-                    $arr['TDDLTEs'][$i]['data']=round($res[0][$key[$i+3]],2).$this->getUnit($key[$i+3]);
+                    $arr['TDDLTEs'][$i]['data']=$res[0][$key[$i+3]].$this->getUnit($key[$i+3]);
                     // $arr['TDDLTEs'][$i]['max']=intval($res[0]['erbs']);
                     $arr['TDDLTEs'][$i]['img'] = $this->getImage($key[$i+3]);
 
@@ -163,14 +163,16 @@ class NetworkOverviewController extends Controller
 
              $res = B_L_TDD::where("day_id",function($query){
                                 $query->select('day_id')->from("B_L_TDD")->orderBy("day_id","desc")->limit(1);
-                            })->select(array(\DB::raw("avg(flow) as flow"),
-                                            \DB::raw("avg(volte_traffic) as volte_traffic"),
-                                            \DB::raw("avg(rrc_users) as rrc_users"),
-                                            \DB::raw("avg(rrc_cell_user_mean) as rrc_cell_user_mean"),
-                                            \DB::raw("avg(rrc_cell_users_max) as rrc_cell_users_max"),
-                                            \DB::raw("avg(rrc_cell_band_users) as rrc_cell_band_users"),
-                                            \DB::raw("avg(cce) as cce"),
-                                            \DB::raw("avg(prb) as prb")
+                            })->select(array(\DB::raw("round(avg(flow),2) as flow"),
+                                            \DB::raw("round(avg(volte_traffic),2) as volte_traffic"),
+                                            \DB::raw("round(avg(rrc_users),2) as rrc_users"),
+                                            \DB::raw("round(avg(rrc_cell_user_mean),2) as rrc_cell_user_mean"),
+                                            \DB::raw("round(avg(rrc_cell_users_max),2) as rrc_cell_users_max"),
+                                            \DB::raw("round(avg(flow_tti_u),10) as flow_tti_u"),
+                                            \DB::raw("round(avg(flow_tti_d),10) as flow_tti_d"),
+                                            \DB::raw("round(avg(rrc_cell_band_users),2) as rrc_cell_band_users"),
+                                            \DB::raw("round(avg(cce),2) as cce"),
+                                            \DB::raw("round(avg(prb),2) as prb")
                                         ))
                             ->get()->toArray();
             $key = array_keys($res[0]);
@@ -178,7 +180,7 @@ class NetworkOverviewController extends Controller
             for($i=0;$i<$len;$i++){
                 $arr['TDDLTEs'][$i]['id']=$i;
                 $arr['TDDLTEs'][$i]['name']=trans("message.loadSurvey.".$key[$i]);
-                $arr['TDDLTEs'][$i]['data']=round($res[0][$key[$i]],2).$this->getUnit($key[$i]);
+                $arr['TDDLTEs'][$i]['data']=$res[0][$key[$i]].$this->getUnit($key[$i]);
                 // $arr['TDDLTEs'][$i]['max']=intval($res[0]['erbs']);
                 $arr['TDDLTEs'][$i]['img'] = $this->getImage($key[$i]);
 
@@ -362,7 +364,7 @@ class NetworkOverviewController extends Controller
                                         \DB::raw("round(sum(tch),2) as tch"),
                                         \DB::raw("round(sum(pdch),2) as pdch")))
                             ->get()->toArray();
-            if($res[0]['cell']!=''){
+            if($res[0]['pdch']!=''){
                 $key = array_keys($res[0]);
                 $len = count($key);
                 for($i=0;$i<$len;$i++){
@@ -788,8 +790,10 @@ class NetworkOverviewController extends Controller
         $str = "";
         switch($name){
             case 'flow':
-            case 'data_traffic':
                 $str="G";
+            break;
+            case 'data_traffic':
+                 $str="M";
             break;
             case 'volte_traffic':
             case 'tel_traffic':

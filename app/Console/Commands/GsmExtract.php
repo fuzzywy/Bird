@@ -21,7 +21,7 @@ class GsmExtract extends Command
      *
      * @var string
      */
-    protected $description = 'GSM 数据备份';
+    protected $description = '指标概览GSM 数据备份';
 
     /**
      * Create a new command instance.

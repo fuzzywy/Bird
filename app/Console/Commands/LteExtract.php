@@ -24,7 +24,7 @@ class LteExtract extends Command
      *
      * @var string
      */
-    protected $description = 'Lte 数据备份';
+    protected $description = '指标概览Lte 数据备份';
 
     /**
      * Create a new command instance.

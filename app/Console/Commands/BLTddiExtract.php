@@ -24,7 +24,7 @@ class BLTddExtract extends Command
      *
      * @var string
      */
-    protected $description = 'B_L_Tdd 数据备份';
+    protected $description = '负荷概览B_L_Tdd 数据备份';
 
     /**
      * Create a new command instance.

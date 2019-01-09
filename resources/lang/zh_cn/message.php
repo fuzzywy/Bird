@@ -60,14 +60,9 @@ return [
 		"data_traffic_pdch"=>"2G每PDCH数据流量",
 		"wireless_rate"=>"无线利用率",
 		"flow_tti" => "忙时单位带宽",
+		"flow_tti_u" => "忙时上行流量单位带宽",
+		"flow_tti_d" => "忙时下行流量单位带宽",
 		"rrc_users_cell"=>"忙时每小区RRC最大用户数",
 		"npdcch"=>"忙时NPDCCH利用率",
-	],
-	"home"=>[
-	        "genius"=>"网络优化",
-		"gmonitor"=>"网络监控",
-		"bird"=>"网络概览",
-		"qat"=>"综合查询",
 	]
-
 ];

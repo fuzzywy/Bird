@@ -54,12 +54,8 @@ return [
 		"data_traffic_pdch"=>"data_traffic_pdch",
 		"wireless_rate"=>"wireless_rate",
 		"rrc_users_cell"=>"rrc_users_cell",
+		"flow_tti_u" => "flow_tti_u",
+		"flow_tti_d" => "flow_tti_d",
 		"npdcch"=>"npdcch",
-	],
-	"home" => [
-	        "genius" => "Genius",
-		"gmonitor" => "Gmonitor",
-		"bird" => "Bird",
-		"qat" => "Qat"
 	]
 ];

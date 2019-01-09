@@ -23,7 +23,7 @@ class NbiExtract extends Command
      *
      * @var string
      */
-    protected $description = 'Nbi 数据备份';
+    protected $description = '指标概览Nbi数据备份';
 
     /**
      * Create a new command instance.

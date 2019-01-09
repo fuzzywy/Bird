@@ -28,7 +28,7 @@ class SLteExtract extends Command
      *
      * @var string
      */
-    protected $description = 'S_LTE_TDD/FDD/NBIOT/GSM 备份';
+    protected $description = '规模概览S_LTE_TDD/FDD/NBIOT/GSM 备份';
 
     /**
      * Create a new command instance.
