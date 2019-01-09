@@ -57,5 +57,11 @@ return [
 		"flow_tti_u" => "flow_tti_u",
 		"flow_tti_d" => "flow_tti_d",
 		"npdcch"=>"npdcch",
-	]
+	],
+	"home"=>[
+		"genius"=>"GENIUS",
+		"gmonitor"=>"GMONITOR",
+		"bird"=>"BIRD",
+		"qat"=>"QAT",
+	],
 ];

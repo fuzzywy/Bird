@@ -64,5 +64,11 @@ return [
 		"flow_tti_d" => "忙时下行流量单位带宽",
 		"rrc_users_cell"=>"忙时每小区RRC最大用户数",
 		"npdcch"=>"忙时NPDCCH利用率",
-	]
+	],
+	"home"=>[
+		"genius"=>"优化平台",
+		"gmonitor"=>"监控平台",
+		"bird"=>"概览平台",
+		"qat"=>"查询平台",
+	],
 ];
