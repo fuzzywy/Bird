@@ -131,9 +131,9 @@ class BLFddExtract extends Command
             $B_L_FDD->day_id=$startTime;
             $B_L_FDD->location=$values['cityChinese'];
             $B_L_FDD->rrc_users=max($rrc_users);
-            $B_L_FDD->rrc_cell_user_mean=max($rrc_users)/$cellNum[array_search(max($rrc_users),$rrc_users)];
-            $B_L_FDD->rrc_cell_users_max=max($agg0)/$cellNum[array_search(max($agg0), $agg0)];
-            $B_L_FDD->rrc_cell_band_users=max($rrc_users)/$num*1000;
+            $B_L_FDD->rrc_cell_user_mean=$cellNum[array_search(max($rrc_users),$rrc_users)]==0?'0':max($rrc_users)/$cellNum[array_search(max($rrc_users),$rrc_users)];
+            $B_L_FDD->rrc_cell_users_max=$cellNum[array_search(max($agg0), $agg0)]=='0'?'0':max($agg0)/$cellNum[array_search(max($agg0), $agg0)];
+            $B_L_FDD->rrc_cell_band_users=$num==0?'0':max($rrc_users)/$num*1000;
             if($item2){
                 $results = $this->getItem($item2);
                 $B_L_FDD->flow= $results['flow'];

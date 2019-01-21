@@ -44,12 +44,13 @@ class BLTddExtract extends Command
     public function handle()
     {   
         $dbc = new DataBaseConnection();
-        $City = City::select()->get()->toArray();
+        $cities = City::select()->get()->toArray();
         $kgetName = $dbc->getKgetTime();
         $startTime = date("Y-m-d",strtotime("-1 day"));
   
         $db_kget = $dbc->getDB("kget",$kgetName);
-        foreach ($City as $key => $values) {
+
+        foreach ($cities as $key => $values) {
             $subNetWorkStr = $dbc->getSubNetsStr("TDD",$values['cityChinese']);
             $sql="select sum(t.t)/1000 as d_tti,sum(t.s)/1000 as u_tti from(SELECT
                                 CASE
@@ -179,7 +180,7 @@ class BLTddExtract extends Command
 			$B_L_TDD->rrc_users=max($rrc_users);
 			$B_L_TDD->rrc_cell_user_mean=max($rrc_users)/$cellNum[array_search(max($rrc_users),$rrc_users)];
 			$B_L_TDD->rrc_cell_users_max=max($agg0)/$cellNum[array_search(max($agg0), $agg0)];
-			$B_L_TDD->rrc_cell_band_users=max($rrc_users)/$num*1000;
+			$B_L_TDD->rrc_cell_band_users=$num==0?'0':max($rrc_users)/$num*1000;
             if($item2){
                 $results = $this->getItem($item2);
                 // var_dump("上行：".$results['flow_u']);
@@ -189,8 +190,8 @@ class BLTddExtract extends Command
                 // var_dump("channelBandwidth:".$num);
                 // exit;
                 $B_L_TDD->flow= $results['flow_u']+$results['flow_d'];
-                $B_L_TDD->flow_tti_u=$results['flow_u']/($tti['u_tti']);
-                $B_L_TDD->flow_tti_d=$results['flow_d']/($tti['d_tti']);
+                $B_L_TDD->flow_tti_u=$tti['u_tti']==0?'0':$results['flow_u']/($tti['u_tti']);
+                $B_L_TDD->flow_tti_d=$tti['d_tti']==0?'0':$results['flow_d']/($tti['d_tti']);
                 $B_L_TDD->volte_traffic=$results['volte_traffic'];
                 $B_L_TDD->cce=$results['cce'];
                 $B_L_TDD->prb=$results['prb'];
