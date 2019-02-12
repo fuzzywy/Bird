@@ -1,0 +1,157 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "4402de6d_0ed5eeae",
+        "filename": "app/Console/Commands/GsmDay.php",
+        "patchSetId": 1
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2019-02-12T06:27:18Z",
+      "side": 1,
+      "message": "命令应该全部为小写字符",
+      "revId": "1368b75bd94fefb4f0f496238340b812e29d27ce",
+      "serverId": "f8e000e2-6046-4ea1-b337-da5e5d5bd44d",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "8ad8f710_b4490c58",
+        "filename": "app/Console/Commands/GsmDay.php",
+        "patchSetId": 1
+      },
+      "lineNbr": 47,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2019-02-12T06:27:18Z",
+      "side": 1,
+      "message": "$GSM这个变量不需要定义",
+      "revId": "1368b75bd94fefb4f0f496238340b812e29d27ce",
+      "serverId": "f8e000e2-6046-4ea1-b337-da5e5d5bd44d",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "2cf350ca_9522d5c3",
+        "filename": "app/Console/Commands/LteDay.php",
+        "patchSetId": 1
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2019-02-12T06:27:18Z",
+      "side": 1,
+      "message": "删除多余的空行",
+      "revId": "1368b75bd94fefb4f0f496238340b812e29d27ce",
+      "serverId": "f8e000e2-6046-4ea1-b337-da5e5d5bd44d",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "8d3b02cb_88e11ca4",
+        "filename": "app/Console/Commands/LteDay.php",
+        "patchSetId": 1
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2019-02-12T06:27:18Z",
+      "side": 1,
+      "message": "命令签名应该全部为小写字符",
+      "revId": "1368b75bd94fefb4f0f496238340b812e29d27ce",
+      "serverId": "f8e000e2-6046-4ea1-b337-da5e5d5bd44d",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "037464ff_bb6d4c78",
+        "filename": "app/Console/Commands/NbiotDay.php",
+        "patchSetId": 1
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2019-02-12T06:27:18Z",
+      "side": 1,
+      "message": "删除多余的空行和注释",
+      "revId": "1368b75bd94fefb4f0f496238340b812e29d27ce",
+      "serverId": "f8e000e2-6046-4ea1-b337-da5e5d5bd44d",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "63552c25_f94f6c32",
+        "filename": "app/Console/Commands/NbiotDay.php",
+        "patchSetId": 1
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2019-02-12T06:27:18Z",
+      "side": 1,
+      "message": "命令签名应该全部为小写字符",
+      "revId": "1368b75bd94fefb4f0f496238340b812e29d27ce",
+      "serverId": "f8e000e2-6046-4ea1-b337-da5e5d5bd44d",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "80a3e60e_47bbd81a",
+        "filename": "app/Console/Commands/VolteDay.php",
+        "patchSetId": 1
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2019-02-12T06:27:18Z",
+      "side": 1,
+      "message": "$Volte_TDD 这个变量没有被使用,不需要定义。",
+      "revId": "1368b75bd94fefb4f0f496238340b812e29d27ce",
+      "serverId": "f8e000e2-6046-4ea1-b337-da5e5d5bd44d",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "e28ea679_01b283f2",
+        "filename": "app/Console/Commands/VolteDay.php",
+        "patchSetId": 1
+      },
+      "lineNbr": 50,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2019-02-12T06:27:18Z",
+      "side": 1,
+      "message": "同上",
+      "revId": "1368b75bd94fefb4f0f496238340b812e29d27ce",
+      "serverId": "f8e000e2-6046-4ea1-b337-da5e5d5bd44d",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "d4b7af9a_ca3041b7",
+        "filename": "app/Models/NBIOT_DAY.php",
+        "patchSetId": 1
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2019-02-12T06:27:18Z",
+      "side": 1,
+      "message": "需要左对齐",
+      "revId": "1368b75bd94fefb4f0f496238340b812e29d27ce",
+      "serverId": "f8e000e2-6046-4ea1-b337-da5e5d5bd44d",
+      "unresolved": false
+    }
+  ]
+}
