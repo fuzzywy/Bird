@@ -15,7 +15,7 @@ class VolteDay extends Command
      *
      * @var string
      */
-    protected $signature = 'VolteDay:backup';
+    protected $signature = 'volteday:backup';
 
     /**
      * The console command description.
@@ -45,9 +45,8 @@ class VolteDay extends Command
         $db = $dbc->getDB("Bird");
         $result = City::select("connName")->get();
         foreach ($result as $key => $value) {
-         $Volte_TDD = new LteBackup("B_VOLTE_TDD_DAY","city","day",$value->connName,"TDD",$db);
-
-         $Volte_FDD = new LteBackup("B_VOLTE_FDD_DAY","city","day",$value->connName,"FDD",$db);
+            new LteBackup("B_VOLTE_TDD_DAY","city","day",$value->connName,"TDD",$db);
+            new LteBackup("B_VOLTE_FDD_DAY","city","day",$value->connName,"FDD",$db);
 
         }
     }

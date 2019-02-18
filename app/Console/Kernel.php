@@ -53,14 +53,11 @@ class Kernel extends ConsoleKernel
         $schedule->command('BLTdd:backup')->cron("20 1 * * *");
         $schedule->command('BLFdd:backup')->cron("20 1 * * *");
         //指标查询备份天级别数据
-        $schedule->command('GsmDay:backup')->dailyAt("02:00");//GSM天级别
-        $schedule->command('NbiotDay:backup')->dailyAt("02:00");//Nbiot天级别
-        $schedule->command('VolteDay:backup')->dailyAt("02:00");//Volte天级别
-        $schedule->command('LteDay:backup')->dailyAt("02:00");//Lte天级别
+        $schedule->command('gsmday:backup')->dailyAt("02:00");//GSM天级别
+        $schedule->command('nbiotday:backup')->dailyAt("02:00");//Nbiot天级别
+        $schedule->command('volteday:backup')->dailyAt("02:00");//Volte天级别
+        $schedule->command('lteday:backup')->dailyAt("02:00");//Lte天级别
 
-        // $schedule->command('VolteExtract:backup')->cron("20 * * * *");
-        // $schedule->command('inspire')
-        //          ->hourly();
     }
 
     /**

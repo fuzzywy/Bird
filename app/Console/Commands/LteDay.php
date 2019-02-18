@@ -17,7 +17,7 @@ class LteDay extends Command
      *
      * @var string
      */
-    protected $signature = 'LteDay:backup';
+    protected $signature = 'lteday:backup';
 
     /**
      * The console command description.
@@ -51,9 +51,8 @@ class LteDay extends Command
         $startTime = date("Y-m-d",strtotime("-1 day"));
         foreach ($result as $key => $values) {
 
-            $TDD = new LteBackup("B_LTE_TDD_DAY","city","day",$values->connName,"TDD",$db);
+            new LteBackup("B_LTE_TDD_DAY","city","day",$values->connName,"TDD",$db);
             $citys = Databaseconns::select()->where('connName','like',$values->connName."%")->get()->toArray();
-            // // print_r($citys);exit;
             $i=0;$j=0;
             foreach ($citys as $key => $value) {
                 $subNetWork = $dbc->getSubNetsByconnName("TDD",$value['connName']);
@@ -65,7 +64,6 @@ class LteDay extends Command
                     $dbName   = $value['dbName'];
                     $userName = $value['userName'];
                     $password = $value['password'];
-                    // $pmDbDSN  = "dblib:host=".$host.":".$port.";dbname=".$dbName;
                     $pmDbDSN = "dblib:host=".$host.":".$port.";".((float)phpversion()>7.0?'dbName':'dbname')."=".$dbName;
                     try {
                         $pmDB     = new PDO($pmDbDSN, $userName, $password);
@@ -93,7 +91,7 @@ class LteDay extends Command
                 $num=$j*100/$i;
             }
             LTE_TDD_DAY::where(['location'=>$values->connName,'day_id'=>$startTime])->update(['interfererate'=>$num]);
-            $FDD = new LteBackup("B_LTE_FDD_DAY","city","day",$values->connName,"FDD",$db);
+            new LteBackup("B_LTE_FDD_DAY","city","day",$values->connName,"FDD",$db);
                $i=0;$j=0;
             foreach ($citys as $key => $value) {
                 $subNetWork = $dbc->getSubNetsByconnName("FDD",$value['connName']);
@@ -105,7 +103,6 @@ class LteDay extends Command
                     $dbName   = $value['dbName'];
                     $userName = $value['userName'];
                     $password = $value['password'];
-                    // $pmDbDSN  = "dblib:host=".$host.":".$port.";dbname=".$dbName;
                     $pmDbDSN = "dblib:host=".$host.":".$port.";".((float)phpversion()>7.0?'dbName':'dbname')."=".$dbName;
                     try {
                         $pmDB     = new PDO($pmDbDSN, $userName, $password);
@@ -126,9 +123,6 @@ class LteDay extends Command
                         }
                      }
                 }
-             
-              
-           
             }
             if($i==0){
                 $num=0;
@@ -136,8 +130,6 @@ class LteDay extends Command
                 $num=$j*100/$i;
             }
             LTE_FDD_DAY::where(['location'=>$values->connName,'day_id'=>$startTime])->update(['interfererate'=>$num]);
- 
-
         }
     }
 }

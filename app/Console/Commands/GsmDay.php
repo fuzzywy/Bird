@@ -13,7 +13,7 @@ class GsmDay extends Command
      *
      * @var string
      */
-    protected $signature = 'GsmDay:backup';
+    protected $signature = 'gsmday:backup';
 
     /**
      * The console command description.
@@ -43,8 +43,7 @@ class GsmDay extends Command
         $db = $dbc->getDB("Bird");
         $result = City::select("connName")->get();
         foreach ($result as $key => $value) {
-            // print_r($value->connName);
-            $GSM = new GsmBackup("B_GSM_DAY","city","day",$value->connName,$db);
+           new GsmBackup("B_GSM_DAY","city","day",$value->connName,$db);
         }
     }
 }
