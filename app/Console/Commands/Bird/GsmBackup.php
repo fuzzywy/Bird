@@ -51,8 +51,8 @@ class GsmBackup{
 		                $endTime = date("Y-m-d H:i:s", mktime(date('H'), date('i') - $interval * 15 - 30,
 		                    0, date('n'), date('j'), date('Y')));
 		        }elseif ($this->timeDim  == "day") {
-		                $startTime = date("Y-m-d H:i:s",strtotime("-1 day"));
-		                $endTime = date("Y-m-d H:i:s");
+		                $startTime = date("Y-m-d",strtotime("-1 day"));
+		                $endTime = date("Y-m-d");
 		        }
 		    $result = GSMQuery::queryTemplate($this->db,$pmDB,$counters,$this->template,$this->locationDim,$this->timeDim,$this->city,$startTime,$endTime);
 		    if($result){
