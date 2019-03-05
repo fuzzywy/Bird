@@ -16,7 +16,7 @@ class CreateGSMDAIesTable extends Migration
         Schema::create('B_GSM_DAY', function (Blueprint $table) {
             $table->increments('id');
             $table->date('day_id');
-            $table->string('location',20)->comment('城市');
+            $table->string('province')->comment('省份');
             $table->string('location',20)->comment('城市');
             $table->decimal('access',6,2)->comment('2G无线接通率');
             $table->decimal('lost',6,2)->comment('2G无线掉线率');
