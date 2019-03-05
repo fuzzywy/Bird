@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "7453cc07_e1f85e46",
+        "filename": "resources/views/layouts/app.blade.php",
+        "patchSetId": 1
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2019-03-05T07:01:55Z",
+      "side": 1,
+      "message": "我们在deploy的时候应该是没有node_modules的\n我觉得这样修改不太合理",
+      "revId": "1b5d97dac8bafd212dd85cc463fda6a40b5f710b",
+      "serverId": "f8e000e2-6046-4ea1-b337-da5e5d5bd44d",
+      "unresolved": false
+    }
+  ]
+}
