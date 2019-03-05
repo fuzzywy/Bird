@@ -17,6 +17,7 @@ class CreateLTETDDDAIesTable extends Migration
             $table->increments('id');
             $table->date('day_id');
             $table->string('location',20)->comment('城市');
+            $table->string('location',20)->comment('城市');
             $table->decimal('access',6,2)->comment('LTE无线接通率');
             $table->decimal('lost',6,2)->comment('LTE无线掉线率');
             $table->decimal('handover',6,2)->comment('LTE切换成功率');
