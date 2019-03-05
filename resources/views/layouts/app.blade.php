@@ -23,6 +23,8 @@
     <!--阿里图标库http://www.iconfont.cn-->
     <link href="{{ asset('icon/iconfont.css') }}" rel="stylesheet">
 
+    <link href="{{ asset('../node_modules/material-design-icons-iconfont/dist/material-design-icons.css') }}" rel="stylesheet">
+
     <link rel="shortcut icon" href="{{ asset('favicon.ico') }}" type="image/x-icon">
 
     
