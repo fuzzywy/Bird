@@ -1,9 +1,9 @@
 
 // Fonts
-@import url("https://fonts.googleapis.com/css?family=Raleway:300,400,600");
+@import url('https://fonts.googleapis.com/css?family=Nunito');
 
 // Variables
-@import "variables";
+@import 'variables';
 
 // Bootstrap
 @import '~bootstrap/scss/bootstrap';
@@ -12,3 +12,6 @@
   background-color: #fff;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
 }
+
+//$material-design-icons-font-path: '/fonts/vendor/material-design-icons-icondist/';
+@import '~material-design-icons-iconfont/src/material-design-icons.scss';
