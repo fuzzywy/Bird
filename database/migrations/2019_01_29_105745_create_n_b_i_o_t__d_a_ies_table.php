@@ -17,6 +17,7 @@ class CreateNBIOTDAIesTable extends Migration
             $table->increments('id');
             $table->date('day_id');
             $table->string('location',20)->comment('城市');
+            $table->string('location',20)->comment('城市');
             $table->decimal('access',6,2)->comment('NBIOT无线接通率');
             $table->decimal('interfererate',6,2)->comment('NBIOT高干扰比例');
         });
