@@ -27,15 +27,19 @@ Vue.use(Vuetify, {
 //     info: colors.indigo.base
 //   }
 // });
+// import 'material-design-icons-iconfont/dist/material-design-icons.css';
 import 'vuetify/dist/vuetify.min.css';
-import 'material-design-icons-iconfont/dist/material-design-icons.css';
 // import 'style-loader/useable.js';
 
 import router from './routes.js';
 import store from './store.js';
 
+//https://www.npmjs.com/package/vue-highcharts 
 window.VueHighcharts = require('vue-highcharts');
 window.Highcharts = require('highcharts');
+
+import loadDrilldown  from 'highcharts/modules/drilldown.js';
+loadDrilldown(Highcharts);
 
 const bus = new Vue();
 Vue.prototype.bus = bus;

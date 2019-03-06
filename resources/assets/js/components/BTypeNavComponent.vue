@@ -19,8 +19,8 @@
         {{ type.label }}
         <v-icon dark right v-if="clickType===type.value">check_circle</v-icon>
       </v-btn>
-      <v-card v-if="type.value!=='volte' && type.value!=='nbiot' && type.value!=='gsm'">
-        <v-list>
+      <v-card v-if="type.value!=='volte' && type.value!=='gsm'">
+        <!-- <v-list>
           <v-list-tile>
             <v-list-tile-content>
               <v-list-tile-title>类型选择</v-list-tile-title>
@@ -28,14 +28,20 @@
             </v-list-tile-content>
           </v-list-tile>
         </v-list>
-        <v-divider></v-divider>
+        <v-divider></v-divider> -->
         <v-list>
           <v-list-tile 
             v-for="city in system"
             :key="city.id"
           >
             <v-list-tile-action>
-              <v-switch v-model="chooseSystem" :value="city.value" color="blue"></v-switch>
+              <!-- <v-switch v-model="chooseSystem" :value="city.value" color="blue"></v-switch> -->
+              <v-checkbox
+                v-model="chooseSystem"
+                color="blue"
+                :value="city.value"
+                hide-details
+              ></v-checkbox>
             </v-list-tile-action>
             <v-list-tile-title>{{ city.label }}</v-list-tile-title>
           </v-list-tile>
@@ -50,7 +56,7 @@
       return {
         types: [
           { id: 0, label: 'ENIQ', value: 'eniq', system: [ { id: 0, label: 'TDD', value: 'tdd' }, { id: 1, label: 'FDD', value: 'fdd' } ] },
-          { id: 1, label: 'NBIOT', value: 'nbiot', system: [ ] },
+          { id: 1, label: 'NBIOT', value: 'nbiot', system: [ { id: 0, label: 'TDD', value: 'tdd' }, { id: 1, label: 'FDD', value: 'fdd' } ] },
           { id: 2, label: 'VOLTE', value: 'volte', system: [ ] },
           { id: 3, label: 'GSM', value: 'gsm', system: [ ] }
         ],

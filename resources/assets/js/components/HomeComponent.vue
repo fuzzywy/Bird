@@ -25,6 +25,9 @@
             <!-- <v-flex d-flex xs12> -->
               <BTypeNavComponent></BTypeNavComponent>
               <v-divider></v-divider>
+              <BCardComponent></BCardComponent>
+              <v-divider></v-divider>
+              <BChartComponent></BChartComponent>
             <!-- </v-flex> -->
             <!-- <v-flex d-flex xs12> -->
               <!-- <v-card color="purple" dark>
@@ -36,6 +39,7 @@
         </v-flex>
       </v-layout>
     </v-container>
+    <BFooterComponent></BFooterComponent>
   </div>
 </template>
 
@@ -44,6 +48,9 @@
   import BOperatorComponent from './OperatorComponent.vue';
   import BLocationNavComponent from './BLocationNavComponent.vue';
   import BTypeNavComponent from './BTypeNavComponent.vue';
+  import BCardComponent from './BCardComponent.vue';
+  import BChartComponent from './BChartComponent.vue';
+  import BFooterComponent from './BFooterComponent.vue';
   export default {
     data() {
         return {
@@ -54,7 +61,10 @@
       BirdSideBarComponent,
       BOperatorComponent,
       BLocationNavComponent,
-      BTypeNavComponent
+      BTypeNavComponent,
+      BCardComponent,
+      BChartComponent,
+      BFooterComponent
       // BKpiCardComponent,
       // BLineChartComponent
     },
