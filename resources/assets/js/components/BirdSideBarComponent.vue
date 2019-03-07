@@ -34,18 +34,23 @@
       </v-toolbar>
       <v-list class="pt-0" dense>
         <v-divider></v-divider>
-        <v-list-tile
-          v-for="item in items"
-          :key="item.title"
-          @click="clickBSideBar(item)"
-        >
-          <v-list-tile-action>
-            <v-icon>{{ item.icon }}</v-icon>
-          </v-list-tile-action>
-          <v-list-tile-content>
-            <v-list-tile-title>{{ item.title }}</v-list-tile-title>
-          </v-list-tile-content>
-        </v-list-tile>
+        <v-tooltip bottom fixed>
+          <template v-slot:activator="{ on }">
+            <v-list-tile
+              v-for="item in items"
+              :key="item.title"
+              @click.stop="clickBSideBar(item)"
+            >
+              <v-list-tile-action>
+                <v-icon v-on="on">{{ item.icon }}</v-icon>
+              </v-list-tile-action>
+              <v-list-tile-content>
+                <v-list-tile-title>{{ item.title }}</v-list-tile-title>
+              </v-list-tile-content>
+            </v-list-tile>
+          </template>
+          <span >tip</span>
+        </v-tooltip>
       </v-list>
     </v-navigation-drawer>
   </div>
@@ -61,13 +66,14 @@
           { id: 2, title: '负荷概览', icon: 'zoom_out_map', routertag: 'loadoverview' }
         ],
         mini: true,
-        right: null
+        right: null,
+        title: ''
       }
     },
     methods: {
       clickBSideBar: function(item) {
+        this.mini = true;
         this.bus.$emit('clickBSideBar', item.routertag);
-        // alert(item.routertag)
       }
     }
   }

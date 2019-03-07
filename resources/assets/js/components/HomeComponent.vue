@@ -1,32 +1,31 @@
 <template>
-  <div>
+  <div style="background-color: white">
     <v-container fluid grid-list-xl>
       <v-layout row align-space-around justify-start fill-height>
         <v-flex
           shrink
-          pa-1
+          pa-0
         >
           <!-- 网络概览布局 -->
           <BirdSideBarComponent></BirdSideBarComponent>
         </v-flex>
         <v-flex
           grow
-          pa-1
+          pa-0
         >
           <!-- 右侧布局 -->
           <!-- <v-layout row> -->
-
               <BOperatorComponent></BOperatorComponent>
-              <v-divider></v-divider>
+              <!-- <v-divider></v-divider> -->
             <!-- <v-flex d-flex xs12> -->
               <BLocationNavComponent></BLocationNavComponent>
             <!-- </v-flex> -->
             <v-divider></v-divider>
             <!-- <v-flex d-flex xs12> -->
               <BTypeNavComponent></BTypeNavComponent>
-              <v-divider></v-divider>
+             <!--  <v-divider></v-divider> -->
               <BCardComponent></BCardComponent>
-              <v-divider></v-divider>
+              <!-- <v-divider></v-divider> -->
               <BChartComponent></BChartComponent>
             <!-- </v-flex> -->
             <!-- <v-flex d-flex xs12> -->

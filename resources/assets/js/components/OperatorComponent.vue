@@ -1,9 +1,9 @@
 <template>
   <div>
-    <!-- height="20px" -->
     <v-tabs 
-      
-      slider-color="yellow"
+      flat
+      fixed-tabs
+      slider-color="blue"
       v-model="active"
     >
       <v-tab

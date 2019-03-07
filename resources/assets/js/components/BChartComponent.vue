@@ -55,6 +55,7 @@
   export default {
     data() {
       return {
+        messageeee: false,
         id: 'container',
         option: {
           credits: {
@@ -64,10 +65,15 @@
             type: 'line'
           },
           title: {
-            text: '点击点将相同分类的点也一起下钻'
+            text: 'ENIQ-全国'
           },
           xAxis: {
             type: 'category'
+          },
+          yAxis: {
+            title: {
+              text: '(%)'
+            },
           },
           plotOptions: {
             series: {
@@ -78,19 +84,103 @@
             }
           },
           series: [{
-            name: '2010',
+            name: '无线接通率',
             data: [{
-              name: 'Republican',
-              y: 5,
-              drilldown: 'republican-2010'
+              name: '2019030500',
+              y: Math.ceil(Math.random()*100),
+              drilldown: '2019030500'
             }, {
-              name: 'Democrats',
-              y: 2,
-              drilldown: 'democrats-2010'
+              name: '2019030501',
+              y: Math.ceil(Math.random()*100),
+              drilldown: '2019030501'
             }, {
-              name: 'Other',
-              y: 4,
-              drilldown: 'other-2010'
+              name: '2019030502',
+              y: Math.ceil(Math.random()*100),
+              drilldown: '2019030502'
+            }, {
+              name: '2019030503',
+              y: Math.ceil(Math.random()*100),
+              drilldown: '2019030503'
+            }, {
+              name: '2019030504',
+              y: Math.ceil(Math.random()*100),
+              drilldown: '2019030504'
+            }, {
+              name: '2019030505',
+              y: Math.ceil(Math.random()*100),
+              drilldown: '2019030505'
+            }, {
+              name: '2019030506',
+              y: Math.ceil(Math.random()*100),
+              drilldown: '2019030506'
+            }, {
+              name: '2019030507',
+              y: Math.ceil(Math.random()*100),
+              drilldown: '2019030507'
+            }, {
+              name: '2019030508',
+              y: Math.ceil(Math.random()*100),
+              drilldown: '2019030508'
+            }, {
+              name: '2019030509',
+              y: Math.ceil(Math.random()*100),
+              drilldown: '2019030509'
+            }, {
+              name: '20190305010',
+              y: Math.ceil(Math.random()*100),
+              drilldown: '20190305010'
+            }, {
+              name: '20190305011',
+              y: Math.ceil(Math.random()*100),
+              drilldown: '20190305011'
+            }, {
+              name: '20190305012',
+              y: Math.ceil(Math.random()*100),
+              drilldown: '20190305012'
+            }, {
+              name: '20190305013',
+              y: Math.ceil(Math.random()*100),
+              drilldown: '20190305013'
+            }, {
+              name: '20190305014',
+              y: Math.ceil(Math.random()*100),
+              drilldown: '20190305014'
+            }, {
+              name: '20190305015',
+              y: Math.ceil(Math.random()*100),
+              drilldown: '20190305015'
+            }, {
+              name: '20190305016',
+              y: Math.ceil(Math.random()*100),
+              drilldown: '20190305016'
+            }, {
+              name: '20190305017',
+              y: Math.ceil(Math.random()*100),
+              drilldown: '20190305017'
+            }, {
+              name: '20190305018',
+              y: Math.ceil(Math.random()*100),
+              drilldown: '20190305018'
+            }, {
+              name: '20190305019',
+              y: Math.ceil(Math.random()*100),
+              drilldown: '20190305019'
+            }, {
+              name: '20190305020',
+              y: Math.ceil(Math.random()*100),
+              drilldown: '20190305020'
+            }, {
+              name: '20190305021',
+              y: Math.ceil(Math.random()*100),
+              drilldown: '20190305021'
+            }, {
+              name: '20190305022',
+              y: Math.ceil(Math.random()*100),
+              drilldown: '20190305022'
+            }, {
+              name: '20190305023',
+              y: Math.ceil(Math.random()*100),
+              drilldown: '20190305023'
             }]
           }/*, {
             name: '2014',
@@ -112,13 +202,12 @@
             allowPointDrilldown: false, // 将此参数注释再下钻来对比查看效果
             series: [{
               type: 'column',
-              id: 'republican-2010',
-              name: 'Republican 2010',
+              id: '2019030500',
+              name: '2019030500-无线接通率',
               data: [
-                ['East', 4],
-                ['West', 2],
-                ['North', 1],
-                ['South', 4]
+                ['江苏省', Math.ceil(Math.random()*100)],
+                ['广东省', Math.ceil(Math.random()*100)],
+                ['湖北省', Math.ceil(Math.random()*100)]
               ],
               events: {
                 click:function(events){
@@ -127,13 +216,12 @@
               }
             }, {
               type: 'column',
-              id: 'democrats-2010',
-              name: 'Republican 2010',
+              id: '2019030501',
+              name: '2019030501',
               data: [
-                ['East', 6],
-                ['West', 2],
-                ['North', 2],
-                ['South', 4]
+                ['江苏省', Math.ceil(Math.random()*100)],
+                ['广东省', Math.ceil(Math.random()*100)],
+                ['湖北省', Math.ceil(Math.random()*100)]
               ],
               events: {
                 click:function(events){
@@ -142,53 +230,320 @@
               }
             }, {
               type: 'column',
-              id: 'other-2010',
-              name: 'Other 2010',
+              id: '2019030502',
+              name: '2019030502',
               data: [
-                ['East', 2],
-                ['West', 7],
-                ['North', 3],
-                ['South', 2]
+                ['江苏省', Math.ceil(Math.random()*100)],
+                ['广东省', Math.ceil(Math.random()*100)],
+                ['湖北省', Math.ceil(Math.random()*100)]
               ],
               events: {
                 click:function(events){
                   alert(events.point.name);
                 }
               }
-            }/*, {
-              id: 'republican-2014',
-              name: 'Republican 2014',
-              data: [
-                ['East', 2],
-                ['West', 4],
-                ['North', 1],
-                ['South', 7]
-              ]
             }, {
-              id: 'democrats-2014',
-              name: 'Democrats 2014',
+              type: 'column',
+              id: '2019030503',
+              name: '2019030503',
               data: [
-                ['East', 4],
-                ['West', 2],
-                ['North', 5],
-                ['South', 3]
-              ]
+                ['江苏省', Math.ceil(Math.random()*100)],
+                ['广东省', Math.ceil(Math.random()*100)],
+                ['湖北省', Math.ceil(Math.random()*100)]
+              ],
+              events: {
+                click:function(events){
+                  alert(events.point.name);
+                }
+              }
             }, {
-              id: 'other-2014',
-              name: 'Other 2014',
+              type: 'column',
+              id: '2019030504',
+              name: '2019030504',
               data: [
-                ['East', 7],
-                ['West', 8],
-                ['North', 2],
-                ['South', 2]
-              ]
-            }*/]
+                ['江苏省', Math.ceil(Math.random()*100)],
+                ['广东省', Math.ceil(Math.random()*100)],
+                ['湖北省', Math.ceil(Math.random()*100)]
+              ],
+              events: {
+                click:function(events){
+                  alert(events.point.name);
+                }
+              }
+            }, {
+              type: 'column',
+              id: '2019030505',
+              name: '2019030505',
+              data: [
+                ['江苏省', Math.ceil(Math.random()*100)],
+                ['广东省', Math.ceil(Math.random()*100)],
+                ['湖北省', Math.ceil(Math.random()*100)]
+              ],
+              events: {
+                click:function(events){
+                  alert(events.point.name);
+                }
+              }
+            }, {
+              type: 'column',
+              id: '2019030506',
+              name: '2019030506',
+              data: [
+                ['江苏省', Math.ceil(Math.random()*100)],
+                ['广东省', Math.ceil(Math.random()*100)],
+                ['湖北省', Math.ceil(Math.random()*100)]
+              ],
+              events: {
+                click:function(events){
+                  alert(events.point.name);
+                }
+              }
+            }, {
+              type: 'column',
+              id: '2019030507',
+              name: '2019030507',
+              data: [
+                ['江苏省', Math.ceil(Math.random()*100)],
+                ['广东省', Math.ceil(Math.random()*100)],
+                ['湖北省', Math.ceil(Math.random()*100)]
+              ],
+              events: {
+                click:function(events){
+                  alert(events.point.name);
+                }
+              }
+            }, {
+              type: 'column',
+              id: '2019030508',
+              name: '2019030508',
+              data: [
+                ['江苏省', Math.ceil(Math.random()*100)],
+                ['广东省', Math.ceil(Math.random()*100)],
+                ['湖北省', Math.ceil(Math.random()*100)]
+              ],
+              events: {
+                click:function(events){
+                  alert(events.point.name);
+                }
+              }
+            }, {
+              type: 'column',
+              id: '2019030509',
+              name: '2019030509',
+              data: [
+                ['江苏省', Math.ceil(Math.random()*100)],
+                ['广东省', Math.ceil(Math.random()*100)],
+                ['湖北省', Math.ceil(Math.random()*100)]
+              ],
+              events: {
+                click:function(events){
+                  alert(events.point.name);
+                }
+              }
+            }, {
+              type: 'column',
+              id: '2019030510',
+              name: '2019030510',
+              data: [
+                ['江苏省', Math.ceil(Math.random()*100)],
+                ['广东省', Math.ceil(Math.random()*100)],
+                ['湖北省', Math.ceil(Math.random()*100)]
+              ],
+              events: {
+                click:function(events){
+                  alert(events.point.name);
+                }
+              }
+            }, {
+              type: 'column',
+              id: '2019030511',
+              name: '2019030511',
+              data: [
+                ['江苏省', Math.ceil(Math.random()*100)],
+                ['广东省', Math.ceil(Math.random()*100)],
+                ['湖北省', Math.ceil(Math.random()*100)]
+              ],
+              events: {
+                click:function(events){
+                  alert(events.point.name);
+                }
+              }
+            }, {
+              type: 'column',
+              id: '2019030512',
+              name: '2019030512',
+              data: [
+                ['江苏省', Math.ceil(Math.random()*100)],
+                ['广东省', Math.ceil(Math.random()*100)],
+                ['湖北省', Math.ceil(Math.random()*100)]
+              ],
+              events: {
+                click:function(events){
+                  alert(events.point.name);
+                }
+              }
+            }, {
+              type: 'column',
+              id: '2019030513',
+              name: '2019030513',
+              data: [
+                ['江苏省', Math.ceil(Math.random()*100)],
+                ['广东省', Math.ceil(Math.random()*100)],
+                ['湖北省', Math.ceil(Math.random()*100)]
+              ],
+              events: {
+                click:function(events){
+                  alert(events.point.name);
+                }
+              }
+            }, {
+              type: 'column',
+              id: '2019030514',
+              name: '2019030514',
+              data: [
+                ['江苏省', Math.ceil(Math.random()*100)],
+                ['广东省', Math.ceil(Math.random()*100)],
+                ['湖北省', Math.ceil(Math.random()*100)]
+              ],
+              events: {
+                click:function(events){
+                  alert(events.point.name);
+                }
+              }
+            }, {
+              type: 'column',
+              id: '2019030515',
+              name: '2019030515',
+              data: [
+                ['江苏省', Math.ceil(Math.random()*100)],
+                ['广东省', Math.ceil(Math.random()*100)],
+                ['湖北省', Math.ceil(Math.random()*100)]
+              ],
+              events: {
+                click:function(events){
+                  alert(events.point.name);
+                }
+              }
+            }, {
+              type: 'column',
+              id: '2019030516',
+              name: '2019030516',
+              data: [
+                ['江苏省', Math.ceil(Math.random()*100)],
+                ['广东省', Math.ceil(Math.random()*100)],
+                ['湖北省', Math.ceil(Math.random()*100)]
+              ],
+              events: {
+                click:function(events){
+                  alert(events.point.name);
+                }
+              }
+            }, {
+              type: 'column',
+              id: '2019030517',
+              name: '2019030517',
+              data: [
+                ['江苏省', Math.ceil(Math.random()*100)],
+                ['广东省', Math.ceil(Math.random()*100)],
+                ['湖北省', Math.ceil(Math.random()*100)]
+              ],
+              events: {
+                click:function(events){
+                  alert(events.point.name);
+                }
+              }
+            }, {
+              type: 'column',
+              id: '2019030518',
+              name: '2019030518',
+              data: [
+                ['江苏省', Math.ceil(Math.random()*100)],
+                ['广东省', Math.ceil(Math.random()*100)],
+                ['湖北省', Math.ceil(Math.random()*100)]
+              ],
+              events: {
+                click:function(events){
+                  alert(events.point.name);
+                }
+              }
+            }, {
+              type: 'column',
+              id: '2019030519',
+              name: '2019030519',
+              data: [
+                ['江苏省', Math.ceil(Math.random()*100)],
+                ['广东省', Math.ceil(Math.random()*100)],
+                ['湖北省', Math.ceil(Math.random()*100)]
+              ],
+              events: {
+                click:function(events){
+                  alert(events.point.name);
+                }
+              }
+            }, {
+              type: 'column',
+              id: '2019030520',
+              name: '2019030520',
+              data: [
+                ['江苏省', Math.ceil(Math.random()*100)],
+                ['广东省', Math.ceil(Math.random()*100)],
+                ['湖北省', Math.ceil(Math.random()*100)]
+              ],
+              events: {
+                click:function(events){
+                  alert(events.point.name);
+                }
+              }
+            }, {
+              type: 'column',
+              id: '2019030521',
+              name: '2019030521',
+              data: [
+                ['江苏省', Math.ceil(Math.random()*100)],
+                ['广东省', Math.ceil(Math.random()*100)],
+                ['湖北省', Math.ceil(Math.random()*100)]
+              ],
+              events: {
+                click:function(events){
+                  alert(events.point.name);
+                }
+              }
+            }, {
+              type: 'column',
+              id: '2019030522',
+              name: '2019030522',
+              data: [
+                ['江苏省', Math.ceil(Math.random()*100)],
+                ['广东省', Math.ceil(Math.random()*100)],
+                ['湖北省', Math.ceil(Math.random()*100)]
+              ],
+              events: {
+                click:function(events){
+                  alert(events.point.name);
+                }
+              }
+            }, {
+              type: 'column',
+              id: '2019030523',
+              name: '2019030523',
+              data: [
+                ['江苏省', Math.ceil(Math.random()*100)],
+                ['广东省', Math.ceil(Math.random()*100)],
+                ['湖北省', Math.ceil(Math.random()*100)]
+              ],
+              events: {
+                click:function(events){
+                  alert(events.point.name);
+                }
+              }
+            }]
           }
         }
       }
     },
     mounted() {
       new Highcharts.chart(this.id, this.option)
-    }
+    },
+
   }
 </script>

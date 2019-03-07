@@ -1,53 +1,94 @@
 <template>
   <div>
-    <v-menu
-      v-for="type in types"
-      :key="type.id"
-      bottom
-      transition="scale-transition"
-      origin="center center"
-      offset-y
-      :close-on-content-click="false"
-      :nudge-width="200"
+    <v-tabs 
+      flat
+      fixed-tabs
+      slider-color="blue"
+      v-model="active"
     >
-      <v-btn 
-        color="blue" 
-        slot="activator"
-        dark
-        @click="typesFix(type.value)" 
+      <v-tab
+        v-for="operator in operators"
+        :key="operator.id"
+        @click="operatorFix(operator.operator)"
       >
-        {{ type.label }}
-        <v-icon dark right v-if="clickType===type.value">check_circle</v-icon>
-      </v-btn>
-      <v-card v-if="type.value!=='volte' && type.value!=='gsm'">
-        <!-- <v-list>
-          <v-list-tile>
-            <v-list-tile-content>
-              <v-list-tile-title>类型选择</v-list-tile-title>
-              <v-list-tile-sub-title>不选默认全选</v-list-tile-sub-title>
-            </v-list-tile-content>
-          </v-list-tile>
-        </v-list>
-        <v-divider></v-divider> -->
-        <v-list>
-          <v-list-tile 
-            v-for="city in system"
-            :key="city.id"
+        {{ operator.name }}
+      </v-tab>
+    </v-tabs>
+  </div>
+</template>
+<script>
+  export default {
+    data () {
+      return {
+        active: 0,
+        operator: 'eniq',
+        operators: [ 
+          { id: 0, operator: 'eniq', name: 'ENIQ' },
+          { id: 1, operator: 'nbiot', name: 'NBIOT' },
+          { id: 2, operator: 'volte', name: 'VOLTE' },
+          { id: 3, operator: 'gsm', name: 'GSM' }
+        ]
+      }
+    },
+    methods: {
+      operatorFix: function(operator) {
+        this.operator = operator;
+        this.bus.$emit('operator', this.operator);
+      }
+    }
+  }
+</script>
+<!-- <template>
+  <div>
+    <v-container  
+      grid-list-md
+    >
+      <v-layout align-center justify-center fill-height>
+        <v-flex
+          v-for="type in types"
+          :key="type.id"
+          xs1
+        >
+          <v-menu
+            open-on-hover
+            bottom
+            transition="scale-transition"
+            origin="center center"
+            offset-y
+            :close-on-content-click="false"
+            :nudge-width="200"
           >
-            <v-list-tile-action>
-              <!-- <v-switch v-model="chooseSystem" :value="city.value" color="blue"></v-switch> -->
-              <v-checkbox
-                v-model="chooseSystem"
-                color="blue"
-                :value="city.value"
-                hide-details
-              ></v-checkbox>
-            </v-list-tile-action>
-            <v-list-tile-title>{{ city.label }}</v-list-tile-title>
-          </v-list-tile>
-        </v-list>
-      </v-card>
-    </v-menu>
+            <v-btn 
+              color="blue" 
+              slot="activator"
+              dark
+              @click="typesFix(type.value)" 
+            >
+              {{ type.label }}
+              <v-icon dark right v-if="clickType===type.value">check_circle</v-icon>
+            </v-btn>
+            <v-card v-if="type.value!=='volte' && type.value!=='gsm'">
+              <v-list>
+                <v-list-tile 
+                  v-for="city in system"
+                  :key="city.id"
+                >
+                  <v-list-tile-action>
+                    <v-checkbox
+                      v-model="chooseSystem"
+                      color="blue"
+                      :value="city.value"
+                      hide-details
+                    ></v-checkbox>
+                  </v-list-tile-action>
+                  <v-list-tile-title>{{ city.label }}</v-list-tile-title>
+                </v-list-tile>
+              </v-list>
+            </v-card>
+          </v-menu>
+        </v-flex>
+      </v-layout>
+    </v-container>
   </div>
 </template>
 <script>
@@ -61,7 +102,7 @@
           { id: 3, label: 'GSM', value: 'gsm', system: [ ] }
         ],
         system: [],
-        clickType: 'national',
+        clickType: 'eniq',
         chooseSystem: [] //通过emit发出
       }
     },
@@ -75,4 +116,4 @@
       }
     }
   }
-</script>
+</script> -->
