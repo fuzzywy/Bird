@@ -1,5 +1,6 @@
 <template>
   <div>
+    <input style="display: none;" id="input" :loadData="loadData">
     <v-navigation-drawer
       v-model="drawer"
       :mini-variant.sync="mini"
@@ -10,11 +11,7 @@
       <v-toolbar flat class="transparent">
         <v-list class="pa-0">
           <v-list-tile avatar>
-            <!-- <v-list-tile-avatar>
-              <img src="/85.jpg"/>
-            </v-list-tile-avatar> -->
             <v-list-tile-action>
-              <!-- <v-icon>question_answer</v-icon> -->
               <v-icon v-html="'$vuetify.icons.configuration'"></v-icon>
             </v-list-tile-action>
             <v-list-tile-content>
@@ -34,11 +31,17 @@
       </v-toolbar>
       <v-list class="pt-0" dense>
         <v-divider></v-divider>
-        <v-tooltip bottom fixed>
+        <div class="text-xs-center" v-if="this.$store.getters.bSideBarItemsStatus!==2">
+          <v-progress-circular
+            indeterminate
+            color="blue"
+          ></v-progress-circular>
+        </div>
+        <v-tooltip bottom fixed v-if="this.$store.getters.bSideBarItemsStatus===2">
           <template v-slot:activator="{ on }">
             <v-list-tile
-              v-for="item in items"
-              :key="item.title"
+              v-for="(item, key) in items"
+              :key="key"
               @click.stop="clickBSideBar(item)"
             >
               <v-list-tile-action>
@@ -56,24 +59,47 @@
   </div>
 </template>
 <script>
+  import {common} from '../common.js';
   export default {
+    mixins: [
+      common
+    ],
     data () {
       return {
         drawer: true,
         items: [
-          { id: 0, title: '指标概览', icon: 'dashboard', routertag: 'indexoverview' },
-          { id: 1, title: '规模概览', icon: 'question_answer', routertag: 'scaleoverview' },
-          { id: 2, title: '负荷概览', icon: 'zoom_out_map', routertag: 'loadoverview' }
+          // { id: 0, title: '指标概览', icon: 'dashboard', routertag: 'indexoverview' },
+          // { id: 1, title: '规模概览', icon: 'question_answer', routertag: 'scaleoverview' },
+          // { id: 2, title: '负荷概览', icon: 'zoom_out_map', routertag: 'loadoverview' }
         ],
-        mini: true,
-        right: null,
-        title: ''
+        mini: true
       }
     },
     methods: {
       clickBSideBar: function(item) {
         this.mini = true;
-        this.bus.$emit('clickBSideBar', item.routertag);
+        this.bus.$emit('clickBSideBar', {
+          bSideBar: item.routertag
+        });
+        // alert(item.routertag);
+      }
+    },
+    created: function(){
+      this.processloadBSideBarItems();
+    },
+    computed: {
+      loadData: function(){
+        switch(this.$store.getters.bSideBarItemsStatus) {
+          case 1:
+              break;
+          case 2:
+              this.items = this.$store.getters.bSideBarItems;
+              break;
+          case 3:
+              break;
+          default:
+              break;
+        }
       }
     }
   }

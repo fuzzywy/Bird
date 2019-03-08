@@ -56,6 +56,10 @@
     data() {
       return {
         messageeee: false,
+        chart: {},
+        bSideBar: "indexoverview",
+        operator: "mobile",
+        city: "national",
         id: 'container',
         option: {
           credits: {
@@ -542,8 +546,29 @@
       }
     },
     mounted() {
-      new Highcharts.chart(this.id, this.option)
+      this.chart = new Highcharts.chart(this.id, this.option);
     },
-
+    created() {
+      this.bus.$on('clickBSideBar', type=>{ 
+        this.bSideBar = type.bSideBar;
+      });
+      this.bus.$on('chooseOperator', type=>{
+        this.operator = type.operator; 
+      });
+      this.bus.$on('chooseCity', type=>{
+        type.city.length===0?this.city="national":this.city=type.city;
+      });
+    },
+    watch: {
+      bSideBar() {
+        // alert(this.bSideBar)
+      },
+      operator() {
+        // alert(this.operator)
+      },
+      city() {
+        // alert(this.city)
+      }
+    }
   }
 </script>
