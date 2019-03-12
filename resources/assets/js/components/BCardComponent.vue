@@ -50,7 +50,9 @@
     },
     methods: {
       clickCard: function( type ) {
-        alert(type);
+        this.bus.$emit('card', {
+          card: type
+        });
       }
     }
   }

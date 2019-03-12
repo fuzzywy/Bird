@@ -1,39 +1,71 @@
 <template>
   <div>
-    <v-tabs 
+    <input style="display: none;" id="input" :loadData="loadData">
+    <div class="text-xs-center" v-if="this.$store.getters.bTypesStatus!==2">
+      <v-spacer></v-spacer>
+      <v-progress-circular
+        indeterminate
+        color="blue"
+      ></v-progress-circular>
+    </div>
+    <v-tabs v-if="this.$store.getters.bTypesStatus===2"
       flat
       fixed-tabs
       slider-color="blue"
       v-model="active"
     >
       <v-tab
-        v-for="operator in operators"
-        :key="operator.id"
-        @click="operatorFix(operator.operator)"
+        v-for="type in types"
+        :key="type.id"
+        @click="typeFix(type.type)"
       >
-        {{ operator.name }}
+        {{ type.name }}
       </v-tab>
     </v-tabs>
   </div>
 </template>
 <script>
+  import { common } from '../common.js';
   export default {
+    mixins: [
+      common
+    ],
     data () {
       return {
         active: 0,
-        operator: 'eniq',
-        operators: [ 
-          { id: 0, operator: 'eniq', name: 'ENIQ' },
-          { id: 1, operator: 'nbiot', name: 'NBIOT' },
-          { id: 2, operator: 'volte', name: 'VOLTE' },
-          { id: 3, operator: 'gsm', name: 'GSM' }
+        type: 'eniq',
+        types: [ 
+          // { id: 0, type: 'eniq', name: 'ENIQ' },
+          // { id: 1, type: 'nbiot', name: 'NBIOT' },
+          // { id: 2, type: 'volte', name: 'VOLTE' },
+          // { id: 3, type: 'gsm', name: 'GSM' }
         ]
       }
     },
     methods: {
-      operatorFix: function(operator) {
-        this.operator = operator;
-        this.bus.$emit('operator', this.operator);
+      typeFix: function(type) {
+        this.type = type;
+        this.bus.$emit('type', {
+          type: this.type
+        });
+      }
+    },
+    created: function(){
+      this.processloadBTypes();
+    },
+    computed: {
+      loadData: function(){
+        switch(this.$store.getters.bTypesStatus) {
+          case 1:
+              break;
+          case 2:
+              this.types = this.$store.getters.bTypes;
+              break;
+          case 3:
+              break;
+          default:
+              break;
+        }
       }
     }
   }

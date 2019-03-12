@@ -12,51 +12,25 @@
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('auth/login');
 });
+
 Auth::routes();
 
-Route::get('localeLang', 'NavController@localeLang');
-
 Route::get('/home', 'HomeController@index')->name('home');
-// Route::get('/cog', 'CogController@index')->name('cog');
 
-
-Route::get('getTabs', 'NetworkOverviewController@getTabs');
-Route::get('getScaleTabs', 'NetworkOverviewController@getScaleTabs');
-Route::get('getLoadTabs', 'NetworkOverviewController@getLoadTabs');
-Route::get('getcharts', 'NetworkOverviewController@getcharts');
-
-
-Route::get('test', 'TestController@test');
-
-Route::get('getCity', 'NetworkOverviewController@getCity');
-Route::get('getBirdSideBar', 'NetworkOverviewController@getBirdSideBar');
-
-Route::post('uploadCog', 'UploadController@uploadCog');
-Route::post('showCog', 'UploadController@showCog');
-Route::post('deleteCog', 'UploadController@deleteCog');
-/*Route::get('/test', function() {
-	return view('test.test', ['name'=>'James']);
+Route::prefix('birdSideBar')->namespace('BirdSideBar')->group(function() {
+  Route::post('show', 'BirdSideBarController@show');
 });
-
-Route::get('example', function () {
-    return view('example');
+Route::prefix('birdOperators')->namespace('BirdOperators')->group(function() {
+  Route::post('show', 'BirdOperatorsController@show');
 });
-
-Route::get('foo', 'TestController@test');
-
-Route::get('indexoverview', 'IndexOverviewController@index');
-Route::get('scaleoverview', 'ScaleOverviewController@scale');
-
-// Route::get('getTabs', 'NetWorkOverviewController@getTabs');
-
-Route::get('getTabsLTE', 'NetWorkOverviewLTEController@getTabs');
-Route::get('getTabsVOLTE', 'NetWorkOverviewVOLTEController@getTabs');
-
-Route::get('getchartsLTE', 'NetWorkChartsLTEController@getcharts');
-Route::get('getchartsVOLTE', 'NetWorkChartsVOLTEController@getcharts');
-
-
-
-//----*/
+Route::prefix('birdRegion')->namespace('BirdRegion')->group(function() {
+  Route::post('show', 'BirdRegionController@show');
+});
+Route::prefix('birdTypes')->namespace('BirdTypes')->group(function() {
+  Route::post('show', 'BirdTypesController@show');
+});
+Route::prefix('birdChart')->namespace('BirdChart')->group(function() {
+  Route::post('show', 'BirdChartController@show');
+});
