@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "5ce69d7d_3cbdf1b2",
+        "filename": "resources/assets/js/components/BCardComponent.vue",
+        "patchSetId": 1
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2019-03-13T09:26:01Z",
+      "side": 1,
+      "message": "这里是不是应该为v-card-action",
+      "revId": "bfa3afaa54783c425779292cf7a2d00ac751bc50",
+      "serverId": "f8e000e2-6046-4ea1-b337-da5e5d5bd44d",
+      "unresolved": false
+    }
+  ]
+}
