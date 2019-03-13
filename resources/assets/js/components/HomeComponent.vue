@@ -14,27 +14,33 @@
           pa-0
         >
           <!-- 右侧布局 -->
-          <!-- <v-layout row> -->
-              <BOperatorComponent></BOperatorComponent>
-              <!-- <v-divider></v-divider> -->
-            <!-- <v-flex d-flex xs12> -->
-              <BLocationNavComponent></BLocationNavComponent>
-            <!-- </v-flex> -->
-            <v-divider></v-divider>
-            <!-- <v-flex d-flex xs12> -->
-              <BTypeNavComponent></BTypeNavComponent>
-             <!--  <v-divider></v-divider> -->
-              <BCardComponent></BCardComponent>
-              <!-- <v-divider></v-divider> -->
-              <BChartComponent></BChartComponent>
-            <!-- </v-flex> -->
-            <!-- <v-flex d-flex xs12> -->
-              <!-- <v-card color="purple" dark>
-                <v-card-title primary class="title">Other</v-card-title>
-                <v-card-text>Other</v-card-text>
-              </v-card> -->
-            <!-- </v-flex> -->
-          <!-- </v-layout> -->
+          <v-container grid-list-md>
+            <v-layout row wrap>
+              <v-flex 
+                xs12
+              >
+              <!-- <v-layout row> -->
+                <BOperatorComponent></BOperatorComponent>
+              </v-flex>
+              <v-flex 
+                xs12>
+                <BLocationNavComponent></BLocationNavComponent>
+              </v-flex>
+              <v-divider></v-divider>
+              <v-flex 
+                xs12>
+                <BTypeNavComponent></BTypeNavComponent>
+              </v-flex>
+              <v-flex 
+                xs12>
+                <BCardComponent></BCardComponent>
+              </v-flex>
+              <v-flex 
+                xs12>
+                <BChartComponent></BChartComponent>
+              </v-flex>
+            </v-layout>
+          </v-container>
         </v-flex>
       </v-layout>
     </v-container>

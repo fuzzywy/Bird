@@ -15,7 +15,7 @@ class BirdTypesController extends Controller
   public function show()
   {
     $arr = array(
-      array("id" => 0, "type" => "eniq", "name" => "ENIQ" ),
+      array("id" => 0, "type" => "lte", "name" => "LTE" ),
       array("id" => 1, "type" => "nbiot", "name" => "NBIOT" ),
       array("id" => 2, "type" => "volte", "name" => "VOLTE" ),
       array("id" => 3, "type" => "gsm", "name" => "GSM" )

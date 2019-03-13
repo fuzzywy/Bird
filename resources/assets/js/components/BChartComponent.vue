@@ -68,7 +68,7 @@
         type: "eniq",
         card: "无线接通率",
         id: 'container',
-        // option: {},
+        optionData: {},
         option: {
           credits: {
             enabled: false
@@ -95,16 +95,16 @@
               }
             }
           },
-          series: [{
+          series: [/*{
             name: '无线接通率',
-            data: [/*{
+            data: [{
               name: '2019030500',
               y: Math.ceil(Math.random()*100),
               drilldown: '2019030500'
-            }*/]
-          }],
+            }]
+          }*/],
           drilldown: {
-            allowPointDrilldown: false, // 将此参数注释再下钻来对比查看效果
+            allowPointDrilldown: true, // 将此参数注释再下钻来对比查看效果
             /*series: [{
               type: 'column',
               id: '2019030500',
@@ -125,9 +125,12 @@
       }
     },
     mounted() {
-      this.chart = new Highcharts.chart(this.id, this.option);
-      // chart.reflow();
-      // this.chart = chart;
+      // new Highcharts.chart(this.id, this.option);
+      Highcharts.addEvent(document.getElementById('container'), 'click', function(e){
+        if( e.hasOwnProperty('point') && e.target.point != null) {
+          alert(event.target.point.name)
+        }
+      });
     },
     created() {
       this.bus.$on('clickBSideBar', type=>{ 
@@ -149,37 +152,31 @@
     },
     watch: {
       bSideBar() {
-        // alert(this.bSideBar)
         this.processLoadBChart(this.bSideBar, this.operator, this.city, this.type, this.card);
       },
       operator() {
-        // alert(this.operator)
         this.processLoadBChart(this.bSideBar, this.operator, this.city, this.type, this.card);
       },
       city() {
-        // alert(this.city)
         this.processLoadBChart(this.bSideBar, this.operator, this.city, this.type, this.card);
       },
       type() {
-        // alert(this.type)
         this.processLoadBChart(this.bSideBar, this.operator, this.city, this.type, this.card);
       },
       card() {
-        // alert(this.card);
         this.processLoadBChart(this.bSideBar, this.operator, this.city, this.type, this.card);
       },
-      option(val) {
+      optionData(val) {
+        this.chart = new Highcharts.chart(this.id, this.option);
         this.chart.title.update({'text': val.title});
         this.chart.subtitle.update({'text': val.subtitle});
         // val.series: this.chart.update({ series: [{ 'name': 'asd', 'data': [{'name': '2019030500', 'y':Math.ceil(Math.random()*100),  'drilldown': '2019030500' }]}] });
-        this.chart.update({series: val.series});
+        // this.chart.update({series: val.series[0]});
+        for (var i = val.series.length - 1; i >= 0; i--) {
+          this.chart.addSeries(val.series[i]);
+        }
         // val.drilldown: [{ "type": 'column', "id": "2019031200", "name": '2019031200', "data": [['ss', 44],['dd',55]], "events": {click:JSON.stringify("function(events){alert(events.point.name);}")} }]
-        this.chart.drilldown.update({ series: val.drilldown }); 
-        Highcharts.addEvent(document.getElementById('container'), 'click', function(e) {
-        	if( e.hasOwnProperty('point') ) {
-        		alert(e.target.point.name)
-        	}
-        })
+        this.chart.drilldown.update({ series: val.drilldown });
       }
     },
     computed: {
@@ -188,7 +185,7 @@
           case 1:
               break;
           case 2:
-              this.option = this.$store.getters.bChart;
+              this.optionData = this.$store.getters.bChart;
               break;
           case 3:
               break;

@@ -1,6 +1,6 @@
 export default {
-  getBSideBarItems: function() {
-    return axios.post( 'birdSideBar/show')
+  getBCards: function() {
+    return axios.post( 'birdCards/show')
         .catch(function(error) {
             if (error.response) {
                 if ( error.response.status == '404' ) {

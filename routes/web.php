@@ -31,6 +31,9 @@ Route::prefix('birdRegion')->namespace('BirdRegion')->group(function() {
 Route::prefix('birdTypes')->namespace('BirdTypes')->group(function() {
   Route::post('show', 'BirdTypesController@show');
 });
+Route::prefix('birdCards')->namespace('BirdCards')->group(function() {
+  Route::post('show', 'BirdCardsController@show');
+});
 Route::prefix('birdChart')->namespace('BirdChart')->group(function() {
   Route::post('show', 'BirdChartController@show');
 });

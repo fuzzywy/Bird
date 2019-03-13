@@ -12,6 +12,9 @@ export const common = {
     processloadBTypes: function() {
       this.$store.dispatch( 'loadBTypes' );
     },
+    processloadBCards: function() {
+      this.$store.dispatch( 'loadBCards' );
+    },
     processLoadBChart: function(bSideBar, operator, city, type, card) {
       this.$store.dispatch( 'loadBChart', {
         bSideBar: bSideBar,
