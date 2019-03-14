@@ -60,6 +60,10 @@
     ],
     data() {
       return {
+        bSideBar: "indexoverview",
+        operator: "mobile",
+        city: "national",
+        type: "eniq",
         cards: [
           // { id: 0, class: 'icon-ali-jiantoushangsheng-blue', color: 'green', data: '98.4%', tend: '0.03%', type: '无线接通率', flex: 3, time: '2019/03/13' },
           // { id: 1, class: 'icon-ali-jiantouxiajiang-red', color: 'red', data: '8.4%', tend: '0.01%', type: '无线掉线率', flex: 3, time: '2019/03/13' },
@@ -76,6 +80,18 @@
       }
     },
     created: function(){
+      this.bus.$on('clickBSideBar', type=>{ 
+        this.bSideBar = type.bSideBar;
+      });
+      this.bus.$on('chooseOperator', type=>{
+        this.operator = type.operator; 
+      });
+      this.bus.$on('chooseCity', type=>{
+        type.city.length===0?this.city="national":this.city=type.city;
+      });
+      this.bus.$on('type', type=>{
+        this.type = type.type;
+      });
       this.processloadBCards();
     },
     computed: {
@@ -91,6 +107,20 @@
           default:
             break;
         }
+      }
+    },
+    watch: {
+      bSideBar() {
+        this.processloadBCards();
+      },
+      operator() {
+        this.processloadBCards();
+      },
+      city() {
+        this.processloadBCards();
+      },
+      type() {
+        this.processloadBCards();
       }
     }
   }

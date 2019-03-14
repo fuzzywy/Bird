@@ -59,6 +59,7 @@
       common
     ],
     data() {
+      let vm = this;
       return {
         messageeee: false,
         chart: {},
@@ -68,6 +69,7 @@
         type: "eniq",
         card: "无线接通率",
         id: 'container',
+        clickProvince: "national",
         optionData: {},
         option: {
           credits: {
@@ -92,6 +94,13 @@
               borderWidth: 0,
               dataLabels: {
                 enabled: true
+              },
+              cursor: 'pointer',
+              events: {
+                click: function(e) {
+                  if( typeof(e.point.drilldown) != "undefined"  )
+                    vm.clickProvince = e.point.drilldown.split('-')[1];
+                }
               }
             }
           },
@@ -140,6 +149,7 @@
         this.operator = type.operator; 
       });
       this.bus.$on('chooseCity', type=>{
+        if( !type.isUpdateBChartVue ) return;
         type.city.length===0?this.city="national":this.city=type.city;
       });
       this.bus.$on('type', type=>{
@@ -172,11 +182,18 @@
         this.chart.subtitle.update({'text': val.subtitle});
         // val.series: this.chart.update({ series: [{ 'name': 'asd', 'data': [{'name': '2019030500', 'y':Math.ceil(Math.random()*100),  'drilldown': '2019030500' }]}] });
         // this.chart.update({series: val.series[0]});
+        val.series.reverse();
         for (var i = val.series.length - 1; i >= 0; i--) {
           this.chart.addSeries(val.series[i]);
         }
         // val.drilldown: [{ "type": 'column', "id": "2019031200", "name": '2019031200', "data": [['ss', 44],['dd',55]], "events": {click:JSON.stringify("function(events){alert(events.point.name);}")} }]
         this.chart.drilldown.update({ series: val.drilldown });
+      },
+      clickProvince(city) {
+        this.bus.$emit('clickProvinceFromBChartVue', {
+          city: city,
+          isUpdateBChartVue: false
+        });
       }
     },
     computed: {

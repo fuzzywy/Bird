@@ -16,6 +16,7 @@ class BirdChartController extends Controller
   public function show()
   {
     $type = Input::get('type');
+    $city = Input::get('city');
     $data = [];
     $drilldownData = [];
     $today = date("Ymd"); 
