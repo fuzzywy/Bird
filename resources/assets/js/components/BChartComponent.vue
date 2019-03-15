@@ -98,6 +98,14 @@
               cursor: 'pointer',
               events: {
                 click: function(e) {
+                  alert(
+                    this.name + ' 被点击了\n' +
+                    '最近点：' + event.point.category + '\n' +  
+                    'Alt 键: ' + event.altKey + '\n' +
+                    'Ctrl 键: ' + event.ctrlKey + '\n' +
+                    'Meta 键（win 键）： ' + event.metaKey + '\n' +
+                    'Shift 键：' + event.shiftKey
+                  );
                   if( typeof(e.point.drilldown) != "undefined"  )
                     vm.clickProvince = e.point.drilldown.split('-')[1];
                 }
