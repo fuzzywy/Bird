@@ -28,8 +28,8 @@
             </v-card-title>
             <v-card-text class="headline font-weight-bold" style="text-align: center; height: 50px">
               {{ item.data }}
-              <v-icon class="mr-2" :color="item.class==='icon-ali-jiantoushangsheng-blue'? '#1296db':'#d81e06'">{{ item.class }}</v-icon>
-              <span class="subheading mr-2">{{ item.tend }}</span>
+              <v-icon class="mr-0" :color="item.class==='arrow_upward'? '#1296db':'#d81e06'">{{ item.class }}</v-icon>
+              <span class="subheading mr-0" style="margin-left: -8px;">{{ item.tend }}</span>
             </v-card-text>
             <v-card-title>
               <v-layout

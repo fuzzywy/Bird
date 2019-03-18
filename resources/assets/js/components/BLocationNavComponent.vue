@@ -22,38 +22,38 @@
       > -->
       
           
-            <v-card flat>
-              <v-container>
-                <v-layout row wrap>
-                  <v-flex xs12 sm12>
-                    <v-btn 
-                      v-for="(province, key) in region"
-                      :key="key"
-                      @click="click(province.value)"
-                      dark
-                      outline color="blue"
-                    >
-                      {{ province.label }}
-                    </v-btn>
-                  </v-flex>
-                  <v-flex xs12 sm12
-                    v-if="clickProvince!=='national'">
-                    <v-btn 
-                      v-for="(city, key) in cities"
-                      :key="key" 
-                      dark
-                      @click="clickCity(city.value)"
-                      outline color="blue"
-                    >
-                      {{ city.label }}
-                    </v-btn>
-                  </v-flex>
-                  <v-flex xs12 sm12>
-                    当前地市：{{ chooseCities }}
-                  </v-flex>
-                </v-layout>
-              </v-container>
-            </v-card>
+      <v-card flat>
+        <v-container>
+          <v-layout row wrap>
+            <v-flex xs12 sm12 pa-0>
+              <v-btn 
+                v-for="(province, key) in region"
+                :key="key"
+                @click="click(province.value)"
+                dark
+                outline color="blue"
+              >
+                {{ province.label }}
+              </v-btn>
+            </v-flex>
+            <v-flex xs12 sm12 pa-0
+              v-if="clickProvince!=='national'">
+              <v-btn 
+                v-for="(city, key) in cities"
+                :key="key" 
+                dark
+                @click="clickCity(city.value)"
+                outline color="blue"
+              >
+                {{ city.label }}
+              </v-btn>
+            </v-flex>
+            <v-flex xs12 sm12 pa-0>
+              当前地市：{{ chooseCities }}
+            </v-flex>
+          </v-layout>
+        </v-container>
+      </v-card>
           
         <!-- <v-card v-if="province.value!=='national'">
           <v-list>
