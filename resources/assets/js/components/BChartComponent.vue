@@ -5,36 +5,25 @@
     <v-layout>
       <v-flex xs12 sm12>
         <v-card hover>
-          <!-- <v-img
-            src="https://cdn.vuetifyjs.com/images/cards/desert.jpg"
-            aspect-ratio="2.75"
-          ></v-img> -->
-          <v-flex offset-sm10>
-            <v-card-actions>
-              <!-- <v-btn flat color="orange">Share</v-btn> -->
-              <v-list>
-                <v-list-tile>
-                  <v-list-tile-action>
-                    <v-switch v-model="messageeee" color="orange"></v-switch>
-                  </v-list-tile-action>
-                  <v-list-tile-title>24小时/2周</v-list-tile-title>
-                </v-list-tile>
-              </v-list>
-              <!-- <v-switch v-model="message" color="orange"></v-switch> -->
+          <v-flex offset-sm10 pa-0>
+            <v-card-actions style="position: static;">
+                <!-- <div style="position: static;">
+                  <div style="position: absolute; left: 350px; z-index: 999;"> -->
+                    <v-list style="position: absolute; right: 50px; top: 10px; z-index: 999;">
+                      <v-list-tile>
+                        <v-list-tile-action>
+                          <v-switch v-model="messageeee" color="orange"></v-switch>
+                        </v-list-tile-action>
+                        <v-list-tile-title>24小时/2周</v-list-tile-title>
+                      </v-list-tile>
+                    </v-list>
+                  <!-- </div> -->
+                 <!--  <div :id="id" :option="option" style="min-width:400px;height:400px; position: absolute;"></div> -->
+                <!-- </div> -->
+                
             </v-card-actions>
           </v-flex>
           <div :id="id" :option="option" style="min-width:400px;height:400px;"></div>
-          <!-- <v-card-title primary-title>
-            <div>
-              <h3 class="headline mb-0">Kangaroo Valley Safari</h3>
-              <div> {{ card_text }} </div>
-            </div>
-          </v-card-title>
-
-          <v-card-actions>
-            <v-btn flat color="orange">Share</v-btn>
-            <v-btn flat color="orange">Explore</v-btn>
-          </v-card-actions> -->
         </v-card>
       </v-flex>
     </v-layout>
@@ -66,10 +55,11 @@
         bSideBar: "indexoverview",
         operator: "mobile",
         city: "national",
-        type: "eniq",
+        type: "lte",
         card: "无线接通率",
         id: 'container',
         clickProvince: "national",
+        province: "national",
         optionData: {},
         option: {
           credits: {
@@ -159,6 +149,7 @@
       this.bus.$on('chooseCity', type=>{
         if( !type.isUpdateBChartVue ) return;
         type.city.length===0?this.city="national":this.city=type.city;
+        this.province = type.province;
       });
       this.bus.$on('type', type=>{
         this.type = type.type;
@@ -166,23 +157,23 @@
       this.bus.$on('card', type=>{
         this.card = type.card;
       });
-      this.processLoadBChart(this.bSideBar, this.operator, this.city, this.type, this.card);
+      this.processLoadBChart(this.bSideBar, this.operator, this.city, this.type, this.card, this.province);
     },
     watch: {
       bSideBar() {
-        this.processLoadBChart(this.bSideBar, this.operator, this.city, this.type, this.card);
+        this.processLoadBChart(this.bSideBar, this.operator, this.city, this.type, this.card, this.province);
       },
       operator() {
-        this.processLoadBChart(this.bSideBar, this.operator, this.city, this.type, this.card);
+        this.processLoadBChart(this.bSideBar, this.operator, this.city, this.type, this.card, this.province);
       },
       city() {
-        this.processLoadBChart(this.bSideBar, this.operator, this.city, this.type, this.card);
+        this.processLoadBChart(this.bSideBar, this.operator, this.city, this.type, this.card, this.province);
       },
       type() {
-        this.processLoadBChart(this.bSideBar, this.operator, this.city, this.type, this.card);
+        this.processLoadBChart(this.bSideBar, this.operator, this.city, this.type, this.card, this.province);
       },
       card() {
-        this.processLoadBChart(this.bSideBar, this.operator, this.city, this.type, this.card);
+        this.processLoadBChart(this.bSideBar, this.operator, this.city, this.type, this.card, this.province);
       },
       optionData(val) {
         this.chart = new Highcharts.chart(this.id, this.option);

@@ -33,7 +33,7 @@
     data () {
       return {
         active: 0,
-        type: 'eniq',
+        type: 'lte',
         types: [ 
           // { id: 0, type: 'eniq', name: 'ENIQ' },
           // { id: 1, type: 'nbiot', name: 'NBIOT' },

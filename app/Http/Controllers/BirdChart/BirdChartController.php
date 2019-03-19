@@ -17,6 +17,27 @@ class BirdChartController extends Controller
   {
     $type = Input::get('type');
     $city = Input::get('city');
+    $card = Input::get('card');
+    $province = Input::get('province');
+
+    //各省市
+    $provinces = array("jiangsu"=>"江苏省", "guangdong"=>"广东省", "hubei"=>"湖北省");
+    $map = array(
+      "jiangsu"=>array(
+        "nanjing" => "南京",
+        "chagnzhou" => "常州",
+        "wuxi" => "无锡"
+      ),
+      "guangdong"=>array(
+        "guangzhou" => "广州",
+        "qingyuan" => "清远"
+      ),
+      "hubei"=>array(
+        "wuhan" => "武汉",
+        "jingzhou" => "荆州"
+      )
+    );
+
     $data = [];
     $drilldownData = [];
     $today = date("Ymd"); 
@@ -38,8 +59,8 @@ class BirdChartController extends Controller
     $national = array("name"=>"全国", "data"=>$data);
 
     $arr = array(
-      "title" => $type, 
-      "subtitle" => "eniq", 
+      "title" => strtoupper($type).'-'.$card, 
+      "subtitle" => $province, 
       "type" => "line",
       "series" => array(
         $national
@@ -73,23 +94,6 @@ class BirdChartController extends Controller
       )*/
     );
 
-    //各省市
-    $provinces = array("jiangsu"=>"江苏省", "guangdong"=>"广东省", "hubei"=>"湖北省");
-    $map = array(
-      "jiangsu"=>array(
-        "nanjing" => "南京",
-        "chagnzhou" => "常州",
-        "wuxi" => "无锡"
-      ),
-      "guangdong"=>array(
-        "guangzhou" => "广州",
-        "qingyuan" => "清远"
-      ),
-      "hubei"=>array(
-        "wuhan" => "武汉",
-        "jingzhou" => "荆州"
-      )
-    );
 
     $provinceArr = [];
     foreach ($provinces as $key => $province) {

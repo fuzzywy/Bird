@@ -31,7 +31,7 @@
                 :key="key"
                 @click="click(province.value)"
                 dark
-                outline color="blue"
+                :outline="province.value!==buttonProvince" color="blue"
               >
                 {{ province.label }}
               </v-btn>
@@ -43,14 +43,14 @@
                 :key="key" 
                 dark
                 @click="clickCity(city.value)"
-                outline color="blue"
+                :outline="city.value!==buttonCities" color="blue"
               >
                 {{ city.label }}
               </v-btn>
             </v-flex>
-            <v-flex xs12 sm12 pa-0>
-              当前地市：{{ chooseCities }}
-            </v-flex>
+            <!-- <v-flex xs12 sm12 pa-0>
+              <v-breadcrumbs :items="items" divider=">"></v-breadcrumbs>
+            </v-flex> -->
           </v-layout>
         </v-container>
       </v-card>
@@ -93,7 +93,9 @@
         ],
         cities: [],
         clickProvince: 'national',
-        chooseCities: "national", //通过emit发出
+        chooseCities: 'national', //通过emit发出
+        buttonProvince: 'national',
+        buttonCities: 'national',
         isUpdateBChartVue: true
       }
     },
@@ -102,19 +104,21 @@
         if( value === "national" ) {
           this.clickProvince = "national";
           this.chooseCities = "national";
+          this.buttonProvince = "national";
+          this.buttonCities = "national";
           this.cities = [{value:"national"}];
         } else {
           let cities = this.region[_.findIndex(this.region, function(o) {return o.value == value})].cities;
-          /*if( this.clickProvince !== value ) {
-            this.chooseCities = []; //cities[0].value
-          }*/
           this.clickProvince = value;
           this.cities = cities;
+
+          this.buttonProvince = value;
         }
       },
       clickCity: function(value) {
         this.isUpdateBChartVue = true;
         this.chooseCities = value;
+        this.buttonCities = value;
       }
     },
     created() {
@@ -122,7 +126,15 @@
       this.bus.$on('clickProvinceFromBChartVue', city=>{
         this.chooseCities = city.city;
         this.isUpdateBChartVue = city.isUpdateBChartVue;
-        // console.log(this.chooseCities, this.clickProvince);
+        this.buttonCities = city.city;
+        let buttonProvince;
+        _.forEach(this.region, function(value, key){
+            if(value.value === city.city) {
+              buttonProvince=value.value;
+              return;
+            }
+        });
+        this.buttonProvince = buttonProvince;
       });
     },
     computed: {
@@ -144,6 +156,7 @@
       chooseCities: function() {
         this.bus.$emit('chooseCity', {
           city: this.chooseCities,
+          province: this.clickProvince,
           isUpdateBChartVue: this.isUpdateBChartVue
         });
       }

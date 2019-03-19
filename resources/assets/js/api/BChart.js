@@ -1,11 +1,12 @@
 export default {
-  getBChart: function( bSideBar, operator, city, type, card ) {
+  getBChart: function( bSideBar, operator, city, type, card, province ) {
     return axios.post( 'birdChart/show', {
       bSideBar: bSideBar,
       operator: operator,
       city: city,
       type: type,
-      card: card
+      card: card,
+      province: province
     } )
     .catch(function(error) {
       if (error.response) {
