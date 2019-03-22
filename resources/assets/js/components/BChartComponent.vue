@@ -104,12 +104,13 @@
             title: {
               text: '(%)'
             },
+            max: 100
           },
           plotOptions: {
             series: {
               borderWidth: 0,
               dataLabels: {
-                enabled: true
+                enabled: false
               },
               cursor: 'pointer',
               events: {
