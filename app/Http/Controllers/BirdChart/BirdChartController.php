@@ -8,21 +8,23 @@ use Illuminate\Support\Facades\Input;
 
 class BirdChartController extends Controller
 {
-    /**
-   * Display a listing of the resource.
-   *
-   * @return \Illuminate\Http\Response
-   */
-  public function show()
-  {
-    $type = Input::get('type');
-    $city = Input::get('city');
-    $card = Input::get('card');
-    $province = Input::get('province');
+  protected $provinces;
+  protected $map;
+  protected $arr;
 
-    //各省市
-    $provinces = array("jiangsu"=>"江苏省", "guangdong"=>"广东省", "hubei"=>"湖北省");
-    $map = array(
+  protected $type;
+  protected $city;
+  protected $card;
+  protected $province;
+  protected $timeDim;
+
+  protected $national;
+  protected $drilldownData;
+
+  public function __construct()
+  {
+    $this->provinces = array("jiangsu"=>"江苏省", "guangdong"=>"广东省", "hubei"=>"湖北省");
+    $this->map = array(
       "jiangsu"=>array(
         "nanjing" => "南京",
         "chagnzhou" => "常州",
@@ -37,33 +39,111 @@ class BirdChartController extends Controller
         "jingzhou" => "荆州"
       )
     );
+  }
 
+  /**
+   * 获取全国图表数据
+   */
+  private function getNationalData() 
+  {
     $data = [];
-    $drilldownData = [];
-    $today = date("Ymd"); 
-    //全国
+    $this->drilldownData = [];
+    $today = date("Ymd");
     for( $i=0; $i<24; $i++ ) {
       $data[$i]['name'] = date("Ymd").($i<10?"0".$i:$i);
       $data[$i]['y'] = rand(90, 100); 
       $data[$i]['drilldown'] = date("Ymd").($i<10?"0".$i:$i)."-national";
 
-      $drilldownData[$i]['type'] = "column";
-      $drilldownData[$i]['id'] = date("Ymd").($i<10?"0".$i:$i)."-national";
-      $drilldownData[$i]['name'] = date("Ymd").($i<10?"0".$i:$i)."-national";
-      $drilldownData[$i]['data'] = array(
+      $this->drilldownData[$i]['type'] = "column";
+      $this->drilldownData[$i]['id'] = date("Ymd").($i<10?"0".$i:$i)."-national";
+      $this->drilldownData[$i]['name'] = date("Ymd").($i<10?"0".$i:$i)."-national";
+      //全国级plot line点击时，呈现‌所有省份的指标(指定时间段内均值)排名的bar plot. 从高到低排序
+      $this->drilldownData[$i]['data'] = array(
         array("江苏省", rand(90, 100)),
         array("广东省", rand(90, 100)),
         array("湖北省", rand(90, 100))
       );
     }
-    $national = array("name"=>"全国", "data"=>$data);
+    $this->national = array("name"=>"全国", "data"=>$data); 
+  }
 
-    $arr = array(
-      "title" => strtoupper($type).'-'.$card, 
-      "subtitle" => $province, 
+  /**
+   * 获取各省市图表数据
+   */
+  private function getProvincesData()
+  {
+    $provinceArr = [];
+    foreach ($this->provinces as $key => $province) {
+      $data = [];
+      $drilldownData = [];
+      // $test = [];
+      for ($i=0; $i < 24; $i++) { 
+        $data[$i]['name'] = date("Ymd").($i<10?"0".$i:$i);
+        $data[$i]['y'] = rand(90, 100); 
+        $data[$i]['drilldown'] = date("Ymd").($i<10?"0".$i:$i).'-'.$key;
+
+        $drilldownData[$i]['type'] = "column";
+        $drilldownData[$i]['id'] = date("Ymd").($i<10?"0".$i:$i).'-'.$key;
+        $drilldownData[$i]['name'] = date("Ymd").($i<10?"0".$i:$i).'-'.$key;
+        $drilldownData[$i]['data'] = [];
+
+        // $test[$i]['type'] = "pie";
+        // $test[$i]['id'] = date("Ymd").($i<10?"0".$i:$i).'-'.$key;
+        // $test[$i]['name'] = date("Ymd").($i<10?"0".$i:$i).'-'.$key;
+        // $test[$i]['data'] = [];
+
+        foreach ($this->map[$key] as $k => $v) {
+          array_push($drilldownData[$i]['data'], array($v, rand(90, 100)));
+          // array_push($test[$i]['data'], array($v, rand(90, 100)));
+        }
+        $this->arr['drilldown'][] = $drilldownData[$i];
+        // $this->arr['drilldown'][] = $test[$i];
+      }
+      $provinceArr['name'] = $province;
+      $provinceArr['data'] = $data;
+      array_push($this->arr['series'], $provinceArr);
+    }
+  }
+  /**
+   * Display a listing of the resource.
+   *
+   * @return \Illuminate\Http\Response
+   */
+  public function show()
+  {
+    $this->type = Input::get('type');
+    $this->city = Input::get('city');
+    $this->card = Input::get('card');
+    $this->province = Input::get('province');
+    $this->timeDim = Input::get('timeDim');
+
+    $this->getNationalData();
+    // $data = [];
+    // $drilldownData = [];
+    // $today = date("Ymd"); 
+    //全国
+    // for( $i=0; $i<24; $i++ ) {
+    //   $data[$i]['name'] = date("Ymd").($i<10?"0".$i:$i);
+    //   $data[$i]['y'] = rand(90, 100); 
+    //   $data[$i]['drilldown'] = date("Ymd").($i<10?"0".$i:$i)."-national";
+
+    //   $drilldownData[$i]['type'] = "column";
+    //   $drilldownData[$i]['id'] = date("Ymd").($i<10?"0".$i:$i)."-national";
+    //   $drilldownData[$i]['name'] = date("Ymd").($i<10?"0".$i:$i)."-national";
+    //   $drilldownData[$i]['data'] = array(
+    //     array("江苏省", rand(90, 100)),
+    //     array("广东省", rand(90, 100)),
+    //     array("湖北省", rand(90, 100))
+    //   );
+    // }
+    // $national = array("name"=>"全国", "data"=>$data);
+
+    $this->arr = array(
+      "title" => strtoupper($this->type).'-'.$this->card, 
+      "subtitle" => $this->province, 
       "type" => "line",
       "series" => array(
-        $national
+        $this->national
         /*array( 
           "name"=>"全国", 
           "data"=> $dataarray( 
@@ -80,7 +160,7 @@ class BirdChartController extends Controller
           ) 
         )*/
       ),
-      "drilldown" => $drilldownData/*array(
+      "drilldown" => $this->drilldownData/*array(
         array(
           "type" => "column",
           "id" => "2019031200",
@@ -94,29 +174,29 @@ class BirdChartController extends Controller
       )*/
     );
 
+    $this->getProvincesData();
+    // $provinceArr = [];
+    // foreach ($this->provinces as $key => $province) {
+    //   $data = [];
+    //   $drilldownData = [];
+    //   for ($i=0; $i < 24; $i++) { 
+    //     $data[$i]['name'] = date("Ymd").($i<10?"0".$i:$i);
+    //     $data[$i]['y'] = rand(90, 100); 
+    //     $data[$i]['drilldown'] = date("Ymd").($i<10?"0".$i:$i).'-'.$key;
 
-    $provinceArr = [];
-    foreach ($provinces as $key => $province) {
-      $data = [];
-      $drilldownData = [];
-      for ($i=0; $i < 24; $i++) { 
-        $data[$i]['name'] = date("Ymd").($i<10?"0".$i:$i);
-        $data[$i]['y'] = rand(90, 100); 
-        $data[$i]['drilldown'] = date("Ymd").($i<10?"0".$i:$i).'-'.$key;
-
-        $drilldownData[$i]['type'] = "column";
-        $drilldownData[$i]['id'] = date("Ymd").($i<10?"0".$i:$i).'-'.$key;
-        $drilldownData[$i]['name'] = date("Ymd").($i<10?"0".$i:$i).'-'.$key;
-        $drilldownData[$i]['data'] = [];
-        foreach ($map[$key] as $k => $v) {
-          array_push($drilldownData[$i]['data'], array($v, rand(90, 100)));
-        }
-        $arr['drilldown'][] = $drilldownData[$i];
-      }
-      $provinceArr['name'] = $province;
-      $provinceArr['data'] = $data;
-      array_push($arr['series'], $provinceArr);
-    }
-    return json_encode($arr);
+    //     $drilldownData[$i]['type'] = "column";
+    //     $drilldownData[$i]['id'] = date("Ymd").($i<10?"0".$i:$i).'-'.$key;
+    //     $drilldownData[$i]['name'] = date("Ymd").($i<10?"0".$i:$i).'-'.$key;
+    //     $drilldownData[$i]['data'] = [];
+    //     foreach ($this->map[$key] as $k => $v) {
+    //       array_push($drilldownData[$i]['data'], array($v, rand(90, 100)));
+    //     }
+    //     $this->arr['drilldown'][] = $drilldownData[$i];
+    //   }
+    //   $provinceArr['name'] = $this->province;
+    //   $provinceArr['data'] = $data;
+    //   array_push($this->arr['series'], $provinceArr);
+    // }
+    return json_encode($this->arr);
   }
 }

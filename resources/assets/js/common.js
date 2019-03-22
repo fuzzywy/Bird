@@ -15,14 +15,15 @@ export const common = {
     processloadBCards: function() {
       this.$store.dispatch( 'loadBCards' );
     },
-    processLoadBChart: function(bSideBar, operator, city, type, card, province) {
+    processLoadBChart: function(bSideBar, operator, city, type, card, province, timeDim) {
       this.$store.dispatch( 'loadBChart', {
         bSideBar: bSideBar,
         operator: operator,
         city: city,
         type: type,
         card: card,
-        province: province
+        province: province,
+        timeDim: timeDim
       });
     }
   }

@@ -7,7 +7,7 @@ export const BChart = {
   actions: {
     loadBChart( {commit}, data ) {
       commit('bChartStatus', 1);
-      BChartAPI.getBChart( data.bSideBar, data.operator, data.city, data.type, data.card, data.province )
+      BChartAPI.getBChart( data.bSideBar, data.operator, data.city, data.type, data.card, data.province, data.timeDim )
       .then( function( response ){
         if ( response.data != undefined ) {
           commit( 'bChart', response.data );

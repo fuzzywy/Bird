@@ -39,7 +39,9 @@ window.VueHighcharts = require('vue-highcharts');
 window.Highcharts = require('highcharts');
 
 import loadDrilldown  from 'highcharts/modules/drilldown.js';
+import loadMap from 'highcharts/modules/map.js';
 loadDrilldown(Highcharts);
+loadMap(Highcharts);
 
 const bus = new Vue();
 Vue.prototype.bus = bus;
