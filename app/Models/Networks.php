@@ -4,10 +4,10 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Network extends Model
+class Networks extends Model
 {
 	protected $connection = 'Bird';
-    protected $table = 'network';
+    protected $table = 'networks';
     public $timestamps = false;
     
 }
