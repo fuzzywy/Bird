@@ -38,3 +38,8 @@ Route::prefix('birdChart')->namespace('BirdChart')->group(function() {
   Route::post('show', 'BirdChartController@show');
 });
 // Route::get('/test/{province}/{city?}', 'BirdRegion\BirdRegionController@test');
+Route::prefix('birdCog')->namespace('birdCog')->group(function() {
+  Route::post('show', 'BirdCogController@show');
+  Route::post('edit', 'BirdCogController@edit');
+  Route::post('delete', 'BirdCogController@delete');
+});

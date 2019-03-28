@@ -3,7 +3,9 @@
 @section('content')
 <div class="container">
 	<v-app>
-	    <home-component></home-component>
+		<router-view name="HomeComponent"></router-view>
+		<router-view name="CogComponent"></router-view>
+	    <!-- <home-component></home-component> -->
 	</v-app>
 </div>
 @endsection

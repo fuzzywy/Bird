@@ -8,6 +8,7 @@
         >
           <!-- 网络概览布局 -->
           <BirdSideBarComponent></BirdSideBarComponent>
+          <!-- <router-view name="BirdSideBarComponent"></router-view> -->
         </v-flex>
         <v-flex
           grow

@@ -16,9 +16,10 @@ class BirdSideBarController extends Controller
     public function show()
     {
       $arr = array(
-        array("id" => 0, "title" => "指标概览", "icon" => "dashboard", "routertag" => "indexoverview" ),
-        array("id" => 1, "title" => "规模概览", "icon" => "question_answer", "routertag" => "scaleoverview" ),
-        array("id" => 2, "title" => "负荷概览", "icon" => "zoom_out_map", "routertag" => "loadoverview")
+        array("id" => 0, "title" => "网络性能", "icon" => "dashboard", "routertag" => "indexoverview" ),
+        array("id" => 1, "title" => "网络规模", "icon" => "question_answer", "routertag" => "scaleoverview" ),
+        array("id" => 2, "title" => "网络负荷", "icon" => "zoom_out_map", "routertag" => "loadoverview"),
+        array("id" => 3, "title" => "系统配置", "icon" => "tune", "routertag" => "systemconfiguration"),
        );
       return $arr;
     }

@@ -25,6 +25,19 @@ export const common = {
         province: province,
         timeDim: timeDim
       });
+    },
+    processLoadCog: function() {
+      this.$store.dispatch( 'loadBCog' );
+    },
+    processEditCog: function(editedItem) {
+      this.$store.dispatch( 'editCog', {
+        editedItem: editedItem
+      });
+    },
+    processDelCog: function(item) {
+      this.$store.dispatch( 'delCog', {
+        item: item
+      });
     }
   }
 }

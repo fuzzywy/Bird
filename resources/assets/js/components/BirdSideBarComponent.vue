@@ -77,11 +77,15 @@
     },
     methods: {
       clickBSideBar: function(item) {
+        if ( item.routertag === 'systemconfiguration' ) {
+          this.$router.push({name: 'cog'})
+        } else {
+          this.$router.push({name: 'home'})
+        }
         this.mini = true;
         this.bus.$emit('clickBSideBar', {
           bSideBar: item.routertag
         });
-        // alert(item.routertag);
       }
     },
     created: function(){

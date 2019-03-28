@@ -9,6 +9,7 @@ import { BRegion } from './modules/BRegion.js';
 import { BTypes } from './modules/BTypes.js';
 import { BCards } from './modules/BCards.js';
 import { BChart } from './modules/BChart.js';
+import { BCog } from './modules/BCog.js';
 export default new Vuex.Store({
   modules: {
     BSideBar,
@@ -16,6 +17,7 @@ export default new Vuex.Store({
     BRegion,
     BTypes,
     BCards,
-    BChart
+    BChart,
+    BCog
   }
 });
