@@ -221,6 +221,10 @@
         type.city.length===0?this.city="national":this.city=type.city;
         this.province = type.province;
       });
+      this.bus.$on('chooseProvince', type=>{
+        if( !type.isUpdateBChartVue ) return;
+        this.province = type.province;
+      });
       this.bus.$on('type', type=>{
         this.type = type.type;
       });
@@ -251,23 +255,21 @@
         this.processLoadBChart(this.bSideBar, this.operator, this.city, this.type, this.card, this.province, this.chooseTimeDim);
       },
       operator() {
-        // this.assessmentPlots(this.bSideBar, this.operator, this.city, this.type, this.card, this.province, this.chooseTimeDim);
         this.processLoadBChart(this.bSideBar, this.operator, this.city, this.type, this.card, this.province, this.chooseTimeDim);
       },
       city() {
-        // this.assessmentPlots(this.bSideBar, this.operator, this.city, this.type, this.card, this.province, this.chooseTimeDim);
+        // this.processLoadBChart(this.bSideBar, this.operator, this.city, this.type, this.card, this.province, this.chooseTimeDim);
+      },
+      province() {
         this.processLoadBChart(this.bSideBar, this.operator, this.city, this.type, this.card, this.province, this.chooseTimeDim);
       },
       type() {
-        // this.assessmentPlots(this.bSideBar, this.operator, this.city, this.type, this.card, this.province, this.chooseTimeDim);
         this.processLoadBChart(this.bSideBar, this.operator, this.city, this.type, this.card, this.province, this.chooseTimeDim);
       },
       card() {
-        // this.assessmentPlots(this.bSideBar, this.operator, this.city, this.type, this.card, this.province, this.chooseTimeDim);
         this.processLoadBChart(this.bSideBar, this.operator, this.city, this.type, this.card, this.province, this.chooseTimeDim);
       },
       chooseTimeDim() {
-        // this.assessmentPlots(this.bSideBar, this.operator, this.city, this.type, this.card, this.province, this.chooseTimeDim);
         this.processLoadBChart(this.bSideBar, this.operator, this.city, this.type, this.card, this.province, this.chooseTimeDim);
       },
       optionData(val) {
@@ -283,16 +285,28 @@
         // this.chart.update({series: val.series[0]});
         // val.series.reverse();
 
-        _.forEach(val.series, (value) => {
+        _.forEach(val.series, (o) => {
           if ( self.province === 'national' ) {
-            value.visible = true;
-          }else if( self.province === value.spellName ) {
-            value.visible = true;
+            o.visible = true;
+          }else if( self.province === o.spellName ) {
+            o.visible = true;
+            //均值
+            if ( (typeof val.assessmentPlots === 'string' && val.assessmentPlots === '禁用') || (typeof val.assessmentPlots === 'object' && val.assessmentPlots.status === '禁用') ) {
+              let _thisO = o; 
+              o.data = _.filter(o.data, function(o){ return o.y<_thisO.plots });
+              // o.data = _.forEach(o.data, function(o){ if(o.y>_thisO.plots){
+              //   o.y = null
+              // } });
+            //考核
+            }else if ( typeof val.assessmentPlots === 'object' && val.assessmentPlots.status === '启用' ) {
+              o.data = _.filter(o.data, function(o){ return o.y<val.assessmentPlots.assessment });
+            }
           }else {
-            value.visible = false;
+            o.visible = false;
           }
-          self.chart.addSeries(value);
+          self.chart.addSeries(o);
         });
+        this.chart.redraw();
         this.chart.yAxis[0].removePlotLine('plot-line');
         _.filter(val.series, (o)=>{
           if( self.province !== 'national' && self.province === o.spellName ) {
@@ -372,12 +386,12 @@
         // this.chart.drilldown.update({ series: [{ "type": 'column', "id": "2019032000-national", "name": '1', "data": [['ss', 44],['dd',55]] }, { "type": 'pie', "id": "2019032001-national", "name": '1', "size": 100, "center": [100, 80], "data": [['ssd', 44],['ddd',55]] }] });
         // this.chart.drilldown.update({ series: [{ "type": 'column', "id": "2019032000-national", "name": '1', "data": [['ss', 44],['dd',55]] }, { "type": 'pie', "id": "2019032001-national", "name": '1', "size": 100, "center": [100, 80], "data": [['ssd', 44],['ddd',55]] }] });
       },
-      clickProvince(city) {
-        this.bus.$emit('clickProvinceFromBChartVue', {
-          city: city,
-          isUpdateBChartVue: false
-        });
-      }
+      // clickProvince(city) {
+      //   this.bus.$emit('clickProvinceFromBChartVue', {
+      //     city: city,
+      //     isUpdateBChartVue: false
+      //   });
+      // }
     },
     computed: {
       loadData: function(){
