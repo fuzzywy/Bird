@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "adece3f5_90d8c018",
+        "filename": "resources/views/layouts/app.blade.php",
+        "patchSetId": 1
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2019-04-02T11:18:11Z",
+      "side": 1,
+      "message": "Do we really need jquery,boostrap?",
+      "revId": "2cac6ed5b7fe8313e58756025b12958dcc31dd7f",
+      "serverId": "f8e000e2-6046-4ea1-b337-da5e5d5bd44d",
+      "unresolved": false
+    }
+  ]
+}
