@@ -1,12 +1,14 @@
 <template>
   <div>
     <input style="display: none;" id="input" :loadData="loadData">
+    <v-layout v-resize="onResize" column align-center justify-center>
+    </v-layout>
     <v-navigation-drawer
       v-model="drawer"
       :mini-variant.sync="mini"
       hide-overlay
       stateless
-      height="-webkit-fill-available"
+      floating
     >
       <v-toolbar flat class="transparent">
         <v-list class="pa-0">
@@ -72,7 +74,11 @@
           // { id: 1, title: '规模概览', icon: 'question_answer', routertag: 'scaleoverview' },
           // { id: 2, title: '负荷概览', icon: 'zoom_out_map', routertag: 'loadoverview' }
         ],
-        mini: true
+        mini: true,
+        windowSize: {
+          x: 0,
+          y: 0
+        }
       }
     },
     methods: {
@@ -86,10 +92,20 @@
         this.bus.$emit('clickBSideBar', {
           bSideBar: item.routertag
         });
+      },
+      onResize () {
+        this.windowSize = { x: window.innerWidth, y: window.innerHeight }
       }
     },
     created: function(){
       this.processloadBSideBarItems();
+    },
+    watch: {
+      windowSize: function() {
+        if( this.windowSize.x <= 1223 ) {
+          this.mini = true;
+        }
+      }
     },
     computed: {
       loadData: function(){
@@ -105,6 +121,9 @@
               break;
         }
       }
+    },
+    mounted() {
+      this.onResize();
     }
   }
 </script>

@@ -5,11 +5,14 @@ namespace App\Http\Controllers\BirdChart;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Input;
+use App\Configuration;
 
 class BirdChartController extends Controller
 {
   protected $provinces;
   protected $map;
+  protected $mapOperator;
+  protected $mapSystem;
   protected $arr;
 
   protected $type;
@@ -17,6 +20,7 @@ class BirdChartController extends Controller
   protected $card;
   protected $province;
   protected $timeDim;
+  protected $operator;
 
   protected $national;
   protected $drilldownData;
@@ -39,6 +43,25 @@ class BirdChartController extends Controller
         "jingzhou" => "荆州"
       )
     );
+    $this->mapOperator = array("mobile"=>"中国移动", "unicom"=>"中国联通","telecommunications"=>"中国电信");
+    $this->mapSystem = array('lte' => 'LTE', 'nbiot'=> 'NBIOT', 'volte'=>'VOLTE', 'gsm'=>'GSM');
+  }
+
+  private function getAssessmentPlots() {
+    if ( $this->province === "national" ) {
+      return "禁用";
+    }
+    $status = Configuration::where('location', $this->provinces[$this->province])
+      ->where('operator', $this->mapOperator[$this->operator])
+      ->where('system', $this->mapSystem[$this->type])
+      ->where('index', $this->card)
+      ->get()
+      ->toArray();
+    if ( count($status) === 0 ) {
+      return "禁用";
+    } else {
+      return array('status'=> $status[0]['status'], 'assessment'=> $status[0]['assessment']);
+    }
   }
 
   /**
@@ -47,11 +70,13 @@ class BirdChartController extends Controller
   private function getNationalData() 
   {
     $data = [];
+    $plots = 0;
     $this->drilldownData = [];
     $today = date("Ymd");
     for( $i=0; $i<24; $i++ ) {
       $data[$i]['name'] = date("Ymd").($i<10?"0".$i:$i);
       $data[$i]['y'] = rand(90, 100); 
+      $plots += $data[$i]['y'];
       $data[$i]['drilldown'] = date("Ymd").($i<10?"0".$i:$i)."-national";
 
       $this->drilldownData[$i]['type'] = "column";
@@ -64,7 +89,9 @@ class BirdChartController extends Controller
         array("湖北省", rand(90, 100))
       );
     }
-    $this->national = array("name"=>"全国", "data"=>$data); 
+    //标识线
+    $plots /= 24;
+    $this->national = array("name"=>"全国", "spellName"=>"national", "plots"=>round($plots, 2), "data"=>$data); 
   }
 
   /**
@@ -77,9 +104,11 @@ class BirdChartController extends Controller
       $data = [];
       $drilldownData = [];
       // $test = [];
+      $plots = 0;
       for ($i=0; $i < 24; $i++) { 
         $data[$i]['name'] = date("Ymd").($i<10?"0".$i:$i);
         $data[$i]['y'] = rand(90, 100); 
+        $plots += $data[$i]['y'];
         $data[$i]['drilldown'] = date("Ymd").($i<10?"0".$i:$i).'-'.$key;
 
         $drilldownData[$i]['type'] = "column";
@@ -100,7 +129,11 @@ class BirdChartController extends Controller
         // $this->arr['drilldown'][] = $test[$i];
       }
       $provinceArr['name'] = $province;
+      $provinceArr['spellName'] = array_flip($this->provinces)[$province];
       $provinceArr['data'] = $data;
+      //标识线
+      $plots /= 24;
+      $provinceArr['plots'] = round($plots, 2);
       array_push($this->arr['series'], $provinceArr);
     }
   }
@@ -116,6 +149,7 @@ class BirdChartController extends Controller
     $this->card = Input::get('card');
     $this->province = Input::get('province');
     $this->timeDim = Input::get('timeDim');
+    $this->operator = Input::get('operator');
 
     $this->getNationalData();
     // $data = [];
@@ -175,6 +209,8 @@ class BirdChartController extends Controller
     );
 
     $this->getProvincesData();
+
+    $this->arr['assessmentPlots'] = $this->getAssessmentPlots();
     // $provinceArr = [];
     // foreach ($this->provinces as $key => $province) {
     //   $data = [];

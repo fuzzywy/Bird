@@ -33,7 +33,7 @@
                 <BTypeNavComponent></BTypeNavComponent>
               </v-flex>
               <v-flex 
-                xs12>
+                xs12 ml-2>
                 <BCardComponent></BCardComponent>
               </v-flex>
               <v-flex 

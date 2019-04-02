@@ -8,13 +8,14 @@
       ></v-progress-circular>
     </div>
     <v-container v-if="this.$store.getters.bCardsStatus===2" 
-      grid-list-md
+      grid-list-md 
     ><!-- fluid -->
-      <v-layout align-center justify-center fill-height row wrap> <!-- row wrap -->
+      <v-layout align-center justify-center row wrap> <!-- row wrap -->
         <v-flex
           v-for="item in cards"
           :key="item.id"
           v-bind="{ [`xs${item.flex}`]: true }"
+          xl2 lg3 md3 sm6 xs12
         >
           <v-card   
             :color="item.color"

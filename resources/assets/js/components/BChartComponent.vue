@@ -78,6 +78,9 @@
         id: 'container',
         clickProvince: "national",
         province: "national",
+        assessment: {
+          status: false
+        },
         optionData: {},
         option: {
           credits: {
@@ -128,7 +131,7 @@
                   //下钻
                   if( typeof(e.point.drilldown) != "undefined"  )
                   {
-                      vm.drilldownProvince = false;
+                    vm.drilldownProvince = false;
                     if (this.name === "全国") {
                       vm.xsline = "xs12";
                     }else{
@@ -248,37 +251,126 @@
         this.processLoadBChart(this.bSideBar, this.operator, this.city, this.type, this.card, this.province, this.chooseTimeDim);
       },
       operator() {
+        // this.assessmentPlots(this.bSideBar, this.operator, this.city, this.type, this.card, this.province, this.chooseTimeDim);
         this.processLoadBChart(this.bSideBar, this.operator, this.city, this.type, this.card, this.province, this.chooseTimeDim);
       },
       city() {
+        // this.assessmentPlots(this.bSideBar, this.operator, this.city, this.type, this.card, this.province, this.chooseTimeDim);
         this.processLoadBChart(this.bSideBar, this.operator, this.city, this.type, this.card, this.province, this.chooseTimeDim);
       },
       type() {
+        // this.assessmentPlots(this.bSideBar, this.operator, this.city, this.type, this.card, this.province, this.chooseTimeDim);
         this.processLoadBChart(this.bSideBar, this.operator, this.city, this.type, this.card, this.province, this.chooseTimeDim);
       },
       card() {
+        // this.assessmentPlots(this.bSideBar, this.operator, this.city, this.type, this.card, this.province, this.chooseTimeDim);
         this.processLoadBChart(this.bSideBar, this.operator, this.city, this.type, this.card, this.province, this.chooseTimeDim);
       },
       chooseTimeDim() {
+        // this.assessmentPlots(this.bSideBar, this.operator, this.city, this.type, this.card, this.province, this.chooseTimeDim);
         this.processLoadBChart(this.bSideBar, this.operator, this.city, this.type, this.card, this.province, this.chooseTimeDim);
       },
       optionData(val) {
         let self = this;
         this.chart = new Highcharts.chart(this.id, this.option);
+
+        this.xsline = 'xs12';
+        this.chart.setSize(parseInt(this.containerWidth), 400);
+        
         this.chart.title.update({'text': val.title});
         this.chart.subtitle.update({'text': val.subtitle});
         // val.series: this.chart.update({ series: [{ 'name': 'asd', 'data': [{'name': '2019030500', 'y':Math.ceil(Math.random()*100),  'drilldown': '2019030500' }]}] });
         // this.chart.update({series: val.series[0]});
         // val.series.reverse();
+
         _.forEach(val.series, (value) => {
+          if ( self.province === 'national' ) {
+            value.visible = true;
+          }else if( self.province === value.spellName ) {
+            value.visible = true;
+          }else {
+            value.visible = false;
+          }
           self.chart.addSeries(value);
         });
+        this.chart.yAxis[0].removePlotLine('plot-line');
+        _.filter(val.series, (o)=>{
+          if( self.province !== 'national' && self.province === o.spellName ) {
+            // self.chart.addSeries(o);
+            o.visible = true;
+            self.chart.yAxis[0].addPlotLine({
+              value: o.plots,
+              width:2,
+              color: 'green',
+              id: 'plot-line',
+              dashStyle: 'Dash',
+              label:{
+                text: '均值:'+o.name+': '+o.plots+'%',
+                align:'left',
+                x:0,
+                style: {
+                  color: 'green'
+                }
+              },
+              zIndex: 999,
+              events: {
+                click:function(){
+                    //当标示线被单击时，触发的事件
+                },
+                mouseover:function(){
+                    //当标示线被鼠标悬停时，触发的事件
+                },
+
+                mouseout:function(){
+                    //当标示线被鼠标移出时，触发的事件
+                },
+
+                mousemove:function(){
+                    //当标示线被鼠标移动(时，触发的事件
+                }
+              }
+            });
+            if( typeof val.assessmentPlots === 'object' && val.assessmentPlots.status === '启用' ) {
+              self.chart.yAxis[0].addPlotLine({
+                value: val.assessmentPlots.assessment,
+                width: 2,
+                color: 'red',
+                id: 'plot-line',
+                dashStyle: 'LongDashDotDot',
+                label:{
+                  text: '考核:'+o.name+': '+val.assessmentPlots.assessment+'%',
+                  align:'right',
+                  x:0,
+                  style: {
+                    color: 'red'
+                  }
+                },
+                zIndex: 999,
+                events: {
+                  click:function(){
+                      //当标示线被单击时，触发的事件
+                  },
+                  mouseover:function(){
+                      //当标示线被鼠标悬停时，触发的事件
+                  },
+
+                  mouseout:function(){
+                      //当标示线被鼠标移出时，触发的事件
+                  },
+
+                  mousemove:function(){
+                      //当标示线被鼠标移动(时，触发的事件
+                  }
+                }
+              });
+            }
+          }
+        });
+
         // val.drilldown: [{ "type": 'column', "id": "2019031200", "name": '2019031200', "data": [['ss', 44],['dd',55]], "events": {click:JSON.stringify("function(events){alert(events.point.name);}")} }]
         this.chart.drilldown.update({ series: val.drilldown });
         // this.chart.drilldown.update({ series: [{ "type": 'column', "id": "2019032000-national", "name": '1', "data": [['ss', 44],['dd',55]] }, { "type": 'pie', "id": "2019032001-national", "name": '1', "size": 100, "center": [100, 80], "data": [['ssd', 44],['ddd',55]] }] });
         // this.chart.drilldown.update({ series: [{ "type": 'column', "id": "2019032000-national", "name": '1', "data": [['ss', 44],['dd',55]] }, { "type": 'pie', "id": "2019032001-national", "name": '1', "size": 100, "center": [100, 80], "data": [['ssd', 44],['ddd',55]] }] });
-       
-        // console.log(val.drilldown);
       },
       clickProvince(city) {
         this.bus.$emit('clickProvinceFromBChartVue', {

@@ -25,7 +25,7 @@
       <v-card flat>
         <v-container>
           <v-layout row wrap>
-            <v-flex xs12 sm12 pa-0>
+            <v-flex xs6 sm12 md12 xl12 lg12 pa-0>
               <v-btn 
                 v-for="(province, key) in region"
                 :key="key"
