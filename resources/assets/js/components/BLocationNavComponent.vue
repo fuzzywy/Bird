@@ -123,19 +123,19 @@
     },
     created() {
       this.processloadBRegion();
-      this.bus.$on('clickProvinceFromBChartVue', city=>{
-        this.chooseCities = city.city;
-        this.isUpdateBChartVue = city.isUpdateBChartVue;
-        this.buttonCities = city.city;
-        let buttonProvince;
-        _.forEach(this.region, function(value, key){
-            if(value.value === city.city) {
-              buttonProvince=value.value;
-              return;
-            }
-        });
-        this.buttonProvince = buttonProvince;
-      });
+      // this.bus.$on('clickProvinceFromBChartVue', city=>{
+      //   this.chooseCities = city.city;
+      //   this.isUpdateBChartVue = city.isUpdateBChartVue;
+      //   this.buttonCities = city.city;
+      //   let buttonProvince;
+      //   _.forEach(this.region, function(value, key){
+      //       if(value.value === city.city) {
+      //         buttonProvince=value.value;
+      //         return;
+      //       }
+      //   });
+      //   this.buttonProvince = buttonProvince;
+      // });
     },
     computed: {
       loadData: function(){
@@ -156,6 +156,12 @@
       chooseCities: function() {
         this.bus.$emit('chooseCity', {
           city: this.chooseCities,
+          province: this.clickProvince,
+          isUpdateBChartVue: this.isUpdateBChartVue
+        });
+      },
+      clickProvince: function() {
+        this.bus.$emit('chooseProvince', {
           province: this.clickProvince,
           isUpdateBChartVue: this.isUpdateBChartVue
         });
