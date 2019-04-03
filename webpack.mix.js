@@ -12,12 +12,33 @@ let mix = require('laravel-mix');
  */
 
 mix.js('resources/assets/js/app.js', 'public/js')
-   .sass('resources/assets/sass/app.scss', 'public/css');
-
-mix.webpackConfig({
-    resolve:{
-        alias: {
-        'vue-router$': 'vue-router/dist/vue-router.common.js'
+    .webpackConfig({
+        module: {
+            rules: [
+                {
+                    test: /\.jsx?$/,
+                    exclude: /node_modules(?!\/foundation-sites)|bower_components/,
+                    use: [
+                        {
+                            loader: 'babel-loader',
+                            options: Config.babel()
+                        }
+                    ]
+                }
+            ]
+        },
+        resolve: {
+            alias: {
+                '@': path.resolve('resources/assets/sass'),
+                'vue-router$': 'vue-router/dist/vue-router.common.js'
+            }
         }
-    }
-});
+    })
+    .extract(['vue'])
+   .sass('resources/assets/sass/app.scss', 'public/css')
+
+if (mix.inProduction()) {
+    mix.version();
+}
+
+// mix.browserSync('bird.test:8080/home#/cog');

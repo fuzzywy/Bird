@@ -5,7 +5,9 @@ namespace App\Http\Controllers\birdCog;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Configuration;
+use App\Region;
 use Illuminate\Support\Facades\Input;
+use App\Kpi;
 // use App\User;
 
 class BirdCogController extends Controller
@@ -17,75 +19,13 @@ class BirdCogController extends Controller
    */
   public function show()
   {
-    // $phone = Configuration::with('configuration')->get()->toArray();
-    // $phone = User::find(1)::with('cog')->get()->toArray();
-    // print_r($phone);return;
-    
-    // print_r($arr);return;
-    // $arr = array(
-    //   array(
-    //     'location'=>'江苏省',
-    //     'operator'=>'中国移动',
-    //     'system'=>'LTE',
-    //     'index'=>'无线接通率',
-    //     'assessment'=>98,
-    //     'status'=>'禁用'
-    //   ),
-    //   array(
-    //     'location'=>'全国',
-    //     'operator'=>'中国移动',
-    //     'system'=>'LTE',
-    //     'index'=>'无线接通率',
-    //     'assessment'=>98,
-    //     'status'=>'禁用'
-    //   ),
-      // array(
-      //   'location'=>array( 'value'=>'jiangsu', 'text'=>'江苏省' ),
-      //   'operator'=>array( 'value'=> 'mobile', 'text'=> '中国移动' ),
-      //   'system'=>array( 'value'=> 'lte', 'text'=> 'LTE' ),
-      //   'index'=>array( 'value'=> 'lowaccess', 'text'=> '无线接通率' ),
-      //   'assessment'=>98,
-      //   'status'=>array( 'value'=> 'off', 'text'=> '禁用' )
-      // ),
-      // array(
-      //   'location'=>array( 'value'=>'national', 'text'=>'全国' ),
-      //   'operator'=>array( 'value'=> 'mobile', 'text'=> '中国移动' ),
-      //   'system'=>array( 'value'=> 'lte', 'text'=> 'LTE' ),
-      //   'index'=>array( 'value'=> 'lowaccess', 'text'=> '无线接通率' ),
-      //   'assessment'=>98,
-      //   'status'=>array( 'value'=> 'off', 'text'=> '禁用' )
-      // ),
-      // array(
-      //   'location'=>array( 'value'=>'national', 'text'=>'全国' ),
-      //   'operator'=>array( 'value'=> 'mobile', 'text'=> '中国移动' ),
-      //   'system'=>array( 'value'=> 'lte', 'text'=> 'LTE' ),
-      //   'index'=>array( 'value'=> 'lowaccess', 'text'=> '无线接通率' ),
-      //   'assessment'=>98,
-      //   'status'=>array( 'value'=> 'off', 'text'=> '禁用' )
-      // ),array(
-      //   'location'=>array( 'value'=>'national', 'text'=>'全国' ),
-      //   'operator'=>array( 'value'=> 'mobile', 'text'=> '中国移动' ),
-      //   'system'=>array( 'value'=> 'lte', 'text'=> 'LTE' ),
-      //   'index'=>array( 'value'=> 'lowaccess', 'text'=> '无线接通率' ),
-      //   'assessment'=>98,
-      //   'status'=>array( 'value'=> 'off', 'text'=> '禁用' )
-      // ),array(
-      //   'location'=>array( 'value'=>'national', 'text'=>'全国' ),
-      //   'operator'=>array( 'value'=> 'mobile', 'text'=> '中国移动' ),
-      //   'system'=>array( 'value'=> 'lte', 'text'=> 'LTE' ),
-      //   'index'=>array( 'value'=> 'lowaccess', 'text'=> '无线接通率' ),
-      //   'assessment'=>98,
-      //   'status'=>array( 'value'=> 'off', 'text'=> '禁用' )
-      // ),array(
-      //   'location'=>array( 'value'=>'national', 'text'=>'全国' ),
-      //   'operator'=>array( 'value'=> 'mobile', 'text'=> '中国移动' ),
-      //   'system'=>array( 'value'=> 'lte', 'text'=> 'LTE' ),
-      //   'index'=>array( 'value'=> 'lowaccess', 'text'=> '无线接通率' ),
-      //   'assessment'=>98,
-      //   'status'=>array( 'value'=> 'off', 'text'=> '禁用' )
-      // ),
-    // );
-    return Configuration::all()->toArray();
+    $arr = [];
+    $arr['data'] = Configuration::all()->toArray();
+    $region = Region::groupBy('spell-province')->get(['province'])->toArray();
+    $arr['region'] = array_reverse($region);
+    $kpi = Kpi::groupBy(['kpi'])->get(['kpi'])->toArray();
+    $arr['kpi'] = array_reverse($kpi);
+    return $arr;//Configuration::all()->toArray();
   }
 
   public function edit() {
