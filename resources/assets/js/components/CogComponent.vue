@@ -160,7 +160,7 @@
       BirdSideBarComponent
     },
     data: () => ({
-      locationSelect: [ '全国', '江苏省', '广东省', '南京市'
+      locationSelect: [ //'全国', '江苏省', '广东省', '南京市'
         // { 'value': 'national', 'text': '全国' },
         // { 'value': 'jiangsu', 'text': '江苏省' },
         // { 'value': 'guangdong', 'text': '广东省' },
@@ -230,7 +230,12 @@
           case 1:
               break;
           case 2:
-              this.desserts = this.$store.getters.bCog;
+              let _this = this;
+              this.desserts = this.$store.getters.bCog['data'];
+              this.locationSelect = [];
+              _.forEach( this.$store.getters.bCog['region'], (v)=>{_this.locationSelect.push(v.province);});
+              this.indexSelect = [];
+              _.forEach( this.$store.getters.bCog['kpi'], (v)=>{_this.indexSelect.push(v.kpi);});
               break;
           case 3:
               break;
