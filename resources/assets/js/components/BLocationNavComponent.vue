@@ -93,9 +93,9 @@
         ],
         cities: [],
         clickProvince: 'national',
-        chooseCities: 'national', //通过emit发出
+        chooseCities: '', //通过emit发出
         buttonProvince: 'national',
-        buttonCities: 'national',
+        buttonCities: '',
         isUpdateBChartVue: true
       }
     },
@@ -103,16 +103,19 @@
       click: function(value) {
         if( value === "national" ) {
           this.clickProvince = "national";
-          this.chooseCities = "national";
+          this.chooseCities = "";
           this.buttonProvince = "national";
-          this.buttonCities = "national";
-          this.cities = [{value:"national"}];
+          this.buttonCities = "";
+          this.cities = [{value:""}];
         } else {
           let cities = this.region[_.findIndex(this.region, function(o) {return o.value == value})].cities;
           this.clickProvince = value;
           this.cities = cities;
 
           this.buttonProvince = value;
+
+          this.chooseCities = '';
+          this.buttonCities = '';
         }
       },
       clickCity: function(value) {

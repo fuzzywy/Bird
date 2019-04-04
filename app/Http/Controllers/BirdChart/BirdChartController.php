@@ -28,6 +28,7 @@ class BirdChartController extends Controller
   public function __construct()
   {
     $this->provinces = array("jiangsu"=>"江苏省", "guangdong"=>"广东省", "hubei"=>"湖北省");
+    $this->cities = array('nanjing' => '南京', 'wuxi' => '无锡', 'suzhou'=> '苏州', 'changzhou'=>'常州', 'zhenjiang'=>'镇江', 'nantong'=>'南通', 'jingzhou'=>'荆州', 'wuhan'=>'武汉', 'guangzhou'=>'广州', 'qingyuan'=>'清远' );
     $this->map = array(
       "jiangsu"=>array(
         "nanjing" => "南京",
@@ -92,6 +93,40 @@ class BirdChartController extends Controller
     //标识线
     $plots /= 24;
     $this->national = array("name"=>"全国", "spellName"=>"national", "plots"=>round($plots, 2), "data"=>$data); 
+  }
+
+  /**
+   * 获取各市图表数据
+   */
+  private function getCitiesData() 
+  {
+    if( $this->city == '' ){
+      return;
+    }
+    $cities = [];
+    $data = [];
+    // $drilldownData = [];
+    for ($i=0; $i < 24; $i++) { 
+      $data[$i]['name'] = date("Ymd").($i<10?"0".$i:$i);
+      $data[$i]['y'] = rand(90, 100); 
+
+      $data[$i]['drilldown'] = date("Ymd").($i<10?"0".$i:$i).'-'.$this->province;
+
+      // $drilldownData[$i]['type'] = "column";
+      // $drilldownData[$i]['id'] = date("Ymd").($i<10?"0".$i:$i).'-'.$key;
+      // $drilldownData[$i]['name'] = date("Ymd").($i<10?"0".$i:$i).'-'.$key;
+      // $drilldownData[$i]['data'] = [];
+
+      // foreach ($this->map[$key] as $k => $v) {
+      //   array_push($drilldownData[$i]['data'], array($v, rand(90, 100)));
+      // }
+      // $this->arr['drilldown'][] = $drilldownData[$i];
+    }
+    $cities['name'] = $this->cities[$this->city];
+    $cities['spellName'] = $this->city;
+    $cities['data'] = $data;
+    // print_r($cities);
+    $this->arr['city-series'] = array($cities);
   }
 
   /**
@@ -209,6 +244,11 @@ class BirdChartController extends Controller
     );
 
     $this->getProvincesData();
+
+    $this->getCitiesData();
+    if( $this->city !== null ) {
+      $this->arr['subtitle'] = $this->city;
+    }
 
     $this->arr['assessmentPlots'] = $this->getAssessmentPlots();
     // $provinceArr = [];
