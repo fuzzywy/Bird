@@ -72,7 +72,7 @@
         chart: {},
         bSideBar: "indexoverview",
         operator: "mobile",
-        city: "national",
+        city: "",
         type: "lte",
         card: "无线接通率",
         id: 'container',
@@ -218,7 +218,7 @@
       });
       this.bus.$on('chooseCity', type=>{
         if( !type.isUpdateBChartVue ) return;
-        type.city.length===0?this.city="national":this.city=type.city;
+        type.city.length===0?this.city="":this.city=type.city;
         this.province = type.province;
       });
       this.bus.$on('chooseProvince', type=>{
@@ -258,7 +258,7 @@
         this.processLoadBChart(this.bSideBar, this.operator, this.city, this.type, this.card, this.province, this.chooseTimeDim);
       },
       city() {
-        // this.processLoadBChart(this.bSideBar, this.operator, this.city, this.type, this.card, this.province, this.chooseTimeDim);
+        this.processLoadBChart(this.bSideBar, this.operator, this.city, this.type, this.card, this.province, this.chooseTimeDim);
       },
       province() {
         this.processLoadBChart(this.bSideBar, this.operator, this.city, this.type, this.card, this.province, this.chooseTimeDim);
@@ -284,8 +284,16 @@
         // val.series: this.chart.update({ series: [{ 'name': 'asd', 'data': [{'name': '2019030500', 'y':Math.ceil(Math.random()*100),  'drilldown': '2019030500' }]}] });
         // this.chart.update({series: val.series[0]});
         // val.series.reverse();
+        // console.log('city:',this.city, 'province:',this.province)
 
-        _.forEach(val.series, (o) => {
+        let regionSeries =  {};
+        if( this.city !== '' ) {
+          regionSeries = val['city-series'];
+        } else {
+          regionSeries = val['series'];
+        }
+
+        _.forEach(regionSeries, (o) => {
           if ( self.province === 'national' ) {
             o.visible = true;
           }else if( self.province === o.spellName ) {
@@ -301,14 +309,19 @@
             }else if ( typeof val.assessmentPlots === 'object' && val.assessmentPlots.status === '启用' ) {
               o.data = _.filter(o.data, function(o){ return o.y<val.assessmentPlots.assessment });
             }
+          }else if( self.city === o.spellName ) {
+            o.visible = true;
+            if ( typeof val.assessmentPlots === 'object' && val.assessmentPlots.status === '启用' ) {
+              o.data = _.filter(o.data, function(o){ return o.y<val.assessmentPlots.assessment });
+            }
           }else {
             o.visible = false;
           }
           self.chart.addSeries(o);
         });
-        this.chart.redraw();
+        // this.chart.redraw();
         this.chart.yAxis[0].removePlotLine('plot-line');
-        _.filter(val.series, (o)=>{
+        _.filter(regionSeries, (o)=>{
           if( self.province !== 'national' && self.province === o.spellName ) {
             // self.chart.addSeries(o);
             o.visible = true;
@@ -319,7 +332,7 @@
               id: 'plot-line',
               dashStyle: 'Dash',
               label:{
-                text: '均值:'+o.name+': '+o.plots+'%',
+                text: '均值:'+/*o.name+': '+*/o.plots+'%',
                 align:'left',
                 x:0,
                 style: {
@@ -344,7 +357,8 @@
                 }
               }
             });
-            if( typeof val.assessmentPlots === 'object' && val.assessmentPlots.status === '启用' ) {
+          }
+          if( typeof val.assessmentPlots === 'object' && val.assessmentPlots.status === '启用' ) {
               self.chart.yAxis[0].addPlotLine({
                 value: val.assessmentPlots.assessment,
                 width: 2,
@@ -352,7 +366,7 @@
                 id: 'plot-line',
                 dashStyle: 'LongDashDotDot',
                 label:{
-                  text: '考核:'+o.name+': '+val.assessmentPlots.assessment+'%',
+                  text: '考核:'+/*o.name+': '+*/val.assessmentPlots.assessment+'%',
                   align:'right',
                   x:0,
                   style: {
@@ -378,7 +392,6 @@
                 }
               });
             }
-          }
         });
 
         // val.drilldown: [{ "type": 'column', "id": "2019031200", "name": '2019031200', "data": [['ss', 44],['dd',55]], "events": {click:JSON.stringify("function(events){alert(events.point.name);}")} }]
