@@ -292,7 +292,7 @@
         } else {
           regionSeries = val['series'];
         }
-
+        // console.log(regionSeries);
         _.forEach(regionSeries, (o) => {
           if ( self.province === 'national' ) {
             o.visible = true;
@@ -319,6 +319,17 @@
           }
           self.chart.addSeries(o);
         });
+
+        if( this.province !== 'national' && this.city === '' ) {
+          _.forEach( val['city-series'], (o)=>{
+            o.visible = true;
+            if ( typeof val.assessmentPlots === 'object' && val.assessmentPlots.status === '启用' ) {
+              o.data = _.filter(o.data, function(o){ return o.y<val.assessmentPlots.assessment });
+            }
+            self.chart.addSeries(o);
+          });
+        }
+
         // this.chart.redraw();
         this.chart.yAxis[0].removePlotLine('plot-line');
         _.filter(regionSeries, (o)=>{
