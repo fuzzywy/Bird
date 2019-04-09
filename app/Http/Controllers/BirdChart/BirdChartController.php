@@ -33,7 +33,10 @@ class BirdChartController extends Controller
       "jiangsu"=>array(
         "nanjing" => "南京",
         "chagnzhou" => "常州",
-        "wuxi" => "无锡"
+        "wuxi" => "无锡",
+        "suzhou" => "苏州",
+        "nantong"=> "南通",
+        "zhenjiang"=>"镇江"
       ),
       "guangdong"=>array(
         "guangzhou" => "广州",
@@ -100,33 +103,52 @@ class BirdChartController extends Controller
    */
   private function getCitiesData() 
   {
-    if( $this->city == '' ){
-      return;
+    if( $this->city == '' ) {
+      if( $this->province !== 'national' ) {
+        $region = $this->map[$this->province];
+        foreach ($region as $key => $value) {
+          $cities = [];
+          $data = [];
+          for ($i=0; $i < 24; $i++) { 
+            $data[$i]['name'] = date("Ymd").($i<10?"0".$i:$i);
+            $data[$i]['y'] = rand(90, 100); 
+            $data[$i]['drilldown'] = date("Ymd").($i<10?"0".$i:$i).'-'.$this->province;
+          }
+          $cities['name'] = $value;
+          $cities['spellName'] = $key;
+          $cities['data'] = $data;
+          // print_r($cities);
+          array_push($this->arr['city-series'], $cities);
+          // $this->arr['city-series'] = array($cities);
+        }
+      }
+    } else {
+      $cities = [];
+      $data = [];
+      // $drilldownData = [];
+      for ($i=0; $i < 24; $i++) { 
+        $data[$i]['name'] = date("Ymd").($i<10?"0".$i:$i);
+        $data[$i]['y'] = rand(90, 100); 
+
+        $data[$i]['drilldown'] = date("Ymd").($i<10?"0".$i:$i).'-'.$this->province;
+
+        // $drilldownData[$i]['type'] = "column";
+        // $drilldownData[$i]['id'] = date("Ymd").($i<10?"0".$i:$i).'-'.$key;
+        // $drilldownData[$i]['name'] = date("Ymd").($i<10?"0".$i:$i).'-'.$key;
+        // $drilldownData[$i]['data'] = [];
+
+        // foreach ($this->map[$key] as $k => $v) {
+        //   array_push($drilldownData[$i]['data'], array($v, rand(90, 100)));
+        // }
+        // $this->arr['drilldown'][] = $drilldownData[$i];
+      }
+      $cities['name'] = $this->cities[$this->city];
+      $cities['spellName'] = $this->city;
+      $cities['data'] = $data;
+      // print_r($cities);
+      $this->arr['city-series'] = array($cities);
     }
-    $cities = [];
-    $data = [];
-    // $drilldownData = [];
-    for ($i=0; $i < 24; $i++) { 
-      $data[$i]['name'] = date("Ymd").($i<10?"0".$i:$i);
-      $data[$i]['y'] = rand(90, 100); 
-
-      $data[$i]['drilldown'] = date("Ymd").($i<10?"0".$i:$i).'-'.$this->province;
-
-      // $drilldownData[$i]['type'] = "column";
-      // $drilldownData[$i]['id'] = date("Ymd").($i<10?"0".$i:$i).'-'.$key;
-      // $drilldownData[$i]['name'] = date("Ymd").($i<10?"0".$i:$i).'-'.$key;
-      // $drilldownData[$i]['data'] = [];
-
-      // foreach ($this->map[$key] as $k => $v) {
-      //   array_push($drilldownData[$i]['data'], array($v, rand(90, 100)));
-      // }
-      // $this->arr['drilldown'][] = $drilldownData[$i];
-    }
-    $cities['name'] = $this->cities[$this->city];
-    $cities['spellName'] = $this->city;
-    $cities['data'] = $data;
-    // print_r($cities);
-    $this->arr['city-series'] = array($cities);
+    
   }
 
   /**
@@ -229,6 +251,7 @@ class BirdChartController extends Controller
           ) 
         )*/
       ),
+      "city-series"=>array(),
       "drilldown" => $this->drilldownData/*array(
         array(
           "type" => "column",
