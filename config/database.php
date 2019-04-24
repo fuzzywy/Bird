@@ -116,6 +116,19 @@ return [
             'charset' => 'utf8',
             'prefix' => '',
         ],
+        'ENIQAggregation' => [
+            'driver' => 'mysql',
+            'host' => '120.77.223.9',
+            'port' => '3306',
+            'database' => 'ENIQAggregation',
+            'username' => 'root',
+            'password' => 'mongs',
+            'charset' => 'utf8',
+            'collation' => 'utf8_unicode_ci',
+            'prefix' => '',
+            'strict' => false,
+            'engine' => null,
+        ],
 
     ],
 

@@ -107,7 +107,7 @@
             title: {
               text: '(%)'
             },
-            max: 100
+            // max: 100
           },
           plotOptions: {
             series: {
