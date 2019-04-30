@@ -27,7 +27,11 @@ class BirdCardsController extends Controller
 
     public function __construct()
     {
-        $this->provinces = array("jiangsu"=>"江苏");
+        $this->provinces = array(
+            "jiangsu"=>"江苏", 
+            "guangdong"=>"广东", 
+            "hubei"=>"湖北"
+        );
         $this->cities = array(
             'wuxi' => '无锡', 
             'suzhou'=> '苏州', 
@@ -85,7 +89,17 @@ class BirdCardsController extends Controller
         $this->type = Input::get('type');
 
         $conn = $this->switchTable();
-        $result =  $this->getDataByCity($conn);
+        if ($this->province == "national") {
+            $result =  $this->getNationalData($conn);
+        } else {
+            if ($this->city == "") {
+                // 省级
+                $result =  $this->getDataByProvince($conn);
+            } else {
+                // 地市级别
+                $result =  $this->getDataByCity($conn);
+            }
+        }
 
         return $result;
     }
@@ -127,8 +141,78 @@ class BirdCardsController extends Controller
             foreach ($res[0] as $key => $value) {
                 if (array_key_exists($key, $this->fields)) {
                     $class = null;
-                    $tend = 0;
-                    if ($res[1]) {
+                    $tend = null;
+                    if (count($res) > 1) {
+                        $oldValue = $res[1][$key];
+                        $tend = abs(round($value - $res[1][$key],2));
+                        $class = $value - $res[1][$key] >=0 ?"arrow_upward":"arrow_downward";
+                    }
+                    $result[] = array(
+                                    "class" => $class,
+                                    "tend" => $tend,
+                                    "color" => "green",
+                                    "data" => $value.$this->fields[$key]['key'],
+                                    "type" => $this->fields[$key]['name'],
+                                    "flex" => 3,
+                                    "time" => $time
+                                );
+                }
+            }
+        }
+        return $result;
+    }
+
+    public function getDataByProvince($conn)
+    {
+        $province = $this->provinces[$this->province];
+        $res = $conn->where('city', $province)
+                    ->orderBy('day_id','desc')
+                    ->orderBy('hour_id','desc')
+                    ->get()
+                    ->toArray();
+        $result = [];
+        if (count($res) > 0) {
+            $time = $res[0]['day_id']." ".$res[0]['hour_id'];
+            foreach ($res[0] as $key => $value) {
+                if (array_key_exists($key, $this->fields)) {
+                    $class = null;
+                    $tend = null;
+                    if (count($res) > 1) {
+                        $oldValue = $res[1][$key];
+                        $tend = abs(round($value - $res[1][$key],2));
+                        $class = $value - $res[1][$key] >=0 ?"arrow_upward":"arrow_downward";
+                    }
+                    $result[] = array(
+                                    "class" => $class,
+                                    "tend" => $tend,
+                                    "color" => "green",
+                                    "data" => $value.$this->fields[$key]['key'],
+                                    "type" => $this->fields[$key]['name'],
+                                    "flex" => 3,
+                                    "time" => $time
+                                );
+                }
+            }
+        }
+        return $result;
+    }
+
+    public function getNationalData($conn)
+    {
+        // $province = $this->provinces[$this->province];
+        $res = $conn->where('city', '全国')
+                    ->orderBy('day_id','desc')
+                    ->orderBy('hour_id','desc')
+                    ->get()
+                    ->toArray();
+        $result = [];
+        if (count($res) > 0) {
+            $time = $res[0]['day_id']." ".$res[0]['hour_id'];
+            foreach ($res[0] as $key => $value) {
+                if (array_key_exists($key, $this->fields)) {
+                    $class = null;
+                    $tend = null;
+                    if (count($res) > 1) {
                         $oldValue = $res[1][$key];
                         $tend = abs(round($value - $res[1][$key],2));
                         $class = $value - $res[1][$key] >=0 ?"arrow_upward":"arrow_downward";

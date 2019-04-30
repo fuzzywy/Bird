@@ -33,70 +33,71 @@ class BirdChartController extends Controller
     protected $timeDim;
     protected $operator;
     
+    protected $allData;
     protected $national;
-    protected $drilldownData;
-    protected $timeArr;
     protected $citys_series;
+    protected $province_series;
+    protected $drilldownData;
 
     public function __construct()
     {
         $this->provinces = array(
-                            "jiangsu"=>"江苏省", 
-                            "guangdong"=>"广东省", 
-                            "hubei"=>"湖北省"
-                        );
+            "jiangsu"=>"江苏", 
+            "guangdong"=>"广东", 
+            "hubei"=>"湖北"
+        );
         $this->cities = array(
-                        // 'nanjing' => '南京', 
-                        'wuxi' => '无锡', 
-                        'suzhou'=> '苏州', 
-                        'changzhou'=>'常州', 
-                        'zhenjiang'=>'镇江', 
-                        'nantong'=>'南通', 
-                        'jingzhou'=>'荆州', 
-                        'wuhan'=>'武汉', 
-                        'guangzhou'=>'广州', 
-                        'qingyuan'=>'清远'
-                    );
+            'nanjing' => '南京', 
+            'wuxi' => '无锡', 
+            'suzhou'=> '苏州', 
+            'changzhou'=>'常州', 
+            'zhenjiang'=>'镇江', 
+            'nantong'=>'南通', 
+            'jingzhou'=>'荆州', 
+            'wuhan'=>'武汉', 
+            'guangzhou'=>'广州', 
+            'qingyuan'=>'清远'
+        );
         $this->map = array(
-                        "jiangsu"=>array(
-                            // "nanjing" => "南京",
-                            "chagnzhou" => "常州",
-                            "wuxi" => "无锡",
-                            "suzhou" => "苏州",
-                            "nantong"=> "南通",
-                            "zhenjiang"=>"镇江"
-                        ),
-                        "guangdong"=>array(
-                            "guangzhou" => "广州",
-                            "qingyuan" => "清远"
-                        ),
-                        "hubei"=>array(
-                            "wuhan" => "武汉",
-                            "jingzhou" => "荆州"
-                        )
-                    );
+            "jiangsu"=>array(
+                "nanjing" => "南京",
+                "chagnzhou" => "常州",
+                "wuxi" => "无锡",
+                "suzhou" => "苏州",
+                "nantong"=> "南通",
+                "zhenjiang"=>"镇江"
+            ),
+            "guangdong"=>array(
+                "guangzhou" => "广州",
+                "qingyuan" => "清远"
+            ),
+            "hubei"=>array(
+                "wuhan" => "武汉",
+                "jingzhou" => "荆州"
+            )
+        );
         $this->mapOperator = array(
-                            "mobile"=>"中国移动", 
-                            "unicom"=>"中国联通",
-                            "telecommunications"=>"中国电信"
-                        );
+            "mobile"=>"中国移动", 
+            "unicom"=>"中国联通",
+            "telecommunications"=>"中国电信"
+        );
         $this->mapSystem = array(
-                            'lte' => 'LTE-TDD', 
-                            'fdd' => 'LTE-FDD',
-                            'nbiot'=> 'NBIOT', 
-                            'volte'=>'VOLTE', 
-                            'gsm'=>'GSM'
-                        );
+            'lte' => 'LTE-TDD', 
+            'fdd' => 'LTE-FDD',
+            'nbiot'=> 'NBIOT', 
+            'volte'=>'VOLTE', 
+            'gsm'=>'GSM'
+        );
         $this->fields = array(
-                        '无线接通率'=>'r_access',
-                        '无线掉线率'=>'r_lost',
-                        '切换成功率'=>'r_handover',
-                        '高干扰小区比例'=>'r_highInterfere',
-                        'SRVCC切换成功率'=>'r_srvcc',
-                        '上行丢包率'=>'r_u_packetlost',
-                        '下行丢包率'=>'r_d_packetlost',
-                        'NBIOT上行底躁（>-110比率）'=>'r_u_floor'
-                    );
+            '无线接通率'=>'r_access',
+            '无线掉线率'=>'r_lost',
+            '切换成功率'=>'r_handover',
+            '高干扰小区比例'=>'r_highInterfere',
+            'SRVCC切换成功率'=>'r_srvcc',
+            '上行丢包率'=>'r_u_packetlost',
+            '下行丢包率'=>'r_d_packetlost',
+            'NBIOT上行底躁（>-110比率）'=>'r_u_floor'
+        );
     }
 
     private function getAssessmentPlots() 
@@ -124,25 +125,33 @@ class BirdChartController extends Controller
     {
         $data = [];
         $plots = 0;
-        $this->drilldownData = [];
-        $i = 0;
-        foreach ($this->timeArr as $time) {
-            $data[$i]['name'] = $time;
-            $data[$i]['y'] = rand(90, 100); 
-            $plots += $data[$i]['y'];
-            $data[$i]['drilldown'] = $time."-national";
 
-            $this->drilldownData[$i]['type'] = "column";
-            $this->drilldownData[$i]['id'] = $time."-national";
-            $this->drilldownData[$i]['name'] = $time."-national";
-            //全国级plot line点击时，呈现‌所有省份的指标(指定时间段内均值)排名的bar plot. 从高到低排序
-            $this->drilldownData[$i]['data'] = array(
-                array("江苏省", rand(90, 100)),
-                array("广东省", rand(90, 100)),
-                array("湖北省", rand(90, 100))
-            );
-            $i++;
+        $n = 0;
+        foreach ($this->allData as $time => $provinces) {
+            $data[$n]['name'] = $time;
+            $temp = [];
+            foreach ($provinces as $province => $value) {
+                if ($province == "全国") {
+                    $data[$n]['y'] = $value['value'];
+                    $plots += $data[$n]['y'];
+                } else {
+                    if (array_key_exists('value', $value)) {
+                        $temp[] = array($province, $value['value']);
+                    }
+                }
+            }
+
+            $data[$n]['drilldown'] = $time."-national";
+
+            $this->drilldownData[$n]['type'] = "column";
+            $this->drilldownData[$n]['id'] = $time."-national";
+            $this->drilldownData[$n]['name'] = $time."-national";
+            // 全国级plot line点击时，呈现‌所有省份的指标(指定时间段内均值)排名的bar plot. 从高到低排序
+            $this->drilldownData[$n]['data'] = $temp;
+
+            $n++;
         }
+
         //标识线
         $plots /= 24;
         $this->national = array("name"=>"全国", "spellName"=>"national", "plots"=>round($plots, 2), "data"=>$data); 
@@ -154,81 +163,48 @@ class BirdChartController extends Controller
      */
     private function getCitiesData() 
     {
-        $this->timeArr = [];
         $this->citys_series = [];
-        $field = $this->fields[$this->card];
+        $cityDataArr = [];
         if( $this->city == '' ) {
             if( $this->province !== 'national' ) {
-                $region = $this->map[$this->province];
-                foreach ($region as $city => $cityChinese) {
-                    $cities = [];
-                    $data = [];
-                    $n = 0;
-                    $conn = $this->switchTableByTypeAndTimedim();
-                    $conn = $conn->where('city', $cityChinese)
-                                    ->orderBy('day_id','desc');
-                    if ($this->timeDim == true) {
-                        $limit = 14;
-                    } else {
-                        $limit = 24;
-                        $conn = $conn->orderBy('hour_id','desc');
-                    }
-                    $res = $conn->take($limit)
-                                ->get()
-                                ->toArray();
-                    foreach ($res as $r) {
-                        $time = str_replace("-", "", $r['day_id']);
-                        if ($this->timeDim == false) {
-                            $time .= $r['hour_id'] < 10 ? "0".$r['hour_id'] : $r['hour_id'];
+                foreach ($this->allData as $time => $provinces) {
+                    if (array_key_exists($this->provinces[$this->province], $provinces)) {
+                        $citys = $provinces[$this->provinces[$this->province]]['citys'];
+                        foreach ($citys as $city => $value) {
+                            $cityDataArr[$city][] = array('time'=> $time, 'value'=> $value['value']);
                         }
-                        array_push($this->timeArr, $time);
-                        $data[$n]['name'] = $time;
-                        $data[$n]['y'] = floatval($r[$field]); 
-                        $data[$n]['drilldown'] = $time.'-'.$this->province;
-                        $n++;
                     }
-                    $cities['name'] = $cityChinese;
-                    $cities['spellName'] = $city;
-                    $cities['data'] = $data;
-                    array_push($this->citys_series, $cities);
                 }
-                $this->timeArr = array_unique($this->timeArr);
             }
         } else {
+            foreach ($this->allData as $time => $provinces) {
+                if (array_key_exists($this->provinces[$this->province], $provinces)) {
+                    $citys = $provinces[$this->provinces[$this->province]]['citys'];
+                    foreach ($citys as $city => $value) {
+                        if ($this->cities[$this->city] == $city) {
+                            $cityDataArr[$city][] = array('time'=> $time, 'value'=> $value['value']);
+                        }
+
+                    }
+                }
+            }
+        }
+        foreach ($cityDataArr as $city => $datas) {
             $cities = [];
+            $cities['name'] = $city;
+            $cities['spellName'] = array_search($city, $this->cities);
+
             $data = [];
             $n = 0;
-            $cityChinese = $this->cities[$this->city];
-            $conn = $this->switchTableByTypeAndTimedim();
-            $conn = $conn->where('city', $cityChinese)
-                        ->orderBy('day_id','desc');
-            if ($this->timeDim == true) {
-                $limit = 14;
-            } else {
-                $limit = 24;
-                $conn = $conn->orderBy('hour_id','desc');
-            }
-            $res = $conn->take($limit)
-                        ->get()
-                        ->toArray();
-            foreach ($res as $r) {
-                $time = str_replace("-", "", $r['day_id']);
-                if ($this->timeDim == false) {
-                    $time .= $r['hour_id'] < 10 ? "0".$r['hour_id'] : $r['hour_id'];
-                }
-                array_push($this->timeArr, $time);
-                $data[$n]['name'] = $time;
-                $data[$n]['y'] = floatval($r[$field]); 
-                $data[$n]['drilldown'] = $time.'-'.$this->province;
+            foreach ($datas as $value) {
+                $data[$n]['name'] = $value['time'];
+                $data[$n]['y'] = floatval($value['value']); 
+                $data[$n]['drilldown'] = $value['time'].'-'.$this->province;
                 $n++;
             }
-            $cities['name'] = $this->cities[$this->city];
-            $cities['spellName'] = $this->city;
             $cities['data'] = $data;
-            // print_r($cities);
-            $this->citys_series = array($cities);
+            array_push($this->citys_series, $cities);
         }
-        sort($this->timeArr);
     }
 
 
@@ -237,39 +213,103 @@ class BirdChartController extends Controller
     */
     private function getProvincesData()
     {
-        $provinceArr = [];
-        foreach ($this->provinces as $key => $province) {
+        $this->province_series = [];
+        foreach ($this->provinces as $proEN => $proCH) {
+            $n = 0;
+            $provinceArr = [];
             $data = [];
             $drilldownData = [];
-            // $test = [];
             $plots = 0;
-            $i = 0;
-            foreach ($this->timeArr as $time) {
-                $data[$i]['name'] = $time;
-                $data[$i]['y'] = rand(90, 100); 
-                $plots += $data[$i]['y'];
-                $data[$i]['drilldown'] = $time.'-'.$key;
+            foreach ($this->allData as $time => $provinces) {
+                $temp = [];
+                foreach ($provinces as $province => $value) {
+                    if ($province == $proCH && array_key_exists('value', $value) ) {
+                        $data[$n]['name'] = $time;
+                        $data[$n]['y'] = floatval($value['value']);
+                        $plots += $data[$n]['y'];
+                        $data[$n]['drilldown'] = $time.'-'.$proEN;
 
-                $drilldownData[$i]['type'] = "column";
-                $drilldownData[$i]['id'] = $time.'-'.$key;
-                $drilldownData[$i]['name'] = $time.'-'.$key;
-                $drilldownData[$i]['data'] = [];
+                        $drilldownData[$n]['type'] = "column";
+                        $drilldownData[$n]['id'] = $time.'-'.$proEN;
+                        $drilldownData[$n]['name'] = $time.'-'.$proEN;
+                        $drilldownData[$n]['data'] = [];
 
-                foreach ($this->map[$key] as $k => $v) {
-                    array_push($drilldownData[$i]['data'], array($v, rand(90, 100)));
+                        foreach ($value['citys'] as $city => $cityValue) {
+                            array_push($drilldownData[$n]['data'], array($city, $cityValue['value']));
+                        }
+                        continue;
+                    }
                 }
-                $this->arr['drilldown'][] = $drilldownData[$i];
-                $i++;
+    
+                $n++;
             }
-            $provinceArr['name'] = $province;
-            $provinceArr['spellName'] = array_flip($this->provinces)[$province];
+            $provinceArr['name'] = $proCH;
+            $provinceArr['spellName'] = $proEN;
             $provinceArr['data'] = $data;
+
             //标识线
             $plots /= 24;
             $provinceArr['plots'] = round($plots, 2);
-            // array_push($this->arr['series'], $provinceArr);
+            array_push($this->province_series, $provinceArr);
+            $this->drilldownData = array_merge($this->drilldownData, $drilldownData);
         }
     }
+
+    /**
+     * 获取一段时间内所有数据
+     * 
+     * 
+     */ 
+    public function getAllData()
+    {
+        date_default_timezone_set('PRC'); 
+        $allData = [];
+        $field = $this->fields[$this->card];
+        $conn = $this->switchTableByTypeAndTimedim();
+        // $conn = $conn->orderBy('day_id','desc');
+        if ($this->timeDim == true) {
+            // 两周
+            $d = strtotime("-14 days");
+            $day = date("Y-m-d", $d);
+            $conn = $conn->where('day_id', '>=', $day)
+                        ->orderBy('day_id');
+        } else {
+            // 24小时
+            $d = strtotime("-1 day");
+            $day = date("Y-m-d", $d);
+            $hour = date("H", $d);
+            $today = date("Y-m-d");
+            $conn = $conn->where(function($query) use ($day,$hour){
+                    $query->where('day_id', '>=', $day)
+                    ->where('hour_id', '>=', $hour);
+                })->orWhere('day_id', $today)
+                ->orderBy('day_id')
+                ->orderBy('hour_id');
+        }
+        $res = $conn->get()
+                    ->toArray();
+        foreach ($res as $r) {
+            $time = str_replace("-", "", $r['day_id']);
+            if ($this->timeDim == false) {
+                $time .= $r['hour_id'] < 10 ? "0".$r['hour_id'] : $r['hour_id'];
+            }
+            // 按照time=>省=>市 的结构进行整理
+            $province = $r['province'];
+            $city = $r['city'];
+            $value = floatval($r[$field]);
+
+            if ($province == $city) {
+                // 全国或者省级
+                $allData[$time][$province]['value'] = $value;
+            } else {
+                $allData[$time][$province]['citys'][$city]['value'] = $value;
+            }
+        }
+        $this->allData = $allData;
+
+    }
+
+
     /**
      * Display a listing of the resource.
      *
@@ -284,22 +324,24 @@ class BirdChartController extends Controller
         $this->timeDim = Input::get('timeDim');
         $this->operator = Input::get('operator');
 
-        $this->getCitiesData();
+        $this->getAllData();
 
         $this->getNationalData();
+
+        $this->getCitiesData();
+
+        $this->getProvincesData();
 
         $this->arr = array(
             "title" => strtoupper($this->type).'-'.$this->card, 
             "subtitle" => $this->province, 
             "type" => "line",
-            "series" => array(
-                $this->national
+            "series" => array_merge(
+                array($this->national),$this->province_series
             ),
             "city-series"=>$this->citys_series,
             "drilldown" => $this->drilldownData
         );
-
-        $this->getProvincesData();
 
         if( $this->city !== null ) {
             $this->arr['subtitle'] = $this->city;
