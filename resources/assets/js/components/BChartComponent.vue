@@ -71,7 +71,7 @@
                 xsline: "xs12",
                 drilldownProvince: true,
                 containerWidth: 0,
-                chooseTimeDim: false,
+                chooseTimeDim: true,
                 chart: {},
                 bSideBar: "indexoverview",
                 operator: "mobile",
@@ -269,8 +269,13 @@
                     this.chooseTimeDim);
             },
             province() {
-                this.processLoadBChart(this.bSideBar, this.operator, this.city, this.type, this.card, this.province,
-                    this.chooseTimeDim);
+                if (this.province == "national") {
+                    this.chooseTimeDim = true;
+                } else {
+                    this.chooseTimeDim = false;
+                }
+                // this.processLoadBChart(this.bSideBar, this.operator, this.city, this.type, this.card, this.province,
+                //     this.chooseTimeDim);
             },
             type() {
                 this.processLoadBChart(this.bSideBar, this.operator, this.city, this.type, this.card, this.province,

@@ -171,7 +171,7 @@
         // { 'value': 'unicom', 'text': '中国联通' },
         // { 'value': 'telecommunications', 'text': '中国电信' }
       ],
-      systemSelect: [ 'LTE', 'VOLTE', 'GSM', 'NBIOT'
+      systemSelect: [ 'LTE-TDD', 'LTE-FDD', 'VOLTE', 'GSM', 'NBIOT'
         // { 'value': 'lte', 'text': 'LTE' },
         // { 'value': 'volte', 'text': 'VOLTE' },
         // { 'value': 'gsm', 'text': 'GSM'},
