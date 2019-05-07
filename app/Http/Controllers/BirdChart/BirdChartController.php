@@ -153,7 +153,8 @@ class BirdChartController extends Controller
         }
 
         //标识线
-        $plots /= 24;
+        // $plots /= 24;
+        $plots /= count($data);
         $this->national = array("name"=>"全国", "spellName"=>"national", "plots"=>round($plots, 2), "data"=>$data); 
     }
 
@@ -248,7 +249,10 @@ class BirdChartController extends Controller
             $provinceArr['data'] = $data;
 
             //标识线
-            $plots /= 24;
+            // $plots /= 24;
+            if (count($data) > 0) {
+                $plots /= count($data);
+            }
             $provinceArr['plots'] = round($plots, 2);
             array_push($this->province_series, $provinceArr);
             $this->drilldownData = array_merge($this->drilldownData, $drilldownData);

@@ -107,22 +107,42 @@ class BirdCardsController extends Controller
     public function switchTable()
     {
         $conn = null;
-        switch ($this->type) {
-            case 'lte':
-                $conn = new B_K_LTE_TDD_HOUR;
-                break;
-            case 'fdd':
-                $conn = new B_K_LTE_FDD_HOUR;
-                break;
-            case 'nbiot':
-                $conn = new B_K_NBIOT_HOUR;
-                break;
-            case 'volte':
-                $conn = new B_K_VOLTE_FDD_HOUR;
-                break;
-            case 'gsm':
-                $conn = new B_K_GSM_HOUR;
-                break;
+        if ($this->province != "national") {
+            switch ($this->type) {
+                case 'lte':
+                    $conn = new B_K_LTE_TDD_HOUR;
+                    break;
+                case 'fdd':
+                    $conn = new B_K_LTE_FDD_HOUR;
+                    break;
+                case 'nbiot':
+                    $conn = new B_K_NBIOT_HOUR;
+                    break;
+                case 'volte':
+                    $conn = new B_K_VOLTE_FDD_HOUR;
+                    break;
+                case 'gsm':
+                    $conn = new B_K_GSM_HOUR;
+                    break;
+            }
+        } else {
+            switch ($this->type) {
+                case 'lte':
+                    $conn = new B_K_LTE_TDD_DAY;
+                    break;
+                case 'fdd':
+                    $conn = new B_K_LTE_FDD_DAY;
+                    break;
+                case 'nbiot':
+                    $conn = new B_K_NBIOT_DAY;
+                    break;
+                case 'volte':
+                    $conn = new B_K_VOLTE_TDD_DAY;
+                    break;
+                case 'gsm':
+                    $conn = new B_K_GSM_DAY;
+                    break;
+            }
         }
         return $conn;
     }
@@ -202,12 +222,13 @@ class BirdCardsController extends Controller
         // $province = $this->provinces[$this->province];
         $res = $conn->where('city', '全国')
                     ->orderBy('day_id','desc')
-                    ->orderBy('hour_id','desc')
+                    // ->orderBy('hour_id','desc')
                     ->get()
                     ->toArray();
         $result = [];
         if (count($res) > 0) {
-            $time = $res[0]['day_id']." ".$res[0]['hour_id'];
+            // $time = $res[0]['day_id']." ".$res[0]['hour_id'];
+            $time = $res[0]['day_id'];
             foreach ($res[0] as $key => $value) {
                 if (array_key_exists($key, $this->fields)) {
                     $class = null;

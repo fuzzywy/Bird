@@ -71,7 +71,7 @@
                 xsline: "xs12",
                 drilldownProvince: true,
                 containerWidth: 0,
-                chooseTimeDim: false,
+                chooseTimeDim: true,
                 chart: {},
                 bSideBar: "indexoverview",
                 operator: "mobile",
@@ -269,8 +269,9 @@
                     this.chooseTimeDim);
             },
             province() {
-                this.processLoadBChart(this.bSideBar, this.operator, this.city, this.type, this.card, this.province,
-                    this.chooseTimeDim);
+                this.chooseTimeDim = (this.province === 'national')
+                // this.processLoadBChart(this.bSideBar, this.operator, this.city, this.type, this.card, this.province,
+                //     this.chooseTimeDim);
             },
             type() {
                 this.processLoadBChart(this.bSideBar, this.operator, this.city, this.type, this.card, this.province,
@@ -431,7 +432,6 @@
                         });
                     }
                 });
-
                 // val.drilldown: [{ "type": 'column', "id": "2019031200", "name": '2019031200', "data": [['ss', 44],['dd',55]], "events": {click:JSON.stringify("function(events){alert(events.point.name);}")} }]
                 this.chart.drilldown.update({
                     series: val.drilldown
