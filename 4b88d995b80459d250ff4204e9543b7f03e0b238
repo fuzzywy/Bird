@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "914ec131_de184fe2",
+        "filename": "resources/assets/js/components/BChartComponent.vue",
+        "patchSetId": 1
+      },
+      "lineNbr": 273,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2019-05-07T09:14:10Z",
+      "side": 1,
+      "message": "this.chooseTimeDim \u003d (this.province \u003d\u003d\u003d \u0027national\u0027)\n尽量避免额外的条件判断",
+      "revId": "4b88d995b80459d250ff4204e9543b7f03e0b238",
+      "serverId": "f8e000e2-6046-4ea1-b337-da5e5d5bd44d",
+      "unresolved": false
+    }
+  ]
+}
