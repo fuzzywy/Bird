@@ -147,6 +147,8 @@ class BirdChartController extends Controller
             $this->drilldownData[$n]['id'] = $time."-national";
             $this->drilldownData[$n]['name'] = $time."-national";
             // 全国级plot line点击时，呈现‌所有省份的指标(指定时间段内均值)排名的bar plot. 从高到低排序
+            // 根据value值降序排列
+            array_multisort(array_column($temp, 1), SORT_DESC, $temp);
             $this->drilldownData[$n]['data'] = $temp;
 
             $n++;
@@ -235,9 +237,13 @@ class BirdChartController extends Controller
                         $drilldownData[$n]['name'] = $time.'-'.$proEN;
                         $drilldownData[$n]['data'] = [];
 
+                        $temp = [];
                         foreach ($value['citys'] as $city => $cityValue) {
-                            array_push($drilldownData[$n]['data'], array($city, $cityValue['value']));
+                            array_push($temp, array($city, $cityValue['value']));
                         }
+                        // 根据value值降序排列
+                        array_multisort(array_column($temp, 1), SORT_DESC, $temp);
+                        $drilldownData[$n]['data'] = $temp;
                         continue;
                     }
                 }

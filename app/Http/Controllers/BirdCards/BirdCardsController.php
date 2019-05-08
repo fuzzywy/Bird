@@ -147,6 +147,31 @@ class BirdCardsController extends Controller
         return $conn;
     }
 
+    public function getColor($value)
+    {
+        $color = "green";
+        if ($value > 10) {
+            // 粗略筛选那些应该是很大的值
+            if ($value <= 98) {
+                $color = "red";
+            } else if ($value <=99) {
+                $color = "yellow";
+            } else if ($value <=100) {
+                $color = "green";
+            }
+        } else {
+            // 粗略筛选那些应该是很小的值
+            if ($value >= 2) {
+                $color = "red";
+            } else if ($value >= 1) {
+                $color = "yellow";
+            } else if ($value >= 0) {
+                $color = "green";
+            }
+        }
+        return $color;
+    }
+
     public function getDataByCity($conn)
     {
         $cityChinese = $this->cities[$this->city];
@@ -170,7 +195,7 @@ class BirdCardsController extends Controller
                     $result[] = array(
                                     "class" => $class,
                                     "tend" => $tend,
-                                    "color" => "green",
+                                    "color" => $this->getColor($value),
                                     "data" => $value.$this->fields[$key]['key'],
                                     "type" => $this->fields[$key]['name'],
                                     "flex" => 3,
@@ -205,7 +230,7 @@ class BirdCardsController extends Controller
                     $result[] = array(
                                     "class" => $class,
                                     "tend" => $tend,
-                                    "color" => "green",
+                                    "color" => $this->getColor($value),
                                     "data" => $value.$this->fields[$key]['key'],
                                     "type" => $this->fields[$key]['name'],
                                     "flex" => 3,
@@ -241,7 +266,7 @@ class BirdCardsController extends Controller
                     $result[] = array(
                                     "class" => $class,
                                     "tend" => $tend,
-                                    "color" => "green",
+                                    "color" => $this->getColor($value),
                                     "data" => $value.$this->fields[$key]['key'],
                                     "type" => $this->fields[$key]['name'],
                                     "flex" => 3,
