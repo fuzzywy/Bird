@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "fd9a320a_ee09bcb9",
+        "filename": "app/Http/Controllers/BirdCards/BirdCardsController.php",
+        "patchSetId": 1
+      },
+      "lineNbr": 150,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2019-05-09T01:53:48Z",
+      "side": 1,
+      "message": "每个指标应该有独立的颜色区间，参考GENIUS平台指标概览上的仪表盘",
+      "revId": "d7ad75fd7690478f444a19da932a831afe5b6843",
+      "serverId": "f8e000e2-6046-4ea1-b337-da5e5d5bd44d",
+      "unresolved": false
+    }
+  ]
+}
