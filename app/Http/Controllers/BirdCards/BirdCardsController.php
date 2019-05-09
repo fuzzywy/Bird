@@ -147,11 +147,10 @@ class BirdCardsController extends Controller
         return $conn;
     }
 
-    public function getColor($value)
+    public function getColor($type, $value)
     {
         $color = "green";
-        if ($value > 10) {
-            // 粗略筛选那些应该是很大的值
+        if ($type == 'r_access' || $type == 'r_handover' || $type == 'r_srvcc') {
             if ($value <= 98) {
                 $color = "red";
             } else if ($value <=99) {
@@ -159,8 +158,7 @@ class BirdCardsController extends Controller
             } else if ($value <=100) {
                 $color = "green";
             }
-        } else {
-            // 粗略筛选那些应该是很小的值
+        } else if ($type == 'r_lost' || $type == 'r_u_packetlost' || $type == 'r_d_packetlost') {
             if ($value >= 2) {
                 $color = "red";
             } else if ($value >= 1) {
@@ -168,6 +166,8 @@ class BirdCardsController extends Controller
             } else if ($value >= 0) {
                 $color = "green";
             }
+        } else if ($type == 'r_highInterfere' || $type == 'r_u_floor') {
+            $color = "green";
         }
         return $color;
     }
@@ -195,7 +195,7 @@ class BirdCardsController extends Controller
                     $result[] = array(
                                     "class" => $class,
                                     "tend" => $tend,
-                                    "color" => $this->getColor($value),
+                                    "color" => $this->getColor($key, $value),
                                     "data" => $value.$this->fields[$key]['key'],
                                     "type" => $this->fields[$key]['name'],
                                     "flex" => 3,
@@ -230,7 +230,7 @@ class BirdCardsController extends Controller
                     $result[] = array(
                                     "class" => $class,
                                     "tend" => $tend,
-                                    "color" => $this->getColor($value),
+                                    "color" => $this->getColor($key, $value),
                                     "data" => $value.$this->fields[$key]['key'],
                                     "type" => $this->fields[$key]['name'],
                                     "flex" => 3,
@@ -266,7 +266,7 @@ class BirdCardsController extends Controller
                     $result[] = array(
                                     "class" => $class,
                                     "tend" => $tend,
-                                    "color" => $this->getColor($value),
+                                    "color" => $this->getColor($key, $value),
                                     "data" => $value.$this->fields[$key]['key'],
                                     "type" => $this->fields[$key]['name'],
                                     "flex" => 3,
