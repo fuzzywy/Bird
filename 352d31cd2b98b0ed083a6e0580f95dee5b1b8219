@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "906b0d5a_907c36ce",
+        "filename": "app/Http/Controllers/BirdCards/BirdCardsController.php",
+        "patchSetId": 1
+      },
+      "lineNbr": 153,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2019-05-10T02:43:56Z",
+      "side": 1,
+      "message": "这个门限确定是正确的吗？\n我记得GENIUS上不是这个门限",
+      "revId": "352d31cd2b98b0ed083a6e0580f95dee5b1b8219",
+      "serverId": "f8e000e2-6046-4ea1-b337-da5e5d5bd44d",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "f656fe20_15d97f2d",
+        "filename": "app/Http/Controllers/BirdCards/BirdCardsController.php",
+        "patchSetId": 1
+      },
+      "lineNbr": 158,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2019-05-10T02:43:56Z",
+      "side": 1,
+      "message": "去掉最后一个判断",
+      "revId": "352d31cd2b98b0ed083a6e0580f95dee5b1b8219",
+      "serverId": "f8e000e2-6046-4ea1-b337-da5e5d5bd44d",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "b8b398b1_5395cbb2",
+        "filename": "app/Http/Controllers/BirdCards/BirdCardsController.php",
+        "patchSetId": 1
+      },
+      "lineNbr": 166,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2019-05-10T02:43:56Z",
+      "side": 1,
+      "message": "最后一个判断去掉",
+      "revId": "352d31cd2b98b0ed083a6e0580f95dee5b1b8219",
+      "serverId": "f8e000e2-6046-4ea1-b337-da5e5d5bd44d",
+      "unresolved": false
+    }
+  ]
+}
