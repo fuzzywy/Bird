@@ -55,7 +55,7 @@ class BirdCardsController extends Controller
             ),
             'r_highInterfere'=>array(
                 'name'=> '高干扰小区比例',
-                'key'=> 'dBm'
+                'key'=> '%'
             ),
             'r_srvcc'=>array(
                 'name'=> 'SRVCC切换成功率',
@@ -71,7 +71,7 @@ class BirdCardsController extends Controller
             ),
             'r_u_floor'=>array(
                 'name'=> 'NBIOT上行底躁（>-110比率）',
-                'key'=> 'dBm'
+                'key'=> '%'
             )
         );
     }
@@ -155,7 +155,7 @@ class BirdCardsController extends Controller
                 $color = "red";
             } else if ($value <=99) {
                 $color = "yellow";
-            } else if ($value <=100) {
+            } else {
                 $color = "green";
             }
         } else if ($type == 'r_lost' || $type == 'r_u_packetlost' || $type == 'r_d_packetlost') {
@@ -163,11 +163,22 @@ class BirdCardsController extends Controller
                 $color = "red";
             } else if ($value >= 1) {
                 $color = "yellow";
-            } else if ($value >= 0) {
+            } else {
                 $color = "green";
             }
         } else if ($type == 'r_highInterfere' || $type == 'r_u_floor') {
             $color = "green";
+            if ($value >= 15) {
+                $color = "red";
+            } else if ($value >= 10) {
+                $color = "orange";
+            } else if ($value >= 5) {
+                $color = "yellow";
+            } else if ($value >= 3) {
+                $color = "#9ACD32";
+            } else {
+                $color = "green";
+            }
         }
         return $color;
     }
