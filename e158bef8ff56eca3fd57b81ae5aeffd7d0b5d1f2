@@ -1,0 +1,72 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "10e98104_f3d06726",
+        "filename": "app/Http/Controllers/BarChart/BarChartController.php",
+        "patchSetId": 1
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2019-05-31T08:09:36Z",
+      "side": 1,
+      "message": "使用Laravel提供的localization服务.\n不建议在应用中定义，太多重复代码了。",
+      "revId": "e158bef8ff56eca3fd57b81ae5aeffd7d0b5d1f2",
+      "serverId": "f8e000e2-6046-4ea1-b337-da5e5d5bd44d",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "93045feb_98359250",
+        "filename": "app/Http/Controllers/BarChart/BarChartController.php",
+        "patchSetId": 1
+      },
+      "lineNbr": 113,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2019-05-31T08:09:36Z",
+      "side": 1,
+      "message": "建议使用PHP提供的date函数。\n另外，需要提取出公共函数。\n因为每个方法里都有重复的代码。",
+      "revId": "e158bef8ff56eca3fd57b81ae5aeffd7d0b5d1f2",
+      "serverId": "f8e000e2-6046-4ea1-b337-da5e5d5bd44d",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "89ecbc4f_a3494fdf",
+        "filename": "app/Http/Controllers/BarChart/BarChartController.php",
+        "patchSetId": 1
+      },
+      "lineNbr": 148,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2019-05-31T08:09:36Z",
+      "side": 1,
+      "message": "city as name,\nthis-\u003efields[$this-\u003ecard] as data.\n\n注意其它地方有相似的用法，同步修改",
+      "revId": "e158bef8ff56eca3fd57b81ae5aeffd7d0b5d1f2",
+      "serverId": "f8e000e2-6046-4ea1-b337-da5e5d5bd44d",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "700c954b_45d7f383",
+        "filename": "app/Http/Controllers/BirdCards/BirdCardsController.php",
+        "patchSetId": 1
+      },
+      "lineNbr": 109,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2019-05-31T08:09:36Z",
+      "side": 1,
+      "message": "switchTable提取成公共方法，因为多个class用到",
+      "revId": "e158bef8ff56eca3fd57b81ae5aeffd7d0b5d1f2",
+      "serverId": "f8e000e2-6046-4ea1-b337-da5e5d5bd44d",
+      "unresolved": false
+    }
+  ]
+}
