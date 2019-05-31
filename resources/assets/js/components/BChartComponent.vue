@@ -8,27 +8,37 @@
                     <!-- <v-flex offset-sm10 pa-0 v-if="drilldownProvince"> -->
                     <v-flex offset-sm10 pa-0>
                         <v-card-actions style="position: static;">
-                            <v-list style="position: absolute; right: 50px; top: 10px; z-index: 999;">
-                                <v-list-tile>
+                            <v-list style="position: absolute; right: 50px; z-index: 999;">
+                                <v-list-tile id="chooseTimeDim">
                                     <v-list-tile-action>
                                         <v-switch v-model="chooseTimeDim" color="orange"></v-switch>
                                     </v-list-tile-action>
                                     <v-list-tile-title>24小时/2周</v-list-tile-title>
                                 </v-list-tile>
+
+                                <v-btn color="info" id="returnLineChartBtn" style="display:none" @click="returnLineChart">返回折线图</v-btn>
                             </v-list>
                         </v-card-actions>
                     </v-flex>
                     <v-flex>
                         <v-container id="containerWidth">
                             <v-layout>
-                                <v-flex :class="xsline">
+                                <v-flex :class="xsline" id="lineChart">
                                     <div :id="id" :option="option"></div>
                                 </v-flex>
-                                <v-flex xs4 v-if="xsline==='xs4'">
-                                    <bubbleChartComponent></bubbleChartComponent>
+                                <v-flex xs6 id="barChart" style="display:none">
+                                    <barChartComponent :optionState="optionState"></barChartComponent>
                                 </v-flex>
-                                <v-flex xs4 v-if="xsline==='xs4'">
-                                    <pieChartComponent></pieChartComponent>
+                                <v-flex xs6 id="topCellTable" style="display:none">
+                                    <topCellTableComponent :optionState="optionState"></topCellTableComponent>
+                                </v-flex>
+                                <v-flex xs6 id="pieChart" style="display:none">
+                                    <pieChartComponent :optionState="optionState"></pieChartComponent>
+                                </v-flex>
+                            </v-layout>
+                            <v-layout>
+                                <v-flex xs12 id="bubbleChart" style="display:none">
+                                    <bubbleChartComponent :optionState="optionState"></bubbleChartComponent>
                                 </v-flex>
                             </v-layout>
                         </v-container>
@@ -55,6 +65,8 @@
         common
     } from '../common.js';
 
+    import barChartComponent from './BarChartComponent.vue';
+    import topCellTableComponent from './TopCellTableComponent.vue';
     import pieChartComponent from './PieChartComponent.vue';
     import bubbleChartComponent from './BubbleChartComponent.vue';
     export default {
@@ -62,8 +74,10 @@
             common
         ],
         components: {
+            barChartComponent,
             pieChartComponent,
-            bubbleChartComponent
+            bubbleChartComponent,
+            topCellTableComponent
         },
         data() {
             let vm = this;
@@ -85,20 +99,13 @@
                     status: false
                 },
                 optionData: {},
+                optionState:{},
                 option: {
                     credits: {
                         enabled: false
                     },
                     chart: {
                         type: 'line',
-                        //width: 1399,
-                        events: {
-                            //上钻
-                            drillup: function (e) {
-                                vm.drilldownProvince = true;
-                                vm.xsline = "xs12";
-                            }
-                        }
                     },
                     title: {
                         text: 'ENIQ-全国'
@@ -121,87 +128,25 @@
                             cursor: 'pointer',
                             events: {
                                 click: function (e) {
-                                    // alert(
-                                    //   this.name + ' 被点击了\n' +
-                                    //   '最近点：' + event.point.category + '\n' +  
-                                    //   'Alt 键: ' + event.altKey + '\n' +
-                                    //   'Ctrl 键: ' + event.ctrlKey + '\n' +
-                                    //   'Meta 键（win 键）： ' + event.metaKey + '\n' +
-                                    //   'Shift 键：' + event.shiftKey
-                                    // );
-                                    // if( typeof(e.point.drillup) != "undefined"  )
-                                    // console.log(e.point)
-                                    //下钻
-                                    if (typeof (e.point.drilldown) != "undefined") {
-                                        vm.drilldownProvince = false;
-                                        if (this.name === "全国") {
-                                            vm.xsline = "xs12";
-                                        } else {
-                                            vm.xsline = "xs4";
-                                        }
-                                        vm.clickProvince = e.point.drilldown.split('-')[1];
-                                        // vm.chart.redraw();
-                                        // vm.chart.reflow();
-                                        // document.getElementsByClassName("highcharts-container")[0].style.width="500px"
-                                        //document.getElementsByClassName("highcharts-container")[0].style.width = '100px';/*parseInt(document.getElementsByClassName('highcharts-container')[0].style.width)/3 + "px";*/
-                                        // console.log(e)
-                                        // alert(parseInt(document.getElementsByClassName('highcharts-container')[0].style.width)/3)
-                                    }
+                                    vm.optionState = {
+                                        card:vm.card,
+                                        city:vm.city,
+                                        operator:vm.operator,
+                                        province:vm.province,
+                                        timeDim:vm.chooseTimeDim == true?"day":"hour",
+                                        type:vm.type,
+                                        clickTime:e.point.name,
+                                        clickLineName:this.name
+                                    };
+                                    // console.log(vm.optionState);
+
+                                    switchChartDisplay(vm.optionState);
                                 },
                             }
                         }
                     },
                     series: [
-                        /*{
-                                    name: '无线接通率',
-                                    data: [{
-                                      name: '2019030500',
-                                      y: Math.ceil(Math.random()*100),
-                                      drilldown: '2019030500'
-                                    }]
-                                  }*/
                     ],
-                    drilldown: {
-                        allowPointDrilldown: true, // 将此参数注释再下钻来对比查看效果
-                        drillUpText: '<< Terug naar {series.name}',
-                        drillUpButton: {
-                            relativeTo: 'spacingBox',
-                            position: {
-                                y: 0,
-                                x: 0
-                            },
-                            theme: {
-                                fill: 'white',
-                                'stroke-width': 1,
-                                stroke: 'silver',
-                                r: 1,
-                                states: {
-                                    hover: {
-                                        fill: '#cdcdcd'
-                                    },
-                                    select: {
-                                        stroke: '#cdcdcd',
-                                        fill: '#cdcdcd'
-                                    }
-                                }
-                            }
-                        }
-                        /*series: [{
-                          type: 'column',
-                          id: '2019030500',
-                          name: '2019030500-无线接通率',
-                          data: [
-                            ['江苏省', Math.ceil(Math.random()*100)],
-                            ['广东省', Math.ceil(Math.random()*100)],
-                            ['湖北省', Math.ceil(Math.random()*100)]
-                          ],
-                          events: {
-                            click:function(events){
-                              alert(events.point.name);
-                            }
-                          }
-                        }]*/
-                    }
                 }
             }
         },
@@ -212,6 +157,11 @@
                     // alert(event.target.point.name)
                 }
             });
+        },
+        methods:{
+            returnLineChart(){
+                switchChartDisplay(null);
+            }
         },
         created() {
             this.bus.$on('clickBSideBar', type => {
@@ -246,38 +196,34 @@
                 } else {
                     this.chart.setSize(parseInt(this.containerWidth), 400);
                 }
-                // console.log(this.option.chart.width)
-                // alert(parseInt(document.getElementsByClassName('highcharts-container')[0].style.width)/3)
-                // this.chart.chartWidth = parseInt(document.getElementsByClassName('highcharts-container')[0].style.width)/3
-                // alert(this.option.chart.width)
-                // this.option.chart.width = parseInt(this.option.chart.width/3)
-                // alert(this.option.chart.width)
-                // this.chart.reflow()
-                // this.option.chart.width = parseInt(document.getElementsByClassName('highcharts-container')[0].style.width)/3
-                // alert(this.chart.chartWidth )
             },
             bSideBar() {
                 this.processLoadBChart(this.bSideBar, this.operator, this.city, this.type, this.card, this.province,
                     this.chooseTimeDim);
             },
             operator() {
+                switchChartDisplay(null);
                 this.processLoadBChart(this.bSideBar, this.operator, this.city, this.type, this.card, this.province,
                     this.chooseTimeDim);
             },
             city() {
+                switchChartDisplay(null);
                 this.processLoadBChart(this.bSideBar, this.operator, this.city, this.type, this.card, this.province,
                     this.chooseTimeDim);
             },
             province() {
+                switchChartDisplay(null);
                 this.chooseTimeDim = (this.province === 'national')
                 // this.processLoadBChart(this.bSideBar, this.operator, this.city, this.type, this.card, this.province,
                 //     this.chooseTimeDim);
             },
             type() {
+                switchChartDisplay(null);
                 this.processLoadBChart(this.bSideBar, this.operator, this.city, this.type, this.card, this.province,
                     this.chooseTimeDim);
             },
             card() {
+                switchChartDisplay(null);
                 this.processLoadBChart(this.bSideBar, this.operator, this.city, this.type, this.card, this.province,
                     this.chooseTimeDim);
             },
@@ -432,12 +378,6 @@
                         });
                     }
                 });
-                // val.drilldown: [{ "type": 'column', "id": "2019031200", "name": '2019031200', "data": [['ss', 44],['dd',55]], "events": {click:JSON.stringify("function(events){alert(events.point.name);}")} }]
-                this.chart.drilldown.update({
-                    series: val.drilldown
-                });
-                // this.chart.drilldown.update({ series: [{ "type": 'column', "id": "2019032000-national", "name": '1', "data": [['ss', 44],['dd',55]] }, { "type": 'pie', "id": "2019032001-national", "name": '1', "size": 100, "center": [100, 80], "data": [['ssd', 44],['ddd',55]] }] });
-                // this.chart.drilldown.update({ series: [{ "type": 'column', "id": "2019032000-national", "name": '1', "data": [['ss', 44],['dd',55]] }, { "type": 'pie', "id": "2019032001-national", "name": '1', "size": 100, "center": [100, 80], "data": [['ssd', 44],['ddd',55]] }] });
             },
             // clickProvince(city) {
             //   this.bus.$emit('clickProvinceFromBChartVue', {
@@ -461,5 +401,95 @@
                 }
             }
         }
+    }
+
+    function switchChartDisplay(optionState)
+    {
+
+        if (!optionState) {
+            document.getElementById("lineChart").style.display= "block";
+            document.getElementById("chooseTimeDim").style.display= "block";
+            document.getElementById("returnLineChartBtn").style.display= "none";
+
+            document.getElementById("barChart").style.display= "none";
+            document.getElementById("topCellTable").style.display= "none";
+            document.getElementById("bubbleChart").style.display= "none";
+            document.getElementById("pieChart").style.display= "none";
+
+            return;
+        }
+
+        var provinces = [];
+        provinces["jiangsu"] = "江苏";
+        provinces["guangdong"] = "广东";
+        provinces["hubei"] = "湖北";
+        var province = optionState.province;
+        var clickLineName = optionState.clickLineName;
+        var city = optionState.city;
+
+        if(province == "national") {
+        //1) 全国页面
+            // 1.1 点击全国趋势线，显示所有地市的指标排名bar图（在点击时间点）
+            // 1.2 点击省级趋势线，显示该省所有地市指标排名bar图（在点击事件点）
+            document.getElementById("lineChart").style.display= "none";
+            document.getElementById("chooseTimeDim").style.display= "none";
+            document.getElementById("returnLineChartBtn").style.display= "block";
+
+
+            document.getElementById("barChart").style.display= "inline-block";
+            document.getElementById("barChart").classList.remove("xs6");
+            document.getElementById("barChart").classList.add("xs12");
+
+            document.getElementById("topCellTable").style.display= "none";
+            document.getElementById("bubbleChart").style.display= "none";
+            document.getElementById("pieChart").style.display= "none";
+                
+        } else {
+            if (city == "") {
+                // 2）省级页面
+                if (provinces[province] == clickLineName) {
+                    // 2.1 点击省级趋势线，显示指标排名bar图，恶化小区分布饼图和失败次数气泡图
+                    document.getElementById("lineChart").style.display= "none";
+                    document.getElementById("chooseTimeDim").style.display= "none";
+                    document.getElementById("returnLineChartBtn").style.display= "block";
+
+                    document.getElementById("barChart").style.display= "inline-block";
+                    document.getElementById("barChart").classList.remove("xs12");
+                    document.getElementById("barChart").classList.add("xs6");
+
+                    if (optionState.timeDim == "day") {
+                        document.getElementById("bubbleChart").style.display= "inline-block";
+                    } else {
+                        document.getElementById("bubbleChart").style.display= "none";
+                    }
+                    document.getElementById("pieChart").style.display= "inline-block";
+                    document.getElementById("topCellTable").style.display= "none";
+                } else {
+                    // 2.2 点击地市趋势线，跳转到地市级视图(注意指标卡片以及地市导航需要同步刷新)
+
+                }
+
+            } else {
+                // 3) 地市级页面
+                // 3.1 点击地市指标趋势线
+                // 左侧显示该时间点该地市的TOP30小区列表(小区名，失败次数)。
+                // 右侧显示TOP30和其余小区失败次数在全网失败次数比例的饼图分布。
+                document.getElementById("lineChart").style.display= "none";
+                document.getElementById("chooseTimeDim").style.display= "none";
+                document.getElementById("returnLineChartBtn").style.display= "block";
+
+                document.getElementById("barChart").style.display= "none";
+                document.getElementById("barChart").classList.remove("xs12");
+                document.getElementById("barChart").classList.add("xs6");
+
+                document.getElementById("topCellTable").style.display= "inline-block";
+                document.getElementById("pieChart").style.display= "inline-block";
+                document.getElementById("bubbleChart").style.display= "none";
+
+            }
+        }
+
+
+        
     }
 </script>

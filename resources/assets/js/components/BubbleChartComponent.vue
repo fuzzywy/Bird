@@ -1,35 +1,82 @@
 <template>
-  <span :id="id" :option="option"></span>
+    <div>
+        <input style="display: none;" id="input" :loadBubbleData="loadBubbleData">
+        <span :id="id" :option="option"></span>
+    </div>
 </template>
 <script>
-  export default {
-    data() {
-      return {
-        id: 'containerBubble',
-        option: {
-          chart: {
-            type: 'bubble',
-            zoomType: 'xy'
-          },
-          title: {
-            text: 'Highcharts 气泡图'
-          },
-          series: [{
-            name:'数据列 1',
-            // 每个气泡包含三个值，x，y，z；其中 x，y用于定位，z 用于计算气泡大小
-            data: [[97, 36, 79], [94, 74, 60], [68, 76, 58], [64, 87, 56], [68, 27, 73], [74, 99, 42], [7, 93, 87], [51, 69, 40], [38, 23, 33], [57, 86, 31]]
-          }, {
-            name:'数据列 2',
-            data: [[25, 10, 87], [2, 75, 59], [11, 54, 8], [86, 55, 93], [5, 3, 58], [90, 63, 44], [91, 33, 17], [97, 3, 56], [15, 67, 48], [54, 25, 81]]
-          }, {
-            name:'数据列 3',
-            data: [[47, 47, 21], [20, 12, 4], [6, 76, 91], [38, 30, 60], [57, 98, 64], [61, 17, 80], [83, 60, 13], [67, 78, 75], [64, 12, 10], [30, 77, 82]]
-          }]
+    import {
+        common
+    } from '../common.js';
+    export default {
+        mixins: [
+            common
+        ],
+        props:{
+            optionState: {}
+        },
+        data() {
+            return {
+                id: 'containerBubble',
+                optionData: {},
+                option: {
+                    chart: {
+                        type: 'bubble',
+                        zoomType: 'xy'
+                    },
+                    title: {
+                        text: '失败次数分布'
+                    },
+                    subtitle: {
+                        text: '2019-05-30'
+                    },
+                    yAxis: {
+                        title: {
+                            text: '过去3天内的恶化频次'
+                        }
+                    },
+                    tooltip: {
+                        pointFormat: '过去3天内的恶化频次:<b>{point.y}次</b> <br> 当天内总失败次数: <b>{point.z}次</b>'
+                    },
+                    series: []
+                }
+            }
+        },
+        mounted() {
+            new Highcharts.chart(this.id, this.option);
+        },
+        watch:{
+            optionState(){
+                this.processLoadBubbleChart(this.optionState);
+            },
+            optionData(val) {
+                // console.log(val)
+                let self = this;
+                this.chart = new Highcharts.chart(this.id, this.option);
+
+                this.chart.setSize(parseInt(this.containerWidth), 400);
+                this.chart.subtitle.update({
+                    'text': val.subtitle
+                });
+                _.forEach(val.series, (o) => {
+                    self.chart.addSeries(o);
+                });
+            },
+        },
+        computed: {
+            loadBubbleData: function () {
+                switch (this.$store.getters.bubbleChartStatus) {
+                    case 1:
+                        break;
+                    case 2:
+                        this.optionData = this.$store.getters.bubbleChart;
+                        break;
+                    case 3:
+                        break;
+                    default:
+                        break;
+                }
+            }
         }
-      }
-    },
-    mounted() {
-      new Highcharts.chart(this.id, this.option);
     }
-  }
 </script>

@@ -44,6 +44,26 @@ export const common = {
             this.$store.dispatch('delCog', {
                 item: item
             });
-        }
+        },
+        processLoadBarChart: function(optionState) {
+            this.$store.dispatch('loadBarChart', {
+                optionState: optionState
+            });
+        },
+        processLoadBubbleChart: function(optionState) {
+            this.$store.dispatch('loadBubbleChart', {
+                optionState: optionState
+            });
+        },
+        processLoadPieChart: function(optionState) {
+            this.$store.dispatch('loadPieChart', {
+                optionState: optionState
+            });
+        },
+        processLoadTopCellTable: function(optionState) {
+            this.$store.dispatch('loadTopCellTable', {
+                optionState: optionState
+            });
+        },
     }
 }

@@ -43,3 +43,16 @@ Route::prefix('birdCog')->namespace('birdCog')->group(function() {
   Route::post('edit', 'BirdCogController@edit');
   Route::post('delete', 'BirdCogController@delete');
 });
+
+Route::prefix('barChart')->namespace('BarChart')->group(function() {
+  Route::post('show', 'BarChartController@show');
+});
+Route::prefix('bubbleChart')->namespace('BubbleChart')->group(function() {
+  Route::post('show', 'BubbleChartController@show');
+});
+Route::prefix('pieChart')->namespace('PieChart')->group(function() {
+  Route::post('show', 'PieChartController@show');
+});
+Route::prefix('topCell')->namespace('TopCell')->group(function() {
+  Route::post('show', 'TopCellController@show');
+});

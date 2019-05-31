@@ -16,6 +16,8 @@ use App\Models\B_K_LTE_TDD_HOUR;
 use App\Models\B_K_NBIOT_DAY;
 use App\Models\B_K_NBIOT_HOUR;
 use App\Models\B_K_VOLTE_FDD_HOUR;
+use App\Models\B_K_VOLTE_TDD_HOUR;
+use App\Models\B_K_VOLTE_FDD_DAY;
 use App\Models\B_K_VOLTE_TDD_DAY;
 
 class BirdChartController extends Controller
@@ -37,7 +39,7 @@ class BirdChartController extends Controller
     protected $national;
     protected $citys_series;
     protected $province_series;
-    protected $drilldownData;
+    // protected $drilldownData;
 
     public function __construct()
     {
@@ -85,7 +87,8 @@ class BirdChartController extends Controller
             'lte' => 'LTE-TDD', 
             'fdd' => 'LTE-FDD',
             'nbiot'=> 'NBIOT', 
-            'volte'=>'VOLTE', 
+            'volteTdd'=>'VOLTE-TDD', 
+            'volteFdd'=>'VOLTE-FDD', 
             'gsm'=>'GSM'
         );
         $this->fields = array(
@@ -141,15 +144,15 @@ class BirdChartController extends Controller
                 }
             }
 
-            $data[$n]['drilldown'] = $time."-national";
+            // $data[$n]['drilldown'] = $time."-national";
 
-            $this->drilldownData[$n]['type'] = "column";
-            $this->drilldownData[$n]['id'] = $time."-national";
-            $this->drilldownData[$n]['name'] = $time."-national";
+            // $this->drilldownData[$n]['type'] = "column";
+            // $this->drilldownData[$n]['id'] = $time."-national";
+            // $this->drilldownData[$n]['name'] = $time."-national";
             // 全国级plot line点击时，呈现‌所有省份的指标(指定时间段内均值)排名的bar plot. 从高到低排序
             // 根据value值降序排列
-            array_multisort(array_column($temp, 1), SORT_DESC, $temp);
-            $this->drilldownData[$n]['data'] = $temp;
+            // array_multisort(array_column($temp, 1), SORT_DESC, $temp);
+            // $this->drilldownData[$n]['data'] = $temp;
 
             $n++;
         }
@@ -202,7 +205,7 @@ class BirdChartController extends Controller
             foreach ($datas as $value) {
                 $data[$n]['name'] = $value['time'];
                 $data[$n]['y'] = floatval($value['value']); 
-                $data[$n]['drilldown'] = $value['time'].'-'.$this->province;
+                // $data[$n]['drilldown'] = $value['time'].'-'.$this->province;
                 $n++;
             }
             $cities['data'] = $data;
@@ -221,7 +224,7 @@ class BirdChartController extends Controller
             $n = 0;
             $provinceArr = [];
             $data = [];
-            $drilldownData = [];
+            // $drilldownData = [];
             $plots = 0;
             foreach ($this->allData as $time => $provinces) {
                 $temp = [];
@@ -230,12 +233,12 @@ class BirdChartController extends Controller
                         $data[$n]['name'] = $time;
                         $data[$n]['y'] = floatval($value['value']);
                         $plots += $data[$n]['y'];
-                        $data[$n]['drilldown'] = $time.'-'.$proEN;
+                        // $data[$n]['drilldown'] = $time.'-'.$proEN;
 
-                        $drilldownData[$n]['type'] = "column";
-                        $drilldownData[$n]['id'] = $time.'-'.$proEN;
-                        $drilldownData[$n]['name'] = $time.'-'.$proEN;
-                        $drilldownData[$n]['data'] = [];
+                        // $drilldownData[$n]['type'] = "column";
+                        // $drilldownData[$n]['id'] = $time.'-'.$proEN;
+                        // $drilldownData[$n]['name'] = $time.'-'.$proEN;
+                        // $drilldownData[$n]['data'] = [];
 
                         $temp = [];
                         foreach ($value['citys'] as $city => $cityValue) {
@@ -243,7 +246,7 @@ class BirdChartController extends Controller
                         }
                         // 根据value值降序排列
                         array_multisort(array_column($temp, 1), SORT_DESC, $temp);
-                        $drilldownData[$n]['data'] = $temp;
+                        // $drilldownData[$n]['data'] = $temp;
                         continue;
                     }
                 }
@@ -261,7 +264,7 @@ class BirdChartController extends Controller
             }
             $provinceArr['plots'] = round($plots, 2);
             array_push($this->province_series, $provinceArr);
-            $this->drilldownData = array_merge($this->drilldownData, $drilldownData);
+            // $this->drilldownData = array_merge($this->drilldownData, $drilldownData);
         }
     }
 
@@ -350,7 +353,7 @@ class BirdChartController extends Controller
                 array($this->national),$this->province_series
             ),
             "city-series"=>$this->citys_series,
-            "drilldown" => $this->drilldownData
+            // "drilldown" => $this->drilldownData
         );
 
         if( $this->city !== null ) {
@@ -375,7 +378,10 @@ class BirdChartController extends Controller
                 case 'nbiot':
                     $conn = new B_K_NBIOT_HOUR;
                     break;
-                case 'volte':
+                case 'volteFdd':
+                    $conn = new B_K_VOLTE_FDD_HOUR;
+                    break;
+                case 'volteTdd':
                     $conn = new B_K_VOLTE_FDD_HOUR;
                     break;
                 case 'gsm':
@@ -393,8 +399,11 @@ class BirdChartController extends Controller
                 case 'nbiot':
                     $conn = new B_K_NBIOT_DAY;
                     break;
-                case 'volte':
+                case 'volteTdd':
                     $conn = new B_K_VOLTE_TDD_DAY;
+                    break;
+                case 'volteFdd':
+                    $conn = new B_K_VOLTE_FDD_DAY;
                     break;
                 case 'gsm':
                     $conn = new B_K_GSM_DAY;
