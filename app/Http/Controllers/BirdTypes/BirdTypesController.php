@@ -18,8 +18,9 @@ class BirdTypesController extends Controller
             array("id" => 0, "type" => "lte", "name" => "LTE-TDD" ),
             array("id" => 1, "type" => "fdd", "name" => "LTE-FDD" ),
             array("id" => 2, "type" => "nbiot", "name" => "NBIOT" ),
-            array("id" => 3, "type" => "volte", "name" => "VOLTE" ),
-            array("id" => 4, "type" => "gsm", "name" => "GSM" )
+            array("id" => 3, "type" => "volteTdd", "name" => "VOLTE-TDD" ),
+            array("id" => 4, "type" => "volteFdd", "name" => "VOLTE-FDD" ),
+            array("id" => 5, "type" => "gsm", "name" => "GSM" )
         );
         return $arr;
     }

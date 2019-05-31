@@ -15,6 +15,8 @@ use App\Models\B_K_LTE_TDD_HOUR;
 use App\Models\B_K_NBIOT_DAY;
 use App\Models\B_K_NBIOT_HOUR;
 use App\Models\B_K_VOLTE_FDD_HOUR;
+use App\Models\B_K_VOLTE_TDD_HOUR;
+use App\Models\B_K_VOLTE_FDD_DAY;
 use App\Models\B_K_VOLTE_TDD_DAY;
 
 class BirdCardsController extends Controller
@@ -118,8 +120,11 @@ class BirdCardsController extends Controller
                 case 'nbiot':
                     $conn = new B_K_NBIOT_HOUR;
                     break;
-                case 'volte':
-                    $conn = new B_K_VOLTE_FDD_HOUR;
+                case 'volteTdd':
+                    $conn = new B_K_VOLTE_TDD_HOUR;
+                    break;
+                case 'volteFdd':
+                    $conn = new B_K_VOLTE_TDD_HOUR;
                     break;
                 case 'gsm':
                     $conn = new B_K_GSM_HOUR;
@@ -136,8 +141,11 @@ class BirdCardsController extends Controller
                 case 'nbiot':
                     $conn = new B_K_NBIOT_DAY;
                     break;
-                case 'volte':
+                case 'volteTdd':
                     $conn = new B_K_VOLTE_TDD_DAY;
+                    break;
+                case 'volteFdd':
+                    $conn = new B_K_VOLTE_FDD_DAY;
                     break;
                 case 'gsm':
                     $conn = new B_K_GSM_DAY;
@@ -167,7 +175,6 @@ class BirdCardsController extends Controller
                 $color = "green";
             }
         } else if ($type == 'r_highInterfere' || $type == 'r_u_floor') {
-            $color = "green";
             if ($value >= 15) {
                 $color = "red";
             } else if ($value >= 10) {

@@ -1,13 +1,14 @@
 export default {
-    getBChart: function(bSideBar, operator, city, type, card, province, timeDim) {
-        return axios.post('birdChart/show', {
-                bSideBar: bSideBar,
-                operator: operator,
-                city: city,
-                type: type,
-                card: card,
-                province: province,
-                timeDim: timeDim
+    getBarChart: function(optionState) {
+        return axios.post('barChart/show', {
+                card: optionState.card,
+                city: optionState.city,
+                operator: optionState.operator,
+                province: optionState.province,
+                timeDim: optionState.timeDim,
+                type: optionState.type,
+                clickTime: optionState.clickTime,
+                clickLineName: optionState.clickLineName,
             })
             .catch(function(error) {
                 if (error.response) {
