@@ -280,7 +280,7 @@ class BirdChartController extends Controller
         $field = $this->fields[$this->card];
         $conn = $this->switchTableByTypeAndTimedim();
         // $conn = $conn->orderBy('day_id','desc');
-        if ($this->timeDim == true) {
+        if ($this->timeDim == "day") {
             // 两周
             $d = strtotime("-14 days");
             $day = date("Y-m-d", $d);
@@ -303,7 +303,7 @@ class BirdChartController extends Controller
                     ->toArray();
         foreach ($res as $r) {
             $time = str_replace("-", "", $r['day_id']);
-            if ($this->timeDim == false) {
+            if ($this->timeDim == "hour") {
                 $time .= $r['hour_id'] < 10 ? "0".$r['hour_id'] : $r['hour_id'];
             }
             // 按照time=>省=>市 的结构进行整理
@@ -367,7 +367,7 @@ class BirdChartController extends Controller
     public function switchTableByTypeAndTimedim()
     {
         $conn = null;
-        if ($this->timeDim == false) {
+        if ($this->timeDim == "hour") {
             switch ($this->type) {
                 case 'lte':
                     $conn = new B_K_LTE_TDD_HOUR;
