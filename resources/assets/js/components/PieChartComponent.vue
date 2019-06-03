@@ -33,7 +33,7 @@
                         text: '2019-05-30'
                     },
                     tooltip: {
-                        pointFormat: '{series.name}:<b>{point.y}个</b> <br>占比:<b>{point.percentage:.1f}%</b>'
+                        pointFormat: '{series.name}:<b>{point.y}次</b> <br>占比:<b>{point.percentage:.1f}%</b>'
                     },
                     plotOptions: {
                         pie: {
