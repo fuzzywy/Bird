@@ -19,7 +19,7 @@
                                 <v-btn color="info" id="returnLineChartBtn" style="display:none" @click="returnLineChart">返回折线图</v-btn>
                             </v-list> -->
                             <v-flex xs12 sm6 class="py-2">
-                                <v-btn-toggle v-model="chooseTimeDim" mandatory blue>
+                                <v-btn-toggle v-model="chooseTimeDim" mandatory>
                                     <v-btn flat value="day" >
                                         2周
                                     </v-btn>
@@ -38,6 +38,12 @@
                                     <div :id="id" :option="option"></div>
                                 </v-flex>
                             </v-layout>
+                        </v-container>
+                    </v-flex>
+                </v-card>
+                <v-card hover class="my-2">
+                    <v-flex>
+                        <v-container id="chartContainer">
                             <v-layout>
                                 <v-flex xs6 id="barChart" style="display:none">
                                     <barChartComponent :optionState="optionState"></barChartComponent>
@@ -154,6 +160,7 @@
                                     // console.log(vm.optionState);
 
                                     switchChartDisplay(vm.optionState);
+                                    $("#chartContainer")[0].scrollIntoView();
                                 },
                             }
                         }
