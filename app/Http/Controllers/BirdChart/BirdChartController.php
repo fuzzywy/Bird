@@ -39,7 +39,6 @@ class BirdChartController extends Controller
     protected $national;
     protected $citys_series;
     protected $province_series;
-    // protected $drilldownData;
 
     public function __construct()
     {
@@ -144,22 +143,13 @@ class BirdChartController extends Controller
                 }
             }
 
-            // $data[$n]['drilldown'] = $time."-national";
-
-            // $this->drilldownData[$n]['type'] = "column";
-            // $this->drilldownData[$n]['id'] = $time."-national";
-            // $this->drilldownData[$n]['name'] = $time."-national";
-            // 全国级plot line点击时，呈现‌所有省份的指标(指定时间段内均值)排名的bar plot. 从高到低排序
-            // 根据value值降序排列
-            // array_multisort(array_column($temp, 1), SORT_DESC, $temp);
-            // $this->drilldownData[$n]['data'] = $temp;
-
             $n++;
         }
 
         //标识线
         // $plots /= 24;
-        $plots /= count($data);
+        // $plots /= count($data);
+        $plots = count($data) > 0? $plots/count($data) : 0;
         $this->national = array("name"=>"全国", "spellName"=>"national", "plots"=>round($plots, 2), "data"=>$data); 
     }
 
@@ -205,7 +195,6 @@ class BirdChartController extends Controller
             foreach ($datas as $value) {
                 $data[$n]['name'] = $value['time'];
                 $data[$n]['y'] = floatval($value['value']); 
-                // $data[$n]['drilldown'] = $value['time'].'-'.$this->province;
                 $n++;
             }
             $cities['data'] = $data;
@@ -221,10 +210,12 @@ class BirdChartController extends Controller
     {
         $this->province_series = [];
         foreach ($this->provinces as $proEN => $proCH) {
+            if ($this->province != 'national' && $this->province != $proEN) {
+                continue;
+            }
             $n = 0;
             $provinceArr = [];
             $data = [];
-            // $drilldownData = [];
             $plots = 0;
             foreach ($this->allData as $time => $provinces) {
                 $temp = [];
@@ -233,12 +224,6 @@ class BirdChartController extends Controller
                         $data[$n]['name'] = $time;
                         $data[$n]['y'] = floatval($value['value']);
                         $plots += $data[$n]['y'];
-                        // $data[$n]['drilldown'] = $time.'-'.$proEN;
-
-                        // $drilldownData[$n]['type'] = "column";
-                        // $drilldownData[$n]['id'] = $time.'-'.$proEN;
-                        // $drilldownData[$n]['name'] = $time.'-'.$proEN;
-                        // $drilldownData[$n]['data'] = [];
 
                         $temp = [];
                         foreach ($value['citys'] as $city => $cityValue) {
@@ -246,7 +231,6 @@ class BirdChartController extends Controller
                         }
                         // 根据value值降序排列
                         array_multisort(array_column($temp, 1), SORT_DESC, $temp);
-                        // $drilldownData[$n]['data'] = $temp;
                         continue;
                     }
                 }
@@ -259,12 +243,12 @@ class BirdChartController extends Controller
 
             //标识线
             // $plots /= 24;
-            if (count($data) > 0) {
-                $plots /= count($data);
-            }
+            // if (count($data) > 0) {
+            //     $plots /= count($data);
+            // }
+            $plots = count($data) > 0? $plots/count($data) : 0;
             $provinceArr['plots'] = round($plots, 2);
             array_push($this->province_series, $provinceArr);
-            // $this->drilldownData = array_merge($this->drilldownData, $drilldownData);
         }
     }
 
@@ -345,15 +329,13 @@ class BirdChartController extends Controller
 
         $this->getProvincesData();
 
+        $series = $this->province != 'national'? $this->province_series:array_merge( array($this->national),$this->province_series );
         $this->arr = array(
             "title" => strtoupper($this->type).'-'.$this->card, 
             "subtitle" => $this->province, 
             "type" => "line",
-            "series" => array_merge(
-                array($this->national),$this->province_series
-            ),
+            "series" => $series,
             "city-series"=>$this->citys_series,
-            // "drilldown" => $this->drilldownData
         );
 
         if( $this->city !== null ) {
