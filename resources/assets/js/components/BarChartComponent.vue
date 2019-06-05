@@ -1,7 +1,7 @@
 <template>
     <div>
         <input style="display: none;" id="input" :loadBarData="loadBarData">
-        <span :id="id" :option="option"></span>
+        <div :id="id" :option="option"></div>
     </div>
 </template>
 <script>
@@ -78,7 +78,7 @@
                 let self = this;
                 this.chart = new Highcharts.chart(this.id, this.option);
 
-                this.chart.setSize(parseInt(this.containerWidth), 400);
+                // this.chart.setSize(parseInt(this.containerWidth), 400);
 
                 this.chart.title.update({
                     'text': val.title
