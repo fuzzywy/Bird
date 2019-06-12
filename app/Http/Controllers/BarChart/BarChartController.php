@@ -23,10 +23,6 @@ use App\Models\B_K_VOLTE_TDD_DAY;
 class BarChartController extends Controller
 {
     protected $provinces;
-    protected $map;
-    protected $mapOperator;
-    protected $mapSystem;
-    protected $arr;
     
     protected $type;
     protected $city;
@@ -37,61 +33,12 @@ class BarChartController extends Controller
     protected $clickTime;
     protected $clickLineName;
     
-    protected $allData;
-    protected $national;
-    protected $citys_series;
-    protected $province_series;
-    // protected $drilldownData;
-
     public function __construct()
     {
         $this->provinces = array(
             "jiangsu"=>"江苏", 
             "guangdong"=>"广东", 
             "hubei"=>"湖北"
-        );
-        $this->cities = array(
-            'nanjing' => '南京', 
-            'wuxi' => '无锡', 
-            'suzhou'=> '苏州', 
-            'changzhou'=>'常州', 
-            'zhenjiang'=>'镇江', 
-            'nantong'=>'南通', 
-            'jingzhou'=>'荆州', 
-            'wuhan'=>'武汉', 
-            'guangzhou'=>'广州', 
-            'qingyuan'=>'清远'
-        );
-        $this->map = array(
-            "jiangsu"=>array(
-                "nanjing" => "南京",
-                "chagnzhou" => "常州",
-                "wuxi" => "无锡",
-                "suzhou" => "苏州",
-                "nantong"=> "南通",
-                "zhenjiang"=>"镇江"
-            ),
-            "guangdong"=>array(
-                "guangzhou" => "广州",
-                "qingyuan" => "清远"
-            ),
-            "hubei"=>array(
-                "wuhan" => "武汉",
-                "jingzhou" => "荆州"
-            )
-        );
-        $this->mapOperator = array(
-            "mobile"=>"中国移动", 
-            "unicom"=>"中国联通",
-            "telecommunications"=>"中国电信"
-        );
-        $this->mapSystem = array(
-            'lte' => 'LTE-TDD', 
-            'fdd' => 'LTE-FDD',
-            'nbiot'=> 'NBIOT', 
-            'volteTdd'=>'VOLTE-TDD', 
-            'volteFdd'=>'VOLTE-FDD', 
-            'gsm'=>'GSM'
         );
         $this->fields = array(
             '无线接通率'=>'r_access',

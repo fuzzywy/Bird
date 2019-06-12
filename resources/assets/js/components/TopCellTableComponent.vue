@@ -9,10 +9,10 @@
             class="elevation-1"
         >
             <template v-slot:items="props">
-                <td class="text-xs-center">{{ props.item.day_id }}</td>
-                <td class="text-xs-center">{{ props.item.hour_id }}</td>
+                <td class="text-xs-center">{{ props.item.day }}</td>
+                <td class="text-xs-center">{{ props.item.hour }}</td>
                 <td class="text-xs-center">{{ props.item.city }}</td>
-                <td class="text-xs-center">{{ props.item.cell }}</td>
+                <td class="text-xs-center">{{ props.item.location }}</td>
                 <td class="text-xs-center">{{ props.item.failTimes }}</td>
             </template>
         </v-data-table>
@@ -36,10 +36,10 @@
                 loading:true,
                 optionData: [],
                 headers: [
-                    { text: 'day_id', value: 'day_id', sortable: false },
-                    { text: 'hour_id', value: 'hour_id', sortable: false },
+                    { text: 'day_id', value: 'day', sortable: false },
+                    { text: 'hour_id', value: 'hour', sortable: false },
                     { text: 'city', value: 'city', sortable: false },
-                    { text: 'cell', value: 'cell', sortable: false },
+                    { text: 'cell', value: 'location', sortable: false },
                     { text: 'failTimes', value: 'failTimes' , sortable: false}
                 ]
             }

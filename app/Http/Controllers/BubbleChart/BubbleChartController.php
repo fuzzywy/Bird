@@ -7,21 +7,41 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Input;
 use App\Configuration;
 
-use App\Models\B_K_LTE_TDD_ACCESS_D_TOP;
-use App\Models\B_K_LTE_TDD_LOST_D_TOP;
-use App\Models\B_K_LTE_TDD_HANDOVER_D_TOP;
 use App\Models\B_K_LTE_TDD_HOUR_ACCESS;
 use App\Models\B_K_LTE_TDD_HOUR_LOST;
 use App\Models\B_K_LTE_TDD_HOUR_HANDOVER;
+
+use App\Models\B_K_LTE_FDD_HOUR_ACCESS;
+use App\Models\B_K_LTE_FDD_HOUR_LOST;
+use App\Models\B_K_LTE_FDD_HOUR_HANDOVER;
+
+use App\Models\B_K_NBIOT_HOUR_ACCESS;
+use App\Models\B_K_NBIOT_HOUR_LOST;
+
+use App\Models\B_K_GSM_HOUR_ACCESS;
+use App\Models\B_K_GSM_HOUR_LOST;
+use App\Models\B_K_GSM_HOUR_HANDOVER;
+
+use App\Models\B_K_VOLTE_TDD_HOUR_ACCESS;
+use App\Models\B_K_VOLTE_TDD_HOUR_LOST;
+use App\Models\B_K_VOLTE_TDD_HOUR_HANDOVER;
+use App\Models\B_K_VOLTE_TDD_HOUR_SRVCC;
+use App\Models\B_K_VOLTE_TDD_HOUR_UPACKETLOST;
+use App\Models\B_K_VOLTE_TDD_HOUR_DPACKETLOST;
+
+use App\Models\B_K_VOLTE_FDD_HOUR_ACCESS;
+use App\Models\B_K_VOLTE_FDD_HOUR_LOST;
+use App\Models\B_K_VOLTE_FDD_HOUR_HANDOVER;
+use App\Models\B_K_VOLTE_FDD_HOUR_SRVCC;
+use App\Models\B_K_VOLTE_FDD_HOUR_UPACKETLOST;
+use App\Models\B_K_VOLTE_FDD_HOUR_DPACKETLOST;
+
+
 
 
 class BubbleChartController extends Controller
 {
     protected $provinces;
-    protected $map;
-    protected $mapOperator;
-    protected $mapSystem;
-    protected $arr;
     
     protected $type;
     protected $city;
@@ -32,12 +52,6 @@ class BubbleChartController extends Controller
     protected $clickTime;
     protected $clickLineName;
     
-    protected $allData;
-    protected $national;
-    protected $citys_series;
-    protected $province_series;
-    // protected $drilldownData;
-
     public function __construct()
     {
         $this->provinces = array(
@@ -45,75 +59,21 @@ class BubbleChartController extends Controller
             "guangdong"=>"广东", 
             "hubei"=>"湖北"
         );
-        $this->cities = array(
-            'nanjing' => '南京', 
-            'wuxi' => '无锡', 
-            'suzhou'=> '苏州', 
-            'changzhou'=>'常州', 
-            'zhenjiang'=>'镇江', 
-            'nantong'=>'南通', 
-            'jingzhou'=>'荆州', 
-            'wuhan'=>'武汉', 
-            'guangzhou'=>'广州', 
-            'qingyuan'=>'清远'
-        );
-        $this->map = array(
-            "jiangsu"=>array(
-                "nanjing" => "南京",
-                "chagnzhou" => "常州",
-                "wuxi" => "无锡",
-                "suzhou" => "苏州",
-                "nantong"=> "南通",
-                "zhenjiang"=>"镇江"
-            ),
-            "guangdong"=>array(
-                "guangzhou" => "广州",
-                "qingyuan" => "清远"
-            ),
-            "hubei"=>array(
-                "wuhan" => "武汉",
-                "jingzhou" => "荆州"
-            )
-        );
-        $this->mapOperator = array(
-            "mobile"=>"中国移动", 
-            "unicom"=>"中国联通",
-            "telecommunications"=>"中国电信"
-        );
-        $this->mapSystem = array(
-            'lte' => 'LTE-TDD', 
-            'fdd' => 'LTE-FDD',
-            'nbiot'=> 'NBIOT', 
-            'volteTdd'=>'VOLTE-TDD', 
-            'volteFdd'=>'VOLTE-FDD', 
-            'gsm'=>'GSM'
-        );
-        $this->fields = array(
-            '无线接通率'=>'r_access',
-            '无线掉线率'=>'r_lost',
-            '切换成功率'=>'r_handover',
-            '高干扰小区比例'=>'r_highInterfere',
-            'SRVCC切换成功率'=>'r_srvcc',
-            '上行丢包率'=>'r_u_packetlost',
-            '下行丢包率'=>'r_d_packetlost',
-            'NBIOT上行底躁（>-110比率）'=>'r_u_floor'
-        );
     }
 
     public function getData()
     {
-        $conn = $this->getTableByTypeAndCard();
-        $topConn = $conn['topConn'];
-        $hourConn = $conn['hourConn'];
+        $conn = $this->getDetailTableByTypeAndCard();
+        $detailConn = $conn['detailConn'];
         $column = $conn['column'];
-        if (!$topConn) {
+        if (!$detailConn) {
             return [];
         }
         $day_id = substr($this->clickTime, 0, 4)."-".substr($this->clickTime, 4, 2)."-".substr($this->clickTime, 6, 2);
         // 先获取城市
-        $cityArr = $topConn->distinct("city")
+        $cityArr = $detailConn->distinct("city")
                             ->where("province", $this->clickLineName)
-                            ->where("day_id", $day_id)
+                            ->where("day", $day_id)
                             ->get(['city'])
                             ->toArray();
         $series = [];
@@ -122,13 +82,13 @@ class BubbleChartController extends Controller
             $city = $city['city'];
             $temp['name'] = $city;
             $temp['data'] = [];
-            $res = $topConn->where("day_id", $day_id)
+            $res = $detailConn->where("day", $day_id)
                             ->where("city", $city)
-                            ->groupBy("cell")
+                            ->groupBy("location")
                             ->orderBy("failTimes","desc")
                             ->offset(0)
                             ->limit(30)
-                            ->selectRaw('cell, sum(`'.$column.'`) as failTimes')
+                            ->selectRaw('location, sum(`'.$column.'`) as failTimes')
                             ->get()
                             ->toArray();
             $top10cell = [];
@@ -142,27 +102,27 @@ class BubbleChartController extends Controller
             $top30FaliFreq = 0;
             for ($i=0; $i < 30; $i++) { 
                 if ($i < 10) {
-                    $top10cell[] = $res[$i]['cell'];
+                    $top10cell[] = $res[$i]['location'];
                     $top10FaliTimes += $res[$i]['failTimes'];
                 } else if ($i < 20) {
-                    $top20cell[] = $res[$i]['cell'];
+                    $top20cell[] = $res[$i]['location'];
                     $top20FaliTimes += $res[$i]['failTimes'];
                 } else {
-                    $top30cell[] = $res[$i]['cell'];
+                    $top30cell[] = $res[$i]['location'];
                     $top30FaliTimes += $res[$i]['failTimes'];
                 }
             }
             $threeDayEarlier = date('Y-m-d', strtotime("-2 day", strtotime($day_id)));
-            $top10FaliFreq = $hourConn->where("day_id", ">=", $threeDayEarlier)
-                                        ->where("day_id", "<=", $day_id)
+            $top10FaliFreq = $detailConn->where("day", ">=", $threeDayEarlier)
+                                        ->where("day", "<=", $day_id)
                                         ->whereIn("location", $top10cell)
                                         ->count();
-            $top20FaliFreq = $hourConn->where("day_id", ">=", $threeDayEarlier)
-                                        ->where("day_id", "<=", $day_id)
+            $top20FaliFreq = $detailConn->where("day", ">=", $threeDayEarlier)
+                                        ->where("day", "<=", $day_id)
                                         ->whereIn("location", $top20cell)
                                         ->count();
-            $top30FaliFreq = $hourConn->where("day_id", ">=", $threeDayEarlier)
-                                        ->where("day_id", "<=", $day_id)
+            $top30FaliFreq = $detailConn->where("day", ">=", $threeDayEarlier)
+                                        ->where("day", "<=", $day_id)
                                         ->whereIn("location", $top30cell)
                                         ->count();
             $temp['data'][] = array(10,intval($top10FaliFreq),intval($top10FaliTimes));
@@ -214,33 +174,123 @@ class BubbleChartController extends Controller
         return json_encode($result);
     }
 
-    public function getTableByTypeAndCard()
+    public function getDetailTableByTypeAndCard()
     {
-        $topConn = null;
-        $hourConn = null;
+        $detailConn = null;
         $column = "";
         if ($this->type == 'lte') {
             switch ($this->card) {
                 case '无线接通率':
-                    $topConn = new B_K_LTE_TDD_ACCESS_D_TOP;
-                    $hourConn = new B_K_LTE_TDD_HOUR_ACCESS;
-                    $column = "c_f_access";
+                    $detailConn = new B_K_LTE_TDD_HOUR_ACCESS;
+                    $column = "无线接入失败次数";
                     break;
                 case '无线掉线率':
-                    $topConn = new B_K_LTE_TDD_LOST_D_TOP;
-                    $hourConn = new B_K_LTE_TDD_HOUR_LOST;
-                    $column = "c_f_lost";
+                    $detailConn = new B_K_LTE_TDD_HOUR_LOST;
+                    $column = "无线掉线次数";
                     break;
                 case '切换成功率':
-                    $topConn = new B_K_LTE_TDD_HANDOVER_D_TOP;
-                    $hourConn = new B_K_LTE_TDD_HOUR_HANDOVER;
-                    $column = "c_f_handover";
+                    $detailConn = new B_K_LTE_TDD_HOUR_HANDOVER;
+                    $column = "切换失败次数";
+                    break;
+            }
+        } else if ($this->type == 'fdd') {
+            switch ($this->card) {
+                case '无线接通率':
+                    $detailConn = new B_K_LTE_FDD_HOUR_ACCESS;
+                    $column = "无线接入失败次数";
+                    break;
+                case '无线掉线率':
+                    $detailConn = new B_K_LTE_FDD_HOUR_LOST;
+                    $column = "无线掉线次数";
+                    break;
+                case '切换成功率':
+                    $detailConn = new B_K_LTE_FDD_HOUR_HANDOVER;
+                    $column = "切换失败次数";
+                    break;
+            }
+        } else if ($this->type == 'nbiot') {
+            switch ($this->card) {
+                case '无线接通率':
+                    $detailConn = new B_K_NBIOT_HOUR_ACCESS;
+                    $column = "NBIOT无线接入失败次数";
+                    break;
+                case '无线掉线率':
+                    $detailConn = new B_K_NBIOT_HOUR_LOST;
+                    $column = "NBIOT无线掉线次数";
+                    break;
+            }
+        } else if ($this->type == 'gsm') {
+            switch ($this->card) {
+                case '无线接通率':
+                    $detailConn = new B_K_GSM_HOUR_ACCESS;
+                    $column = "2G无线接入失败次数";
+                    break;
+                case '无线掉线率':
+                    $detailConn = new B_K_GSM_HOUR_LOST;
+                    $column = "2G无线掉线次数";
+                    break;
+                case '切换成功率':
+                    $detailConn = new B_K_GSM_HOUR_HANDOVER;
+                    $column = "2G切换失败次数";
+                    break;
+            }
+        } else if ($this->type == 'volteTdd') {
+            switch ($this->card) {
+                case '无线接通率':
+                    $detailConn = new B_K_VOLTE_TDD_HOUR_ACCESS;
+                    $column = "VOLTE无线接入失败次数";
+                    break;
+                case '无线掉线率':
+                    $detailConn = new B_K_VOLTE_TDD_HOUR_LOST;
+                    $column = "无线掉线次数QCI1";
+                    break;
+                case '切换成功率':
+                    $detailConn = new B_K_VOLTE_TDD_HOUR_HANDOVER;
+                    $column = "VOLTE切换失败次数";
+                    break;
+                case 'SRVCC切换成功率':
+                    $detailConn = new B_K_VOLTE_TDD_HOUR_SRVCC;
+                    $column = "SRVCC失败次数";
+                    break;
+                case '上行丢包率':
+                    $detailConn = new B_K_VOLTE_TDD_HOUR_UPACKETLOST;
+                    $column = "volte上行丢包数";
+                    break;
+                case '下行丢包率':
+                    $detailConn = new B_K_VOLTE_TDD_HOUR_DPACKETLOST;
+                    $column = "volte下行丢包数";
+                    break;
+            }
+        } else if ($this->type == 'volteFdd') {
+            switch ($this->card) {
+                case '无线接通率':
+                    $detailConn = new B_K_VOLTE_FDD_HOUR_ACCESS;
+                    $column = "VOLTE无线接入失败次数";
+                    break;
+                case '无线掉线率':
+                    $detailConn = new B_K_VOLTE_FDD_HOUR_LOST;
+                    $column = "无线掉线次数QCI1";
+                    break;
+                case '切换成功率':
+                    $detailConn = new B_K_VOLTE_FDD_HOUR_HANDOVER;
+                    $column = "VOLTE切换失败次数";
+                    break;
+                case 'SRVCC切换成功率':
+                    $detailConn = new B_K_VOLTE_FDD_HOUR_SRVCC;
+                    $column = "SRVCC失败次数";
+                    break;
+                case '上行丢包率':
+                    $detailConn = new B_K_VOLTE_FDD_HOUR_UPACKETLOST;
+                    $column = "volte上行丢包数";
+                    break;
+                case '下行丢包率':
+                    $detailConn = new B_K_VOLTE_FDD_HOUR_DPACKETLOST;
+                    $column = "volte下行丢包数";
                     break;
             }
         }
         return array(
-            "topConn"=>$topConn,
-            "hourConn"=>$hourConn,
+            "detailConn"=>$detailConn,
             "column"=>$column
         );
     }
