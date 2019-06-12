@@ -244,10 +244,10 @@
                         if ((typeof val.assessmentPlots === 'string' && val.assessmentPlots === '禁用') || (
                                 typeof val.assessmentPlots === 'object' && val.assessmentPlots.status === '禁用'
                                 )) {
-                            let _thisO = o;
-                            o.data = _.filter(o.data, function (o) {
-                                return o.y < _thisO.plots
-                            });
+                            // let _thisO = o;
+                            // o.data = _.filter(o.data, function (o) {
+                            //     return o.y < _thisO.plots
+                            // });
                             // o.data = _.forEach(o.data, function(o){ if(o.y>_thisO.plots){
                             //   o.y = null
                             // } });
