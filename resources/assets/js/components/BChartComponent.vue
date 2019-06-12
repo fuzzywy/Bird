@@ -4,7 +4,7 @@
         <input style="display: none;" id="input" :loadData="loadData">
         <v-layout>
             <v-flex xs12 sm12>
-                <v-card hover>
+                <v-card>
                     <v-flex offset-sm10 pa-0>
                         <v-card-actions style="position: static;">
                             <v-flex xs12 sm6 class="py-2">
@@ -30,7 +30,7 @@
                         </v-container>
                     </v-flex>
                 </v-card>
-                <v-card hover class="my-2">
+                <v-card class="my-2">
                     <v-flex>
                         <v-container id="chartContainer">
                             <v-layout>
