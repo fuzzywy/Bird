@@ -1,3 +1,16 @@
+<style>
+    .v-btn--active.primary {
+        color: #fff !important;
+        background-color: #2196f3 !important;
+        border-color: #2196f3 !important
+    }
+
+    .v-btn--depressed.primary--text {
+        color: #000 !important;
+        opacity: 1;
+        border-color: rgba(0, 0, 0, .26) !important
+    }
+</style>
 <template>
     <div>
         <input style="display: none;" id="input" :loadData="loadData">
@@ -7,9 +20,9 @@
         </div>
         <div v-if="this.$store.getters.bTypesStatus===2">
             <v-flex xs12 sm6 class="py-2">
-                <v-btn-toggle mandatory style="top:-3px">
-                    <v-btn v-for="(type, key) in types" :key="key" @click="typeFix(type.type)" 
-                        :outline="type.type!==buttonType" color="primary" style="color:#fff">
+                <v-btn-toggle mandatory>
+                    <v-btn v-for="(type, key) in types" :key="key" @click="typeFix(type.type)"
+                        :outline="type.type!==buttonType" color="primary">
                         {{ type.name }}
                     </v-btn>
                 </v-btn-toggle>
@@ -35,8 +48,8 @@
                     // { id: 2, type: 'volte', name: 'VOLTE' },
                     // { id: 3, type: 'gsm', name: 'GSM' }
                 ],
-                typeDim:'LTE-TDD',
-                buttonType:'lte'
+                typeDim: 'LTE-TDD',
+                buttonType: 'lte'
             }
         },
         methods: {

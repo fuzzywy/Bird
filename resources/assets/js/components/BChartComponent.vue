@@ -2,56 +2,58 @@
     <!-- https://www.highcharts.com.cn/docs/basic-drilldown -->
     <div>
         <input style="display: none;" id="input" :loadData="loadData">
-        <v-layout>
+        <!-- <v-layout>
             <v-flex xs12 sm12>
-                <v-card>
-                    <v-flex offset-sm10 pa-0>
-                        <v-card-actions style="position: static;">
-                            <v-flex xs12 sm6 class="py-2">
-                                <v-btn-toggle v-model="chooseTimeDim" mandatory>
-                                    <v-btn flat value="day" >
-                                        2周
-                                    </v-btn>
-                                    <v-btn flat value="hour">
-                                        24小时
-                                    </v-btn>
-                                </v-btn-toggle>
-                            </v-flex>
-                        </v-card-actions>
+                <v-card> -->
+        <v-flex xs12 sm12 style="background-color: #fff;">
+            <v-flex offset-sm9 pa-0 style="position: absolute;z-index: 999">
+                <v-card-actions>
+                    <v-flex xs12 sm6 class="py-2">
+                        <v-btn-toggle v-model="chooseTimeDim" mandatory>
+                            <v-btn flat value="day">
+                                2周
+                            </v-btn>
+                            <v-btn flat value="hour">
+                                24小时
+                            </v-btn>
+                        </v-btn-toggle>
+                    </v-flex>
+                </v-card-actions>
 
-                    </v-flex>
-                    <v-flex>
-                        <v-container id="containerWidth">
-                            <v-layout>
-                                <v-flex xs12 id="lineChart">
-                                    <div :id="id" :option="option"></div>
-                                </v-flex>
-                            </v-layout>
-                        </v-container>
-                    </v-flex>
-                </v-card>
-                <v-card class="my-2">
-                    <v-flex>
-                        <v-container id="chartContainer">
-                            <v-layout>
-                                <v-flex :class="xsBar" id="barChart" style="display:none">
-                                    <barChartComponent :optionState="optionState"></barChartComponent>
-                                </v-flex>
-                                <v-flex :class="xsTopCell" id="topCellTable" style="display:none">
-                                    <topCellTableComponent :optionState="optionState"></topCellTableComponent>
-                                </v-flex>
-                                <v-flex :class="xsPie" id="pieChart" style="display:none">
-                                    <pieChartComponent :optionState="optionState"></pieChartComponent>
-                                </v-flex>
-                                <v-flex :class="xsBubble" id="bubbleChart" style="display:none">
-                                    <bubbleChartComponent :optionState="optionState"></bubbleChartComponent>
-                                </v-flex>
-                            </v-layout>
-                        </v-container>
-                    </v-flex>
-                </v-card>
             </v-flex>
-        </v-layout>
+            <v-flex>
+                <v-container id="containerWidth">
+                    <v-layout>
+                        <v-flex xs12 id="lineChart">
+                            <div :id="id" :option="option"></div>
+                        </v-flex>
+                    </v-layout>
+                </v-container>
+            </v-flex>
+        </v-flex>
+        <!-- </v-card> -->
+        <!-- <v-card class="my-2"> -->
+        <v-flex xs12 sm12 pa-0>
+            <v-container id="chartContainer" class="pl-0 pr-0">
+                <v-layout>
+                    <v-flex :class="xsBar" id="barChart" style="display:none">
+                        <barChartComponent :optionState="optionState"></barChartComponent>
+                    </v-flex>
+                    <v-flex :class="xsTopCell" id="topCellTable" style="display:none">
+                        <topCellTableComponent :optionState="optionState"></topCellTableComponent>
+                    </v-flex>
+                    <v-flex :class="xsPie" id="pieChart" style="display:none">
+                        <pieChartComponent :optionState="optionState"></pieChartComponent>
+                    </v-flex>
+                    <v-flex :class="xsBubble" id="bubbleChart" style="display:none">
+                        <bubbleChartComponent :optionState="optionState"></bubbleChartComponent>
+                    </v-flex>
+                </v-layout>
+            </v-container>
+        </v-flex>
+        <!-- </v-card>
+            </v-flex>
+        </v-layout> -->
     </div>
 </template>
 <script>
@@ -76,10 +78,10 @@
         data() {
             let vm = this;
             return {
-                xsBar:"xs12",
-                xsTopCell:"xs6",
-                xsPie:"xs4",
-                xsBubble:"xs4",
+                xsBar: "xs12",
+                xsTopCell: "xs6",
+                xsPie: "xs4",
+                xsBubble: "xs4",
                 containerWidth: 0,
                 chooseTimeDim: "day",
                 chart: {},
@@ -95,7 +97,7 @@
                     status: false
                 },
                 optionData: {},
-                optionState:{},
+                optionState: {},
                 option: {
                     credits: {
                         enabled: false
@@ -104,7 +106,15 @@
                         type: 'line',
                     },
                     title: {
-                        text: 'ENIQ-全国'
+                        text: 'LTE无线接通率',
+                        align: 'left',
+                        style: {
+                            fontSize: '16px'
+                        }
+                    },
+                    subtitle: {
+                        text: 'national',
+                        align: 'left'
                     },
                     xAxis: {
                         type: 'category'
@@ -125,25 +135,24 @@
                             events: {
                                 click: function (e) {
                                     vm.optionState = {
-                                        card:vm.card,
-                                        city:vm.city,
-                                        operator:vm.operator,
-                                        province:vm.province,
-                                        timeDim:vm.chooseTimeDim,
-                                        type:vm.type,
-                                        clickTime:e.point.name,
-                                        clickLineName:this.name
+                                        card: vm.card,
+                                        city: vm.city,
+                                        operator: vm.operator,
+                                        province: vm.province,
+                                        timeDim: vm.chooseTimeDim,
+                                        type: vm.type,
+                                        clickTime: e.point.name,
+                                        clickLineName: this.name
                                     };
                                     // console.log(vm.optionState);
 
-                                    switchChartDisplay(vm.optionState,vm);
+                                    switchChartDisplay(vm.optionState, vm);
                                     $("#chartContainer")[0].scrollIntoView();
                                 },
                             }
                         }
                     },
-                    series: [
-                    ],
+                    series: [],
                 }
             }
         },
@@ -155,8 +164,7 @@
                 }
             });
         },
-        methods:{
-        },
+        methods: {},
         created() {
             this.bus.$on('clickBSideBar', type => {
                 this.bSideBar = type.bSideBar;
@@ -243,7 +251,7 @@
                         //均值
                         if ((typeof val.assessmentPlots === 'string' && val.assessmentPlots === '禁用') || (
                                 typeof val.assessmentPlots === 'object' && val.assessmentPlots.status === '禁用'
-                                )) {
+                            )) {
                             // let _thisO = o;
                             // o.data = _.filter(o.data, function (o) {
                             //     return o.y < _thisO.plots
@@ -375,13 +383,12 @@
         }
     }
 
-    function switchChartDisplay(optionState,vm)
-    {
+    function switchChartDisplay(optionState, vm) {
         if (!optionState) {
-            document.getElementById("barChart").style.display= "none";
-            document.getElementById("topCellTable").style.display= "none";
-            document.getElementById("bubbleChart").style.display= "none";
-            document.getElementById("pieChart").style.display= "none";
+            document.getElementById("barChart").style.display = "none";
+            document.getElementById("topCellTable").style.display = "none";
+            document.getElementById("bubbleChart").style.display = "none";
+            document.getElementById("pieChart").style.display = "none";
 
             return;
         }
@@ -394,47 +401,47 @@
         var clickLineName = optionState.clickLineName;
         var city = optionState.city;
 
-        if(province == "national") {
-        //1) 全国页面
+        if (province == "national") {
+            //1) 全国页面
             // 1.1 点击全国趋势线，显示所有地市的指标排名bar图（在点击时间点）
             // 1.2 点击省级趋势线，显示该省所有地市指标排名bar图（在点击事件点）
-            document.getElementById("barChart").style.display= "inline-block";
+            document.getElementById("barChart").style.display = "inline-block";
             vm.xsBar = "xs12";
-            document.getElementById("topCellTable").style.display= "none";
-            document.getElementById("bubbleChart").style.display= "none";
-            document.getElementById("pieChart").style.display= "none";
+            document.getElementById("topCellTable").style.display = "none";
+            document.getElementById("bubbleChart").style.display = "none";
+            document.getElementById("pieChart").style.display = "none";
         } else {
             if (city == "") {
                 // 2）省级页面
                 if (provinces[province] == clickLineName) {
                     // 2.1 点击省级趋势线，显示指标排名bar图，恶化小区分布饼图和失败次数气泡图
-                    document.getElementById("barChart").style.display= "inline-block";
-                    document.getElementById("pieChart").style.display= "inline-block";
-                    document.getElementById("topCellTable").style.display= "none";
+                    document.getElementById("barChart").style.display = "inline-block";
+                    document.getElementById("pieChart").style.display = "inline-block";
+                    document.getElementById("topCellTable").style.display = "none";
                     if (optionState.timeDim == "day") {
-                        document.getElementById("bubbleChart").style.display= "inline-block";
+                        document.getElementById("bubbleChart").style.display = "inline-block";
                         vm.xsBar = "xs4";
                         vm.xsPie = "xs4";
                     } else {
-                        document.getElementById("bubbleChart").style.display= "none";
+                        document.getElementById("bubbleChart").style.display = "none";
                         vm.xsBar = "xs6";
                         vm.xsPie = "xs6";
                     }
                 } else {
-                    document.getElementById("barChart").style.display= "none";
-                    document.getElementById("topCellTable").style.display= "none";
-                    document.getElementById("bubbleChart").style.display= "none";
-                    document.getElementById("pieChart").style.display= "none";
+                    document.getElementById("barChart").style.display = "none";
+                    document.getElementById("topCellTable").style.display = "none";
+                    document.getElementById("bubbleChart").style.display = "none";
+                    document.getElementById("pieChart").style.display = "none";
                 }
             } else {
                 // 3) 地市级页面
                 // 3.1 点击地市指标趋势线
                 // 左侧显示该时间点该地市的TOP30小区列表(小区名，失败次数)。
                 // 右侧显示TOP30和其余小区失败次数在全网失败次数比例的饼图分布。
-                document.getElementById("barChart").style.display= "none";
-                document.getElementById("topCellTable").style.display= "inline-block";
-                document.getElementById("pieChart").style.display= "inline-block";
-                document.getElementById("bubbleChart").style.display= "none";
+                document.getElementById("barChart").style.display = "none";
+                document.getElementById("topCellTable").style.display = "inline-block";
+                document.getElementById("pieChart").style.display = "inline-block";
+                document.getElementById("bubbleChart").style.display = "none";
 
                 vm.xsPie = "xs6";
             }
