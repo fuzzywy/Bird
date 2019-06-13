@@ -4,38 +4,46 @@
         <div class="text-xs-center" v-if="this.$store.getters.bCardsStatus!==2">
             <v-progress-circular indeterminate color="blue"></v-progress-circular>
         </div>
-        <v-container v-if="this.$store.getters.bCardsStatus===2" grid-list-md>
-            <!-- fluid -->
-            <v-layout align-center justify-center row wrap>
-                <!-- row wrap -->
-                <v-flex v-for="item in cards" :key="item.id" v-bind="{ [`xs${item.flex}`]: true }" xl2 lg3 md3 sm6 xs12>
-                    <v-card :color="item.color" dark hover @click="clickCard(item.type)" tag="div">
-                        <v-card-title style="height: 30px; padding-bottom: 10px;">
-                            <span class="title font-weight-light mx-auto">{{ item.type }}</span>
-                        </v-card-title>
-                        <v-card-text class="headline font-weight-bold" style="text-align: center; height: 50px">
-                            {{ item.data }}
-                            <v-icon class="mr-0" :color="item.class==='arrow_upward'? '#1296db':'#d81e06'">
-                                {{ item.class }}</v-icon>
-                            <span class="subheading mr-0" style="margin-left: -8px;">{{ item.tend }}</span>
-                        </v-card-text>
-                        <v-card-title>
-                            <v-layout justify-center>
-                                上次更新: {{ item.time }}
+        <!-- <v-layout>
+                <v-card> -->
+        <v-flex xs12 sm12 pa-1 mt-1 mb-1 style="background-color: #fff;">
+            <v-container v-if="this.$store.getters.bCardsStatus===2" grid-list-md>
+                <!-- fluid -->
+                <v-layout align-center justify-center row wrap>
+                    <!-- row wrap -->
+                    <v-flex v-for="item in cards" :key="item.id" v-bind="{ [`xs${item.flex}`]: true }" xl2 lg3 md3 sm6
+                        xs12>
+                        <v-card :color="item.color" dark hover @click="clickCard(item.type)" tag="div">
+                            <v-card-title class="pt-4 pb-0" style="height: 26px;font-size:16px">
+                                <span class="font-weight-light mx-auto">{{ item.type }}</span>
+                            </v-card-title>
+                            <v-card-text class="font-weight-bold"
+                                style="text-align: center; height: 40px;font-size:16px">
+                                {{ item.data }}
+                                <v-icon class="mr-0" :color="item.class==='arrow_upward'? '#1296db':'#d81e06'">
+                                    {{ item.class }}</v-icon>
+                                <span class="subheading mr-0" style="margin-left: -8px;">{{ item.tend }}</span>
+                            </v-card-text>
+                            <v-card-title style="font-size:12px">
+                                <v-layout justify-center>
+                                    上次更新: {{ item.time }}
+                                </v-layout>
+                            </v-card-title>
+                            <!-- <v-card-title>
+                            <v-layout
+                            justify-center
+                            >
+                            <v-icon class="mr-2" :color="item.class==='icon-ali-jiantoushangsheng-blue'? '#1296db':'#d81e06'">{{ item.class }}</v-icon>
+                            <span class="subheading mr-2">{{ item.tend }}</span>
                             </v-layout>
-                        </v-card-title>
-                        <!-- <v-card-title>
-                <v-layout
-                  justify-center
-                >
-                  <v-icon class="mr-2" :color="item.class==='icon-ali-jiantoushangsheng-blue'? '#1296db':'#d81e06'">{{ item.class }}</v-icon>
-                  <span class="subheading mr-2">{{ item.tend }}</span>
+                        </v-card-title> -->
+                        </v-card>
+                    </v-flex>
                 </v-layout>
-            </v-card-title> -->
-                    </v-card>
-                </v-flex>
-            </v-layout>
-        </v-container>
+            </v-container>
+        </v-flex>
+        <!-- </v-card>
+        </v-layout> -->
     </div>
 </template>
 <script>

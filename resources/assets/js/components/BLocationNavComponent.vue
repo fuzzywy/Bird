@@ -6,10 +6,12 @@
             <v-progress-circular indeterminate color="blue"></v-progress-circular>
         </div>
         <div v-if="this.$store.getters.bRegionStatus===2">
-            <v-menu offset-y >
+            <span style="font-size:16px" class="ml-2">
+                指标概览
+            </span>
+            <v-menu offset-y>
                 <template v-slot:activator="{ on }">
-                    地区：
-                    <v-btn color="primary" dark v-on="on" >
+                    <v-btn color="#2196f3" dark v-on="on" class="mt-2 mb-2">
                         <v-icon v-html="'icon-ali-map-marker'"></v-icon>
                         {{ locationDim }}&nbsp;&nbsp;&nbsp;&nbsp;
                         <v-icon v-html="'icon-ali-jiantouxia'" style="font-size:12px"></v-icon>
@@ -19,15 +21,16 @@
                     <v-layout wrap>
                         <v-flex xs12 sm12 md12 xl12 lg12 pa-0 mx-3>
                             <v-btn v-for="(province, key) in region" :key="key" @click="click(province)" dark
-                                :outline="province.value!==buttonProvince" color="blue">
+                                :outline="province.value!==buttonProvince" color="#2196f3">
                                 {{ province.label }}
                             </v-btn>
                         </v-flex>
                         <v-flex xs12 sm12 pa-0>
                             <v-list>
                                 <v-list-tile v-for="(province, p) in region" :key="p" v-if="province.cities.length>0">
-                                    <v-btn v-for="(city, key) in province.cities" :key="key" dark @click="clickCity(city,province.value)"
-                                        :outline="city.value!==buttonCities" color="blue">
+                                    <v-btn v-for="(city, key) in province.cities" :key="key" dark
+                                        @click="clickCity(city,province.value)" :outline="city.value!==buttonCities"
+                                        color="#2196f3">
                                         {{ city.label }}
                                     </v-btn>
                                 </v-list-tile>
@@ -61,7 +64,7 @@
                 buttonProvince: 'national',
                 buttonCities: '',
                 isUpdateBChartVue: true,
-                locationDim:"全国",
+                locationDim: "全国",
             }
         },
         methods: {
@@ -73,7 +76,7 @@
 
                 this.locationDim = province.label;
             },
-            clickCity: function (city,province) {
+            clickCity: function (city, province) {
                 this.isUpdateBChartVue = true;
                 this.chooseCities = city.value;
                 this.buttonCities = city.value;
