@@ -18,10 +18,10 @@
                             <v-flex xs12 pl-2 pr-2 pt-0 pb-0>
                                 <!-- <v-card> -->
                                 <v-flex pl-1 pr-1 pt-0 pb-0 style="background-color: #fff;display: flex;">
-                                    <v-flex xs3 pa-0>
+                                    <v-flex xs2 pa-0>
                                         <BLocationNavComponent></BLocationNavComponent>
                                     </v-flex>
-                                    <v-flex xs9 pa-0>
+                                    <v-flex xs10 pa-0>
                                         <BTypeNavComponent></BTypeNavComponent>
                                     </v-flex>
                                 </v-flex>

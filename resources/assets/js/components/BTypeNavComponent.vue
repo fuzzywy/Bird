@@ -6,7 +6,7 @@
     }
 
     .v-btn--depressed.primary--text {
-        color: #000 !important;
+        color: rgba(0, 0, 0, .87) !important;
         opacity: 1;
         border-color: rgba(0, 0, 0, .26) !important
     }

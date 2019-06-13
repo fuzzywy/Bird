@@ -39,6 +39,7 @@ class BirdChartController extends Controller
     protected $national;
     protected $citys_series;
     protected $province_series;
+    protected $categories;
 
     public function __construct()
     {
@@ -285,10 +286,14 @@ class BirdChartController extends Controller
         }
         $res = $conn->get()
                     ->toArray();
+        $this->categories = [];
         foreach ($res as $r) {
             $time = str_replace("-", "", $r['day_id']);
             if ($this->timeDim == "hour") {
                 $time .= $r['hour_id'] < 10 ? "0".$r['hour_id'] : $r['hour_id'];
+            }
+            if (!in_array($time, $this->categories)) {
+                $this->categories[] = $time;
             }
             // 按照time=>省=>市 的结构进行整理
             $province = $r['province'];
@@ -336,6 +341,7 @@ class BirdChartController extends Controller
             "type" => "line",
             "series" => $series,
             "city-series"=>$this->citys_series,
+            "categories"=>$this->categories
         );
 
         if( $this->city !== null ) {

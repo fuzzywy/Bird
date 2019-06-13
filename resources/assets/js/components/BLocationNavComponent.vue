@@ -6,9 +6,9 @@
             <v-progress-circular indeterminate color="blue"></v-progress-circular>
         </div>
         <div v-if="this.$store.getters.bRegionStatus===2">
-            <span style="font-size:16px" class="ml-2">
+            <!-- <span style="font-size:16px" class="ml-2">
                 指标概览
-            </span>
+            </span> -->
             <v-menu offset-y>
                 <template v-slot:activator="{ on }">
                     <v-btn color="#2196f3" dark v-on="on" class="mt-2 mb-2">

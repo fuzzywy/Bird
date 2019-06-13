@@ -5,8 +5,8 @@
         <!-- <v-layout>
             <v-flex xs12 sm12>
                 <v-card> -->
-        <v-flex xs12 sm12 style="background-color: #fff;">
-            <v-flex offset-sm9 pa-0 style="position: absolute;z-index: 999">
+        <v-flex xs12 sm12 pa-0 style="background-color: #fff;position: relative">
+            <v-flex offset-sm10 pa-0 style="position: absolute;z-index: 999;top:-12px">
                 <v-card-actions>
                     <v-flex xs12 sm6 class="py-2">
                         <v-btn-toggle v-model="chooseTimeDim" mandatory>
@@ -21,15 +21,15 @@
                 </v-card-actions>
 
             </v-flex>
-            <v-flex>
+            <!-- <v-flex> -->
                 <v-container id="containerWidth">
                     <v-layout>
-                        <v-flex xs12 id="lineChart">
+                        <v-flex xs12 pt-2 id="lineChart">
                             <div :id="id" :option="option"></div>
                         </v-flex>
                     </v-layout>
                 </v-container>
-            </v-flex>
+            <!-- </v-flex> -->
         </v-flex>
         <!-- </v-card> -->
         <!-- <v-card class="my-2"> -->
@@ -107,15 +107,15 @@
                     },
                     title: {
                         text: 'LTE无线接通率',
-                        align: 'left',
+                        // align: 'left',
                         style: {
                             fontSize: '16px'
                         }
                     },
-                    subtitle: {
-                        text: 'national',
-                        align: 'left'
-                    },
+                    // subtitle: {
+                    //     text: 'national',
+                    //     align: 'left'
+                    // },
                     xAxis: {
                         type: 'category'
                     },
@@ -213,6 +213,9 @@
             },
             type() {
                 switchChartDisplay(null);
+                this.bus.$emit('card', {
+                    card: "无线接通率"
+                });
                 this.processLoadBChart(this.bSideBar, this.operator, this.city, this.type, this.card, this.province,
                     this.chooseTimeDim);
             },
@@ -232,9 +235,10 @@
                 this.chart.title.update({
                     'text': val.title
                 });
-                this.chart.subtitle.update({
-                    'text': val.subtitle
-                });
+                // this.chart.subtitle.update({
+                //     'text': val.subtitle
+                // });
+                self.chart.xAxis[0].categories = val.categories;
 
                 let regionSeries = {};
                 if (this.city !== '') {
@@ -262,15 +266,26 @@
                             //考核
                         } else if (typeof val.assessmentPlots === 'object' && val.assessmentPlots.status ===
                             '启用') {
-                            o.data = _.filter(o.data, function (o) {
-                                return o.y < val.assessmentPlots.assessment
+                            // o.data = _.filter(o.data, function (o) {
+                            //     return o.y < val.assessmentPlots.assessment
+                            // });
+                            o.data.forEach(o => {
+                                if (o.y >= val.assessmentPlots.assessment) {
+                                    o.y = null;
+                                }
                             });
+
                         }
                     } else if (self.city === o.spellName) {
                         o.visible = true;
                         if (typeof val.assessmentPlots === 'object' && val.assessmentPlots.status === '启用') {
-                            o.data = _.filter(o.data, function (o) {
-                                return o.y < val.assessmentPlots.assessment
+                            // o.data = _.filter(o.data, function (o) {
+                            //     return o.y < val.assessmentPlots.assessment
+                            // });
+                            o.data.forEach(o => {
+                                if (o.y >= val.assessmentPlots.assessment) {
+                                    o.y = null;
+                                }
                             });
                         }
                     } else {
@@ -283,13 +298,28 @@
                     _.forEach(val['city-series'], (o) => {
                         o.visible = true;
                         if (typeof val.assessmentPlots === 'object' && val.assessmentPlots.status === '启用') {
-                            o.data = _.filter(o.data, function (o) {
-                                return o.y < val.assessmentPlots.assessment
+                            // o.data = _.filter(o.data, function (o) {
+                            //     return o.y < val.assessmentPlots.assessment
+                            // });
+                            o.data.forEach(o => {
+                                if (o.y >= val.assessmentPlots.assessment) {
+                                    o.y = null;
+                                }
                             });
                         }
                         self.chart.addSeries(o);
                     });
                 }
+                console.log(self.chart.xAxis[0].names)
+                // var t = self.chart.xAxis[0].names.keys;
+                // var categories = [];
+                // for(var c in t) {
+                //     categories.push(c);
+                // }
+                // console.log(categories)
+                // self.chart.xAxis[0].categories = categories;
+                // self.chart.redraw();
+
 
                 this.chart.yAxis[0].removePlotLine('plot-line');
                 _.filter(regionSeries, (o) => {

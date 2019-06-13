@@ -29,9 +29,9 @@
                             fontSize: '16px'
                         }
                     },
-                    subtitle: {
-                        text: '2019-05-30'
-                    },
+                    // subtitle: {
+                    //     text: '2019-05-30'
+                    // },
                     xAxis: {
                         categories: [
                             '2019-05-30'
@@ -86,9 +86,9 @@
                 this.chart.title.update({
                     'text': val.title
                 });
-                this.chart.subtitle.update({
-                    'text': val.subtitle
-                });
+                // this.chart.subtitle.update({
+                //     'text': val.subtitle
+                // });
                 this.chart.xAxis[0].categories = val.xAxis;
 
                 _.forEach(val.series, (o) => {
