@@ -12,7 +12,7 @@
         mixins: [
             common
         ],
-        props:{
+        props: {
             optionState: {}
         },
         data() {
@@ -25,7 +25,10 @@
                         zoomType: 'xy'
                     },
                     title: {
-                        text: '失败次数分布'
+                        text: '失败次数分布',
+                        style: {
+                            fontSize: '16px'
+                        }
                     },
                     subtitle: {
                         text: '2019-05-30'
@@ -45,8 +48,8 @@
         mounted() {
             new Highcharts.chart(this.id, this.option);
         },
-        watch:{
-            optionState(){
+        watch: {
+            optionState() {
                 this.processLoadBubbleChart(this.optionState);
             },
             optionData(val) {

@@ -12,7 +12,7 @@
         mixins: [
             common
         ],
-        props:{
+        props: {
             optionState: {}
         },
         data() {
@@ -27,7 +27,10 @@
                         type: 'pie'
                     },
                     title: {
-                        text: '恶化小区分布'
+                        text: '恶化小区分布',
+                        style: {
+                            fontSize: '16px'
+                        }
                     },
                     subtitle: {
                         text: '2019-05-30'
@@ -56,8 +59,8 @@
         mounted() {
             new Highcharts.chart(this.id, this.option);
         },
-        watch:{
-            optionState(){
+        watch: {
+            optionState() {
                 this.processLoadPieChart(this.optionState);
             },
             optionData(val) {
@@ -70,10 +73,10 @@
                     'text': val.subtitle
                 });
                 self.chart.addSeries({
-                        name: '失败次数',
-                        colorByPoint: true,
-                        data: val.series
-                    });
+                    name: '失败次数',
+                    colorByPoint: true,
+                    data: val.series
+                });
             },
         },
         computed: {
