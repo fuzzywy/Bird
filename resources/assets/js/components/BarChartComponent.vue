@@ -12,7 +12,7 @@
         mixins: [
             common
         ],
-        props:{
+        props: {
             optionState: {}
         },
         data() {
@@ -24,7 +24,10 @@
                         type: 'column'
                     },
                     title: {
-                        text: '所有城市指标排名'
+                        text: '所有城市指标排名',
+                        style: {
+                            fontSize: '16px'
+                        }
                     },
                     subtitle: {
                         text: '2019-05-30'
@@ -46,7 +49,7 @@
                         // head + 每个 point + footer 拼接成完整的 table
                         headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
                         pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
-                        '<td style="padding:0"><b>{point.y:.2f} %</b></td></tr>',
+                            '<td style="padding:0"><b>{point.y:.2f} %</b></td></tr>',
                         footerFormat: '</table>',
                         shared: true,
                         useHTML: true
@@ -67,10 +70,10 @@
             // test(){
             //     console.log(this.optionState)
             // }
-            
+
         },
-        watch:{
-            optionState(){
+        watch: {
+            optionState() {
                 this.processLoadBarChart(this.optionState);
             },
             optionData(val) {
