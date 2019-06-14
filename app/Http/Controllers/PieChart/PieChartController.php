@@ -245,7 +245,8 @@ class PieChartController extends Controller
                     // 2.1 点击省级趋势线，显示指标排名bar图，恶化小区分布饼图和失败次数气泡图
                     $result['series'] = $this->getProvinceCitysData();
                     // $result['title'] = $this->clickLineName."-".$this->card;
-                    $result['subtitle'] = $this->clickLineName."-".$this->clickTime;
+                    $result['subtitle'] = $this->clickTime;
+                    $result['clickLineName'] = $this->clickLineName;
                     // $result['xAxis'] = [$this->clickTime];
                 }
 
@@ -256,7 +257,8 @@ class PieChartController extends Controller
                 // 右侧显示TOP30和其余小区失败次数在全网失败次数比例的饼图分布。
                 $result['series'] = $this->getCityData();
                 // $result['title'] = $this->clickLineName."-".$this->card;
-                $result['subtitle'] = $this->clickLineName."-".$this->clickTime;
+                $result['subtitle'] = $this->clickTime;
+                $result['clickLineName'] = $this->clickLineName;
                 // $result['xAxis'] = [$this->clickTime];
             }
         }

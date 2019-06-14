@@ -69,6 +69,9 @@
                 this.chart = new Highcharts.chart(this.id, this.option);
 
                 // this.chart.setSize(parseInt(this.containerWidth), 400);
+                this.chart.title.update({
+                    'text': val.clickLineName+"-恶化小区分布"
+                });
                 this.chart.subtitle.update({
                     'text': val.subtitle
                 });

@@ -163,6 +163,7 @@ class BubbleChartController extends Controller
                     $result['series'] = $this->getData();
                     // $result['title'] = $this->clickLineName."-".$this->card;
                     $result['subtitle'] = $this->clickTime;
+                    $result['clickLineName'] = $this->clickLineName;
                     // $result['xAxis'] = [$this->clickTime];
                 }
             }

@@ -61,6 +61,9 @@
                 this.chart.subtitle.update({
                     'text': val.subtitle
                 });
+                this.chart.title.update({
+                    'text': val.clickLineName+"-失败次数分布"
+                });
                 _.forEach(val.series, (o) => {
                     self.chart.addSeries(o);
                 });
