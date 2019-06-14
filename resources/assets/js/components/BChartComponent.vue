@@ -39,11 +39,11 @@
                     <v-flex :class="xsBar" id="barChart" style="display:none">
                         <barChartComponent :optionState="optionState"></barChartComponent>
                     </v-flex>
-                    <v-flex :class="xsTopCell" id="topCellTable" style="display:none">
-                        <topCellTableComponent :optionState="optionState"></topCellTableComponent>
-                    </v-flex>
                     <v-flex :class="xsPie" id="pieChart" style="display:none">
                         <pieChartComponent :optionState="optionState"></pieChartComponent>
+                    </v-flex>
+                    <v-flex :class="xsTopCell" id="topCellTable" style="display:none">
+                        <topCellTableComponent :optionState="optionState"></topCellTableComponent>
                     </v-flex>
                     <v-flex :class="xsBubble" id="bubbleChart" style="display:none">
                         <bubbleChartComponent :optionState="optionState"></bubbleChartComponent>

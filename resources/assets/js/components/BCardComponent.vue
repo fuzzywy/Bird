@@ -14,17 +14,17 @@
                     <v-flex v-for="item in cards" :key="item.id" v-bind="{ [`xs${item.flex}`]: true }" xl2 lg3 md3 sm6
                         xs12>
                         <v-card :color="item.color" dark hover @click="clickCard(item.type)" tag="div">
-                            <v-card-title class="pt-4 pb-0" style="height: 26px;font-size:16px">
+                            <v-card-title class="pt-2 pb-0" style="height: 26px;font-size:16px">
                                 <span class="font-weight-light mx-auto">{{ item.type }}</span>
                             </v-card-title>
-                            <v-card-text class="font-weight-bold"
+                            <v-card-text class="font-weight-bold pt-2"
                                 style="text-align: center; height: 40px;font-size:16px">
                                 {{ item.data }}
                                 <v-icon class="mr-0" :color="item.class==='arrow_upward'? '#1296db':'#d81e06'">
                                     {{ item.class }}</v-icon>
                                 <span class="subheading mr-0" style="margin-left: -8px;">{{ item.tend }}</span>
                             </v-card-text>
-                            <v-card-title style="font-size:12px">
+                            <v-card-title class="pt-2" style="font-size:12px">
                                 <v-layout justify-center>
                                     上次更新: {{ item.time }}
                                 </v-layout>
