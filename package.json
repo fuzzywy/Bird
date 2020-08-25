@@ -30,7 +30,7 @@
     },
     "dependencies": {
         "css-loader": "^2.1.0",
-        "highcharts": "^6.1.1",
+        "highcharts": "^7.2.2",
         "material-design-icons-iconfont": "^4.0.5",
         "vue-highcharts": "0.0.10",
         "vue-loader": "^15.7.0",
